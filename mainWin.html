@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Test</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+
+</head>
+<body>
+	<!-- dunno what are these -yet- -->
+	<nav>
+		<div class="nav-wrapper">
+			<a class="brand-logo center"> Test </a>
+		</div>
+	</nav>
+	<ul>
+		
+	</ul>
+	<script>
+		const electron = require('electron');
+		const {ipcRenderer} = electron;
+		const ul = document.querySelector('ul'); //variable for unordered list.
+
+		//Add Item.
+		ipcRenderer.on('item:add', function(event, item){
+			ul.className = 'collection'; // Its about the materialize css !
+			// Dom manupilation.
+			const li = document.createElement('li');
+			li.className = 'collection-item';
+			const itemText = document.createTextNode(item);
+			// append the text to li.
+			li.appendChild(itemText);
+			ul.appendChild(li);
+		});
+
+		// Clear Item
+		ipcRenderer.on('item:clear', function(){
+			ul.innerHTML = '';
+			ul.className = '';
+		});
+
+		// Remove item by selecting.
+		ul.addEventListener('dblclick', removeItem);
+
+		function removeItem(e){
+			e.target.remove();
+			if(ul.children.length == 0){ // It's because when wedelete item
+				// classes remains and looks horrible.
+				ul.className = '';
+			}
+		}
+
+
+	</script>
+</body>
+</html>
