@@ -1,5 +1,4 @@
-# MangApplizer
-
+#MangaApplizer
 - It does not mean anything. It's just a repo that we trying to improve our javascript
 knowledge on electron.
 
