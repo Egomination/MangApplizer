@@ -1,4 +1,6 @@
-node_modules/
-false/
-release-builds/
+# Node.JS
 package-lock.json
+node_modules/
+
+# VS Code
+.vscode
