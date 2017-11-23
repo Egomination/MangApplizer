@@ -1,26 +1,12 @@
-var request = require('request');
-var cheerio = require('cheerio');
-var http = require('http');
-var fs = require('fs');
-var mkdirp = require('mkdirp');
-var readline = require('readline');
+const request = require('request');
+const cheerio = require('cheerio');
+const http = require('http');
+const fs = require('fs');
+const mkdirp = require('mkdirp');
+const readline = require('readline');
 
 
 let list = [];
-
-
-// var rl = readline.createInterface({
-//   input: process.stdin,
-//   output: process.stdout
-// });
-
-// rl.question("Url, foldername, chaptername ", function(answer) {
-//   // TODO: Log the answer in a database
-//   // download(answer);
-//   let stringify = answer.split(' ');
-//   download(stringify[0], stringify[1], stringify[2])
-//   rl.close();
-// });
 
 function download(url, foldername, chname){
 	mkdirp('./imgs/' + foldername + '/' + chname + '/');

@@ -1,8 +1,9 @@
 const electron = require('electron');
 const url = require('url');
 const path = require('path');
-const download = require('./webscrp').download;
+const download = require('./src/scripts/webscrp').download;
 const {app, BrowserWindow, Menu, ipcMain} = electron;
+require('electron-reload')(__dirname);
 
 // SET ENVIRONMENT FOR DEV TOOLS
 process.env.NODE_ENV = 'dev';
@@ -21,7 +22,7 @@ app.on('ready', function () {
 	mainWin = new BrowserWindow({});
 	//Load html for the view.
 	mainWin.loadURL(url.format({
-		pathname: path.join(__dirname, 'mainWin.html'),
+		pathname: path.join(__dirname, 'index.html'),
 		protocol:'file:',
 		slashes: true //This is just passing the path.
 	}));
@@ -46,7 +47,7 @@ function createAddWindow(){
 	});
 
 	addWindow.loadURL(url.format({
-		pathname: path.join(__dirname, 'addWindow.html'),
+		pathname: path.join(__dirname, './src/components/addWindow.html'),
 		protocol:'file:',
 		slashes: true
 	}))
