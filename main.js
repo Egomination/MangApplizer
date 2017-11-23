@@ -1,8 +1,8 @@
-const electron = require('electron');
-const url = require('url');
-const path = require('path');
-const download = require('./src/scripts/webscrp').download;
-const {app, BrowserWindow, Menu, ipcMain} = electron;
+const electron = require('electron'),
+ 	  url = require('url'),
+ 	  path = require('path'),
+ 	  download = require('./src/scripts/webscrp').download,
+ 	  {app, BrowserWindow, Menu, ipcMain, dialog} = electron
 
 // SET ENVIRONMENT FOR DEV TOOLS
 process.env.NODE_ENV = 'dev';
@@ -47,14 +47,14 @@ function createAddWindow(){
 	addWindow = new BrowserWindow({
 		width: 800,
 		height: 600,
-		title: 'Add List Item!'
+		title: 'Give me the Manga!'
 	});
 
 	addWindow.loadURL(url.format({
 		pathname: path.join(__dirname, './src/components/addWindow.html'),
 		protocol:'file:',
 		slashes: true
-	}))
+	}));
 
 }
 
@@ -84,6 +84,8 @@ const mainMenuTemp = [
 		submenu:[
 			{
 				label:'Add Item',
+				accelerator: process.platform == 'darwin' ? 'Command+D':
+				'Ctrl+D',
 				click(){
 					createAddWindow();
 				}
@@ -102,8 +104,8 @@ const mainMenuTemp = [
 					app.quit();
 				}
 			}
-		]
-	}
+		],
+	},
 ];
 
 // If mac, add empty object to menu

@@ -1,9 +1,10 @@
-const request = require('request');
-const cheerio = require('cheerio');
-const http = require('http');
-const mkdirp = require('mkdirp-promise')
-const fs = require('fs-extra')
-const readline = require('readline');
+const request = require('request'),
+	  cheerio = require('cheerio'),
+	  http = require('http'),
+	  mkdirp = require('mkdirp-promise'),
+	  fs = require('fs-extra'),
+	  readline = require('readline'),
+	  {dialog} = require('electron');
 
 
 let list = [];
@@ -27,13 +28,20 @@ function download(url, foldername, chname){
 	    list.forEach(function(item, url){
 	    	let val = item.trim();
 	    	// Downloadin the images.
-			let file = fs.createWriteStream(mpath + '/' + "page" + counter + ".jpg");
+	    	// val.split('.').pop(-1).toLowerCase();
+			let file = fs.createWriteStream(mpath + counter + '.' + // counter seems working but
+				// after downloading, they looks unordered in sublime.
+				val.split('.').pop(-1).toLowerCase()); // we need original extension.
     		let req = http.get(val, function(response) {
         		response.pipe(file)
 			});
 			counter = counter + 1;
 
 		});
+		// Dialog message after successful download operation.
+	    dialog.showMessageBox({message: "Downloading completed successfully!",
+	    	buttons: ['OK'] });
+
 	});
 }
 
