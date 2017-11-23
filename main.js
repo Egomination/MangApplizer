@@ -3,7 +3,6 @@ const url = require('url');
 const path = require('path');
 const download = require('./src/scripts/webscrp').download;
 const {app, BrowserWindow, Menu, ipcMain} = electron;
-require('electron-reload')(__dirname);
 
 // SET ENVIRONMENT FOR DEV TOOLS
 process.env.NODE_ENV = 'dev';
@@ -38,11 +37,16 @@ app.on('ready', function () {
 	Menu.setApplicationMenu(mainMenu)
 });
 
+// For logging the errors in the program
+electron.dialog.showErrorBox = (title, content) => {
+	console.log(`${title}\n${content}`);
+};
+
 // Add Window Menu
 function createAddWindow(){
 	addWindow = new BrowserWindow({
-		width: 300,
-		height: 200,
+		width: 800,
+		height: 600,
 		title: 'Add List Item!'
 	});
 
