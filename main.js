@@ -76,7 +76,6 @@ ipcMain.on('chno:add', function(event, item){
 	mainWin.webContents.send('chno:add', item); // Now sending to mainwindow.
 	chno = item;
 	download(urls,fname, chno);
-	addWindow.close(); 
 });
 
 
