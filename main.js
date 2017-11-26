@@ -18,7 +18,10 @@ let chno;
 // Creation
 // It creates a main window from mainWin html.
 app.on('ready', function () {
-	mainWin = new BrowserWindow({});
+	mainWin = new BrowserWindow({
+		width: 1200,
+		height: 800,
+	});
 	//Load html for the view.
 	mainWin.loadURL(url.format({
 		pathname: path.join(__dirname, 'index.html'),

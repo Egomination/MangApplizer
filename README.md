@@ -9,4 +9,4 @@ to read them.
 
 ## Based on:
 - [Electron](https://github.com/electron/electron)
-- `Bootstrap` for CSS
+- `Materialize` for CSS
