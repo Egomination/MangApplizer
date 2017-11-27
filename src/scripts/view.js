@@ -1,3 +1,3 @@
 $(document).ready( function() {
-    $("#Dow").load("./src/components/addWindow.html");
+    $("#Dow").load("./src/components/lhscans.html");
 });

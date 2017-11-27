@@ -1,8 +1,8 @@
 const electron = require('electron'),
  	  url = require('url'),
  	  path = require('path'),
- 	  download = require('./src/scripts/webscrp').download,
- 	  {app, BrowserWindow, Menu, ipcMain, dialog} = electron
+ 	  lhs = require('./src/lib/mangasrc/lhscans').lhs,
+ 	  {app, BrowserWindow, Menu, ipcMain, dialog} = electron;
 
 // SET ENVIRONMENT FOR DEV TOOLS
 process.env.NODE_ENV = 'dev';
@@ -10,7 +10,6 @@ process.env.NODE_ENV = 'dev';
 let mainWin;
 let addWindow;
 
-let urls;
 let fname;
 let chno;
 
@@ -61,11 +60,6 @@ function createAddWindow(){
 
 }
 
-// Catching the payload from addWindow add:item
-ipcMain.on('url:add', function(event, item){
-	mainWin.webContents.send('url:add', item); // Now sending to mainwindow.
-	urls = item;
-});
 
 ipcMain.on('fname:add', function(event, item){
 	mainWin.webContents.send('fname:add', item); // Now sending to mainwindow.
@@ -75,7 +69,7 @@ ipcMain.on('fname:add', function(event, item){
 ipcMain.on('chno:add', function(event, item){
 	mainWin.webContents.send('chno:add', item); // Now sending to mainwindow.
 	chno = item;
-	download(urls,fname, chno);
+	lhs(fname, chno);
 });
 
 
