@@ -4,7 +4,7 @@
 	<title>MangApplizer</title>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-	<link rel="stylesheet" href="./src/css/downloader.css">
+	<link rel="stylesheet" href="./src/css/main.css">
 </head>
 <body>
 	<nav class="nav-extended">
@@ -17,7 +17,7 @@
 		</div>
 		<div class="nav-content">
 		  <ul class="tabs tabs-transparent">
-				<li class="tab"><a href="#Main">Main</a></li>
+				<li class="tab"><a href="#Main" class="active">Main</a></li>
 				<li class="tab"><a href="#Dow">Manga Downloader</a></li>
 				<li class="tab"><a href="#View">Manga Viewer</a></li>
 			</ul>
@@ -29,7 +29,16 @@
 		</ul>
 	</nav>
 	<div id="Main" class="col s12">Test 0</div>
-	<div id="Dow"></div>
+	<div id="Dow">
+		<div class="container bar">
+			<select name="myList" onchange="source(this.value)"> 
+				<option value="">Please select a source</option>
+				<option value="lhs">LHScan</option>
+				<option value="km">KissManga</option>
+			</select>
+		</div>
+		<div id="content"></div>
+	</div>
   <div id="View" class="col s12">Test 2</div>
 	<script type="text/javascript" src="./node_modules/jquery/dist/jquery.min.js"></script>
 	<script type="text/javascript" src="./node_modules/hammerjs/hammer.min.js"></script>
