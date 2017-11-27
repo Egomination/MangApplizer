@@ -4,30 +4,41 @@
 	<title>Manga Downloader</title>
 </head>
 <body>
+	
 	<div class="container start">
 		<form>
 			<div>
-				<label>Manga Name</label>
-				<input type="text" id="fname">
-				<label>Chapter No</label>
-				<input type="text" id="chno">
+				<div class="input-field">
+					<input type="text" id="fname" data-length = "40">
+					<label>Manga Name</label>
+				</div>
+				<div class="input-field">
+					<input type="number" class="no-spin" id="chno" data-length = "4">
+					<label>Chapter No</label>
+				</div>
 			</div>
 			<button class="btn waves-effect waves-light" type="submit">Add!</button>
 		</form>
 	</div>
+
 	<script>
-		const electron = require('electron');
-		const {ipcRenderer} = electron;
+		try{
+			const electron = require('electron');
+			const {ipcRenderer} = electron;
 
-		const form = document.querySelector('form');
-		form.addEventListener('submit', submitForm);
+			const form = document.querySelector('form');
+			form.addEventListener('submit', submitForm);
 
-		function submitForm(event){
-			event.preventDefault(); // Preventing default pass
-			const name = document.querySelector('#fname').value; // Need to watch DOM video of traversy.
-			const chno = document.querySelector('#chno').value; // Need to watch DOM video of traversy.
-			ipcRenderer.send('fname:add', name); // sending the payload to main.js
-			ipcRenderer.send('chno:add', chno); // sending the payload to main.js
+			function submitForm(event){
+				event.preventDefault(); // Preventing default pass
+				const name = document.querySelector('#fname').value; // Need to watch DOM video of traversy.
+				const chno = document.querySelector('#chno').value; // Need to watch DOM video of traversy.
+				ipcRenderer.send('fname:add', name); // sending the payload to main.js
+				ipcRenderer.send('chno:add', chno); // sending the payload to main.js
+			}
+		}
+		catch(err){
+			//pass
 		}
 	</script>
 
