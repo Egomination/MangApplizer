@@ -7,6 +7,3 @@ function downloader(file, url){
 }
 
 module.exports = downloader;
-// module.exports = {
-// 	downloader: downloader
-// }
