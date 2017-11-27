@@ -7,7 +7,7 @@ $(document).ready(function() {
 
 function source(source){
     if(source=="lhs"){
-        $("#content").load("./src/components/lhscan.html");
+        $("#content").load("./src/components/lhscans.html");
         console.log("lhs")
     }
     else if(source=="km"){

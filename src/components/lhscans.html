@@ -7,12 +7,10 @@
 	<div class="container start">
 		<form>
 			<div>
-				<label>URL of the Manga</label>
-				<input type="url" class="validate" id="url">
 				<label>Manga Name</label>
 				<input type="text" id="fname">
 				<label>Chapter No</label>
-				<input type="number" class="no-spin" id="chno">
+				<input type="text" id="chno">
 			</div>
 			<button class="btn waves-effect waves-light" type="submit">Add!</button>
 		</form>
@@ -26,10 +24,8 @@
 
 		function submitForm(event){
 			event.preventDefault(); // Preventing default pass
-			const url = document.querySelector('#url').value; // Need to watch DOM video of traversy.
 			const name = document.querySelector('#fname').value; // Need to watch DOM video of traversy.
 			const chno = document.querySelector('#chno').value; // Need to watch DOM video of traversy.
-			ipcRenderer.send('url:add', url); // sending the payload to main.js
 			ipcRenderer.send('fname:add', name); // sending the payload to main.js
 			ipcRenderer.send('chno:add', chno); // sending the payload to main.js
 		}
