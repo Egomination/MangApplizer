@@ -1,6 +1,8 @@
 # Node.JS
 package-lock.json
 node_modules/
+false/
+release-builds/
 
 # VS Code
 vscode
