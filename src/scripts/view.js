@@ -3,6 +3,8 @@
 // Needed for Materialize Design
 $(document).ready(function() {
     $('select').material_select();
+    $(".dropdown-button").dropdown();
+    $(".button-collapse").sideNav();
 });
 
 function source(source){
