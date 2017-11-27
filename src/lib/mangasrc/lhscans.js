@@ -4,16 +4,22 @@ const request = require('request'),
 	  mkdirp = require('mkdirp-promise'),
 	  fs = require('fs-extra'),
 	  readline = require('readline'),
+	  downloader = require('../../scripts/downloader'),
 	  {dialog} = require('electron');
 
 
 let list = [];
 // This function will be generalized and download will be seperated.
 // TODO: Fix the download and additional manga sites!
-function download(url, foldername, chname){
-	let mpath = './imgs/' + foldername + '/' + chname + '/';
 
-	if(!url && !foldername && !chname){
+function lhs(foldername, chname){
+	let mpath = './imgs/' + foldername + '/' + chname + '/';
+	foldername = foldername.toLowerCase();
+	foldername = foldername.replace(/ /g, "-");
+
+	let url = 'http://lhscans.com/read-'+foldername+'-chapter-'+chname+
+					'.html';
+	if(!foldername && !chname){
 		dialog.showMessageBox({type: "error", message: "Fill the form correctly!",
 	    	buttons: ['OK'] });
 	}
@@ -40,9 +46,10 @@ function download(url, foldername, chname){
 		    	// val.split('.').pop(-1).toLowerCase();
 				let file = fs.createWriteStream(mpath + counter + '.' + 
 					val.split('.').pop(-1).toLowerCase());
-	    		let req = http.get(val, function(response) {
-	        		response.pipe(file)
-				});
+					// let req = http.get(val, function(response) {
+					// 	response.pipe(file)
+					// 	});
+					downloader(file, val);
 				counter = counter + 1;
 
 			});
@@ -59,5 +66,5 @@ function download(url, foldername, chname){
 }
 
 module.exports = {
-	download: download
+	lhs: lhs
 }
