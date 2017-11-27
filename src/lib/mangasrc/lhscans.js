@@ -9,6 +9,7 @@ const request = require('request'),
 
 
 let list = [];
+var flag = 0;
 // This function will be generalized and download will be seperated.
 // TODO: Fix the download and additional manga sites!
 
@@ -27,7 +28,24 @@ function lhs(foldername, chname){
 		// Creating the folders
 		mkdirp(mpath)
 			.catch(console.error);
-		request(url, function(err, resp, body) {
+
+	request(url, function(err, resp, body) {
+		const $ = cheerio.load(body);
+		let x = $("title").text();
+		if(x == 'Lhscans - Read manga online in high quality'){
+			url = 'http://lhscans.com/read-'+foldername+'-raw-chapter-'+chname+
+						'.html';
+			lhsDownloader(url, foldername, chname, mpath);
+		}else{
+			lhsDownloader(url, foldername, chname, mpath);
+			}
+		});	
+	}
+}
+
+
+function lhsDownloader(url, foldername, chno, path){
+	request(url, function(err, resp, body) {
 			if(!err && resp.statusCode == 200){
 			// First we get the image urls from lhscans.
 		      const $ = cheerio.load(body);
@@ -39,12 +57,13 @@ function lhs(foldername, chname){
 		      });
 		    // Creating the folders for the chapter.
 			// Downloading the each link
+
 			let counter = 1;
 		    list.forEach(function(item, url){
 		    	let val = item.trim();
 		    	// Downloadin the images.
 		    	// val.split('.').pop(-1).toLowerCase();
-				let file = fs.createWriteStream(mpath + counter + '.' + 
+				let file = fs.createWriteStream(path + counter + '.' + 
 					val.split('.').pop(-1).toLowerCase());
 					// let req = http.get(val, function(response) {
 					// 	response.pipe(file)
@@ -62,7 +81,6 @@ function lhs(foldername, chname){
 		    		buttons: ['OK'] });
 			}
 		});
-	}
 }
 
 module.exports = {
