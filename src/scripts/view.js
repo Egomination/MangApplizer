@@ -13,7 +13,7 @@ function source(source){
         console.log("lhs")
     }
     else if(source=="km"){
-        //$("#Dow").load("./src/components/.html");
+        $("#content").load("./src/components/kissmanga.html");
         console.log("km")
     }
 }
