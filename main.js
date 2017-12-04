@@ -2,17 +2,13 @@ const electron = require('electron'),
  	  url = require('url'),
  	  path = require('path'),
  	  lhs = require('./src/lib/mangasrc/lhscans').lhs,
- 	  {app, BrowserWindow, Menu, ipcMain, dialog} = electron;
+ 	  {app, BrowserWindow, Menu, dialog} = electron;
 
 // SET ENVIRONMENT FOR DEV TOOLS
 process.env.NODE_ENV = 'dev';
 
 let mainWin;
 let addWindow;
-
-let fname;
-let chno;
-
 
 // Creation
 // It creates a main window from mainWin html.
@@ -44,33 +40,6 @@ electron.dialog.showErrorBox = (title, content) => {
 	console.log(`${title}\n${content}`);
 };
 
-// Add Window Menu
-function createAddWindow(){
-	addWindow = new BrowserWindow({
-		width: 800,
-		height: 600,
-		title: 'Give me the Manga!'
-	});
-
-	addWindow.loadURL(url.format({
-		pathname: path.join(__dirname, './src/components/addWindow.html'),
-		protocol:'file:',
-		slashes: true
-	}));
-
-}
-
-
-ipcMain.on('fname:add', function(event, item){
-	mainWin.webContents.send('fname:add', item); // Now sending to mainwindow.
-	fname = item;
-});
-
-ipcMain.on('chno:add', function(event, item){
-	mainWin.webContents.send('chno:add', item); // Now sending to mainwindow.
-	chno = item;
-	lhs(fname, chno);
-});
 
 
 // Creating the menu template

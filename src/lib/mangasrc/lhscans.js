@@ -9,9 +9,6 @@ const request = require('request'),
 
 
 let list = [];
-var flag = 0;
-// This function will be generalized and download will be seperated.
-// TODO: Fix the download and additional manga sites!
 
 function lhs(foldername, chname){
 	let mpath = './imgs/' + foldername + '/' + chname + '/';
@@ -65,9 +62,6 @@ function lhsDownloader(url, foldername, chno, path){
 		    	// val.split('.').pop(-1).toLowerCase();
 				let file = fs.createWriteStream(path + counter + '.' + 
 					val.split('.').pop(-1).toLowerCase());
-					// let req = http.get(val, function(response) {
-					// 	response.pipe(file)
-					// 	});
 					downloader(file, val);
 				counter = counter + 1;
 

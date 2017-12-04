@@ -31,10 +31,10 @@
 
 			function submitForm(event){
 				event.preventDefault(); // Preventing default pass
-				const name = document.querySelector('#fname').value; // Need to watch DOM video of traversy.
-				const chno = document.querySelector('#chno').value; // Need to watch DOM video of traversy.
-				ipcRenderer.send('fname:add', name); // sending the payload to main.js
-				ipcRenderer.send('chno:add', chno); // sending the payload to main.js
+				const name = document.querySelector('#fname').value; 
+				const chno = document.querySelector('#chno').value; 
+				ipcRenderer.send('fname:add', name); 
+				ipcRenderer.send('chno:add', chno); 
 			}
 		}
 		catch(err){
