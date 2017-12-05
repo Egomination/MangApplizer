@@ -1,28 +1,12 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Manga Downloader</title>
-</head>
-<body>
-	
-	<div class="container start">
-		<form>
-			<div>
-				<div class="input-field">
-					<input type="text" id="fname">
-					<label>Manga Name</label>
-				</div>
-				<div class="input-field">
-					<input type="number" class="no-spin" id="chno">
-					<label>Chapter No</label>
-				</div>
-			</div>
-			<button id="butto-kun" class="btn waves-effect waves-light" disabled="disabled" onclick="buttoKun(); return false;">Add!</button>
-		</form>
-    </div>
-    <script>
-        const url = "./src/lib/mangasrc/kissmanga.js";
-        $.getScript(url);
-	</script>
-	</body>
-</html>
+<!-- Kissmanga Button -->
+
+<button id="butto-kun" class="btn waves-effect waves-light" disabled="disabled" onclick="buttoKun(); return false;">Add!</button>
+
+<script>
+	try{
+		const url = "./src/lib/mangasrc/kissmanga.js";
+		$.getScript(url);	
+	}catch(error){
+		// Pass
+	}
+</script>

@@ -47,12 +47,26 @@
 				<option value="km">KissManga</option>
 			</select>
 		</div>
-		<div id="content"></div>
+		<div class="container start">
+			<form name="downloadForm">
+				<div>
+					<div class="input-field">
+						<input type="text" id="fname">
+						<label>Manga Name</label>
+					</div>
+					<div class="input-field">
+						<input type="number" class="no-spin" id="chno">
+						<label>Chapter No</label>
+					</div>
+				</div>
+				<div id="content"></div>
+			</form>
+		</div>
 	</div>
   <div id="View" class="col s12">Test 2</div>
 	<script type="text/javascript" src="./node_modules/jquery/dist/jquery.min.js"></script>
 	<script type="text/javascript" src="./node_modules/hammerjs/hammer.min.js"></script>
 	<script type="text/javascript" src="./node_modules/materialize-css/dist/js/materialize.js"></script>
-	<script type="text/javascript" src="./src/scripts/view.js"></script>
+	<script type="text/javascript" src="./src/scripts/index.js"></script>
 </body>
 </html>

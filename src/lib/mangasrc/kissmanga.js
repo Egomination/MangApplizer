@@ -27,24 +27,3 @@ function buttoKun(){
 
 	});
 }
-
-// Grey out the button if at least one input is missing
-(function(){
-    $("form input").on("keyup change",function() {
-
-        let empty = false;
-        $('form input').each(function() {
-			// Check is any input value is empty
-            if ($(this).val() == '') {
-                empty = true;
-            }
-        });
-
-        if(empty){
-            $('#butto-kun').attr('disabled', 'disabled'); 
-		} 
-		else{
-            $('#butto-kun').removeAttr('disabled');
-        }
-    });
-})()
