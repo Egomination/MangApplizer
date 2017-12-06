@@ -15,10 +15,12 @@ function source(source){
     if(source=="lhs"){
         $("#content").load("./src/components/lhscans.html");
         console.log("lhs")
+        resetBtt();
     }
     else if(source=="km"){
         $("#content").load("./src/components/kissmanga.html");
         console.log("km")
+        resetBtt();
     }
 }
 
@@ -42,3 +44,10 @@ function source(source){
         }
     });
 })()
+
+// Reset Button
+function resetBtt(){
+    $('form[name="downloadForm"]')
+        .find(":input").val("");
+    $('#butto-kun').attr('disabled', 'disabled');     
+}
