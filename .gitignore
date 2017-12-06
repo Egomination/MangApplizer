@@ -3,7 +3,8 @@ package-lock.json
 node_modules/
 false/
 release-builds/
-
+.tern-project
+*.swp
 # VS Code
 vscode
 

@@ -21,34 +21,12 @@
 			</div>
 			<button id="butto-kun" class="btn waves-effect waves-light" onclick="lhs(); return false;">Add!</button>
 		</form>
-<<<<<<< HEAD
-	</div>
 
-	<script>
-		try{
-			const electron = require('electron');
-			const {ipcRenderer} = electron;
-
-			const form = document.querySelector('form');
-			form.addEventListener('submit', submitForm);
-
-			function submitForm(event){
-				event.preventDefault(); // Preventing default pass
-				const name = document.querySelector('#fname').value; 
-				const chno = document.querySelector('#chno').value; 
-				ipcRenderer.send('fname:add', name); 
-				ipcRenderer.send('chno:add', chno); 
-			}
-		}
-		catch(err){
-			//pass
-		}
-=======
     </div>
     <script>
         const url = "./src/lib/mangasrc/lhscans.js";
         $.getScript(url);
->>>>>>> b34405f87abbd778b27a023427d581a48f08ec96
+
 	</script>
 	</body>
 
