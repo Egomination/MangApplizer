@@ -4,14 +4,12 @@ const hakuneko = require('hakuneko');
 	regex=(.*\.jpe?g|.*\.png)
 	its for the handling urls correction
 
-
-
  */
 
 function buttoKun(){
 	manga = hakuneko.base.createManga( 'Title', '/Manga/Bleach' );
-	hakuneko.kissmanga.getChapters( manga, function( error, chapters ) {
-		if( !error ) {
+	hakuneko.kissmanga.getChapters( manga, function( error, chapters ){
+		if(!error){
 
 			chapter = hakuneko.base.createChapter('[VOL]', '[NR]', 'Title', 'lang', 'scanlator',
 				'/Manga/Bleach', []);
