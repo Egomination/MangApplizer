@@ -1,10 +1,6 @@
 const electron = require('electron'),
  	  url = require('url'),
  	  path = require('path'),
-<<<<<<< HEAD
- 	  lhs = require('./src/lib/mangasrc/lhscans').lhs,
-=======
->>>>>>> 0f5344cbbcf0c69142dde89ea4b205d43ae7c436
  	  {app, BrowserWindow, Menu, dialog} = electron;
 
 // SET ENVIRONMENT FOR DEV TOOLS
@@ -43,11 +39,6 @@ electron.dialog.showErrorBox = (title, content) => {
 	console.log(`${title}\n${content}`);
 };
 
-<<<<<<< HEAD
-
-
-=======
->>>>>>> 0f5344cbbcf0c69142dde89ea4b205d43ae7c436
 // Creating the menu template
 const mainMenuTemp = [
 	{
