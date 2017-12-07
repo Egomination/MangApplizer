@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-	<title>MangApplizer</title>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
-	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-	<link rel="stylesheet" href="./src/css/main.css">
+    <title>MangApplizer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="./src/css/main.css">
 </head>
+
 <body>
+<<<<<<< HEAD
 	<nav class="nav-extended">
 		<div class="nav-wrapper">
 			<a href="#" class="brand-logo center">MangApplizer</a>
@@ -75,5 +78,76 @@
 	<script type="text/javascript" src="./node_modules/hammerjs/hammer.min.js"></script>
 	<script type="text/javascript" src="./node_modules/materialize-css/dist/js/materialize.js"></script>
 	<script type="text/javascript" src="./src/scripts/index.js"></script>
+=======
+    <nav class="nav-extended">
+        <div class="nav-wrapper">
+            <a href="#" class="brand-logo center">MangApplizer</a>
+            <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+            <ul class="right hide-on-med-and-down">
+                <li><a href="#H">Help</a></li>
+                <li><a class="dropdown-button" data-activates="help_drop">About<i class="material-icons right">arrow_drop_down</i></a></li>
+            </ul>
+            <ul class="side-nav" id="mobile-demo">
+                <li><a href="#H">Help</a></li>
+                <li><a class="dropdown-button" data-activates="help_drop_mobile">About<i class="material-icons right">arrow_drop_down</i></a></li>
+            </ul>
+        </div>
+        <div class="nav-content">
+            <ul class="tabs tabs-transparent">
+                <li class="tab"><a href="#Main" class="active">Main</a></li>
+                <li class="tab"><a href="#Dow">Manga Downloader</a></li>
+                <li class="tab"><a href="#View">Manga Viewer</a></li>
+            </ul>
+        </div>
+        <ul id="help_drop" class="dropdown-content">
+            <li><a href="#Ab">About</a></li>
+            <li class="divider"></li>
+            <li><a href="#Cr">Credits</a></li>
+        </ul>
+        <ul id="help_drop_mobile" class="dropdown-content">
+            <li><a href="#Ab">About</a></li>
+            <li class="divider"></li>
+            <li><a href="#Cr">Credits</a></li>
+        </ul>
+    </nav>
+    <div id="Main" class="col s12">Test 0</div>
+    <div id="Dow">
+        <div class="container bar">
+            <select name="myList" id="selector" onchange="source(this.value)">
+                <option value="a" disabled selected>Please select a source</option>
+                <option value="lhs">LHScan</option>
+                <option value="km">KissManga</option>
+            </select>
+        </div>
+        <div class="container start">
+            <form name="downloadForm">
+                <div>
+                    <div class="input-field">
+                        <input type="text" id="fname">
+                        <label>Manga Name</label>
+                    </div>
+                    <div class="input-field">
+                        <input type="number" class="no-spin" id="chno">
+                        <label>Chapter No</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s3">
+                        <button id="reset" class="btn waves-effect waves-dark" onclick="resetBtt(); return false;">Reset</button>
+                    </div>
+                    <div class="col s1">
+                        <div id="content"></div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div id="View" class="col s12">Test 2</div>
+    <script type="text/javascript" src="./node_modules/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="./node_modules/hammerjs/hammer.min.js"></script>
+    <script type="text/javascript" src="./node_modules/materialize-css/dist/js/materialize.js"></script>
+    <script type="text/javascript" src="./src/scripts/index.js"></script>
+>>>>>>> 858088ac0100427c881aca793a0f3bd0053f77fe
 </body>
+
 </html>
