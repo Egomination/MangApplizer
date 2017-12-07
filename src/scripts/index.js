@@ -17,18 +17,6 @@ $(document).ready(function() {
 });
 
 // Loads respective source buttons
-<<<<<<< HEAD
-function source(source){
-    if(source=="lhs"){
-        //$("#content").load("./src/components/lhscans.html");
-        $('#butto-kun').attr('onclick', 'lhs(); return false;'); 
-        console.log("lhs")
-        resetBtt();
-    }
-    else if(source=="km"){
-        //$("#content").load("./src/components/kissmanga.html");
-        $('#butto-kun').attr('onclick', 'buttoKun(); return false;');  
-=======
 function source(source) {
     if (source == "lhs") {
         $("#content").load("./src/components/lhscans.html");
@@ -36,7 +24,6 @@ function source(source) {
         resetBtt();
     } else if (source == "km") {
         $("#content").load("./src/components/kissmanga.html");
->>>>>>> 858088ac0100427c881aca793a0f3bd0053f77fe
         console.log("km")
         resetBtt();
     }

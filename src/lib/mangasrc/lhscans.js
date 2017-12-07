@@ -12,18 +12,8 @@ let list = []
 
 function lhs() {
 
-<<<<<<< HEAD
-function lhs(){
-	let foldername = document.getElementById('fname').value;
-	let chno = document.getElementById('chno').value;
-	
-	let mpath = './imgs/' + foldername + '/' + chno + '/';
-	foldername = foldername.toLowerCase();
-	foldername = foldername.replace(/ /g, "-");
-=======
     let foldername = document.getElementById('fname').value;
     let chno = document.getElementById('chno').value;
->>>>>>> 858088ac0100427c881aca793a0f3bd0053f77fe
 
     let mpath = './imgs/' + foldername + '/' + chno + '/';
     foldername = foldername.toLowerCase()
