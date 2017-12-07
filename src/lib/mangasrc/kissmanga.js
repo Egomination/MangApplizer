@@ -14,33 +14,32 @@ function test(){
 }*/
 
 
-function buttoKun(){
+function buttoKun() {
     // TODO: nmanga -> REGEX INCOMING!!!!!
     // FIXME:foldername = foldername.toLowerCase() foldername = foldername.replace(/ /g, "-");
     //
     let nmanga = document.getElementById('fname').value;
     let chno = document.getElementById('chno').value;
 
-	manga = hakuneko.base.createManga( 'Title', `/Manga/${nmanga}` );
-	hakuneko.kissmanga.getChapters( manga, function( error, chapters ) {
-		if( !error ) {
+    manga = hakuneko.base.createManga('Title', `/Manga/${nmanga}`);
+    hakuneko.kissmanga.getChapters(manga, function(error, chapters) {
+        if (!error) {
 
-                        chapter = hakuneko.base.createChapter('[VOL]', '[NR]', 'Title',
-                        'lang', 'scanlator',`/Manga/${nmanga}`, []);
-			// FIXME: 0 -> equals the last chap
-			chapter = chapters[chno];
-			console.log(chapter);
+            chapter = hakuneko.base.createChapter('[VOL]', '[NR]', 'Title',
+                'lang', 'scanlator', `/Manga/${nmanga}`, []);
+            // FIXME: 0 -> equals the last chap
+            chapter = chapters[chno];
+            console.log(chapter);
 
-			hakuneko.kissmanga.getPages( chapter, function( error, pages ){
-				if( !error ) {
-					chapter.p = pages; // assign pages to chapter
-				}
-				console.log(error, pages)
-			});
-		}else{
+            hakuneko.kissmanga.getPages(chapter, function(error, pages) {
+                if (!error) {
+                    chapter.p = pages; // assign pages to chapter
+                }
+                console.log(error, pages)
+            });
+        } else {
             console.log(error);
         }
 
-	});
+    });
 }
-

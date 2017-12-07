@@ -11,13 +11,12 @@ $(document).ready(function() {
 });
 
 // Loads respective source buttons
-function source(source){
-    if(source=="lhs"){
+function source(source) {
+    if (source == "lhs") {
         $("#content").load("./src/components/lhscans.html");
         console.log("lhs")
         resetBtt();
-    }
-    else if(source=="km"){
+    } else if (source == "km") {
         $("#content").load("./src/components/kissmanga.html");
         console.log("km")
         resetBtt();
@@ -25,29 +24,28 @@ function source(source){
 }
 
 // Grey out the button if at least one input is missing
-(function(){
-    $("form input").on("keyup change",function() {
+(function() {
+    $("form input").on("keyup change", function() {
 
         let empty = false;
         $('form input').each(function() {
-			// Check is any input value is empty
+            // Check is any input value is empty
             if ($(this).val() == '') {
                 empty = true;
             }
         });
 
-        if(empty){
-            $('#butto-kun').attr('disabled', 'disabled'); 
-		} 
-		else{
+        if (empty) {
+            $('#butto-kun').attr('disabled', 'disabled');
+        } else {
             $('#butto-kun').removeAttr('disabled');
         }
     });
 })()
 
 // Reset Button
-function resetBtt(){
+function resetBtt() {
     $('form[name="downloadForm"]')
         .find(":input").val("");
-    $('#butto-kun').attr('disabled', 'disabled');     
+    $('#butto-kun').attr('disabled', 'disabled');
 }
