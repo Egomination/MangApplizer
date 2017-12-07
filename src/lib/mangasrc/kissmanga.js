@@ -1,4 +1,5 @@
-const hakuneko = require('hakuneko');
+const hakuneko = require('hakuneko'),
+    fs = require('fs-extra');
 
 /*
 	regex=(.*\.jpe?g|.*\.png)
@@ -17,9 +18,9 @@ function test(){
 function buttoKun() {
     // TODO: nmanga -> REGEX INCOMING!!!!!
     // FIXME:foldername = foldername.toLowerCase() foldername = foldername.replace(/ /g, "-");
-    //
     let nmanga = document.getElementById('fname').value;
     let chno = document.getElementById('chno').value;
+    nmanga = nmanga.replace(/ /g, "-");
 
     manga = hakuneko.base.createManga('Title', `/Manga/${nmanga}`);
     hakuneko.kissmanga.getChapters(manga, function(error, chapters) {
@@ -33,12 +34,21 @@ function buttoKun() {
 
             hakuneko.kissmanga.getPages(chapter, function(error, pages) {
                 if (!error) {
+                    let regex = new RegExp(/.*\.jpe?g|.*\.png/);
+                    pages.forEach(function(item){
+                        let x = item.match(regex);
+                        x.trim();
+                        let file = fs.createWriteStream('./imgs/' +
+                            x.split('/').pop(-1).toLowerCase());
+                        let req = http.get(x, function(response) {
+                            response.pipe(file)});
+                 });
                     chapter.p = pages; // assign pages to chapter
                 }
-                console.log(error, pages)
             });
+                // console.log(error, pages)
         } else {
-            console.log(error);
+            // console.log(error);
         }
 
     });
