@@ -7,7 +7,6 @@ const request = require('request'),
 
 
 let list = []
-=======
 // This function will be generalized and download will be seperated.
 // TODO: Fix the download and additional manga sites!
 
@@ -27,17 +26,20 @@ function lhs(){
 		dialog.showMessageBox({type: "error", message: "Fill the form correctly!",
 	    	buttons: ['OK'] });
 	}
-	else{
+        else{
+            let urlChecker = request(url, function(error, response, body){return true;})
+            //FIXME: I'm not sure that if its doing the trick for us
+            if(urlChecker == '/index.js'){
+            url = 'http://lhscans.com/read-'+foldername+'-raw-chapter-'+chno+
+                '.html';
+            }
+            console.log(url); 
 		request(url, function(err, resp, body) {
 			if(response.statusCode == 200){
 				// Creating the folders
 				mkdirp(mpath)
 					.catch(console.error);
-				let urlCheck = response.request.uri.path; //if its equals '/index.html' add raw into the url!.
-					if(urlCheck == 'index.html'){
-						url = 'http://lhscans.com/read-'+foldername+'-raw-chapter-'+chname+
-					'.html';
-					}
+				
 				  const $ = cheerio.load(body);
 			      $(body).find('img.chapter-img').each(function(index, element) {
 					  let info = ($(element).attr('src'));

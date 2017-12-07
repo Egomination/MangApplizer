@@ -41,18 +41,39 @@
 	<div id="Main" class="col s12">Test 0</div>
 	<div id="Dow">
 		<div class="container bar">
-			<select name="myList" onchange="source(this.value)"> 
-				<option value="" disabled selected>Please select a source</option>
+			<select name="myList" id="selector" onchange="source(this.value)"> 
+				<option value="a" disabled selected>Please select a source</option>
 				<option value="lhs">LHScan</option>
 				<option value="km">KissManga</option>
 			</select>
 		</div>
-		<div id="content"></div>
+		<div class="container start">
+			<form name="downloadForm">
+				<div>
+					<div class="input-field">
+						<input type="text" id="fname">
+						<label>Manga Name</label>
+					</div>
+					<div class="input-field">
+						<input type="number" class="no-spin" id="chno">
+						<label>Chapter No</label>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col s3">
+						<button id="reset" class="btn waves-effect waves-dark" onclick="resetBtt(); return false;">Reset</button>
+					</div>
+					<div class="col s1">
+						<div id="content"></div>
+					</div>
+				</div>
+			</form>
+		</div>
 	</div>
   <div id="View" class="col s12">Test 2</div>
 	<script type="text/javascript" src="./node_modules/jquery/dist/jquery.min.js"></script>
 	<script type="text/javascript" src="./node_modules/hammerjs/hammer.min.js"></script>
 	<script type="text/javascript" src="./node_modules/materialize-css/dist/js/materialize.js"></script>
-	<script type="text/javascript" src="./src/scripts/view.js"></script>
+	<script type="text/javascript" src="./src/scripts/index.js"></script>
 </body>
 </html>
