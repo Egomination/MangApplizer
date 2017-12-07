@@ -6,9 +6,9 @@ const request = require('request'),
 	  {dialog} = require('electron');
 
 
+
+//NOTE: Will be moved into lhs!
 let list = []
-// This function will be generalized and download will be seperated.
-// TODO: Fix the download and additional manga sites!
 
 
 function lhs(){
@@ -19,14 +19,9 @@ function lhs(){
 	foldername = foldername.toLowerCase()
 	foldername = foldername.replace(/ /g, "-");
 
-	let url = 'http://lhscans.com/read-'+foldername+'-chapter-'+chno+
-					'.html';
-
-	if(!foldername && !chno){
-		dialog.showMessageBox({type: "error", message: "Fill the form correctly!",
-	    	buttons: ['OK'] });
-	}
-        else{
+	let url = 'http://lhscans.com/read-'+foldername+
+                '-chapter-'+chno+'.html';
+	
             let urlChecker = request(url, function(error, response, body){return true;})
             //FIXME: I'm not sure that if its doing the trick for us
             if(urlChecker == '/index.js'){
@@ -52,7 +47,6 @@ function lhs(){
 				console.log(error);
 			}
 		});	
-	}
 }
 
 
@@ -68,10 +62,8 @@ function lhsDownloader(url, foldername, chno, path){
 					list.push(info);
 				  }
 		      });
-		    // Creating the folders for the chapter.
-			// Downloading the each link
-
-			let counter = 1;
+		
+		    let counter = 1;
 		    list.forEach(function(item, url){
 		    	let val = item.trim();
 		    	// Downloadin the images.
@@ -87,7 +79,8 @@ function lhsDownloader(url, foldername, chno, path){
 		    	buttons: ['OK'] });
 			}else{
 				dialog.showMessageBox({type: 'error', 
-					message: "Check your internet connection given URL adress!",
+                                        message: "Check your internet connection"+
+                                        "or given URL adress!",
 		    		buttons: ['OK'] });
 			}
 
