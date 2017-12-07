@@ -46,65 +46,13 @@ function lhs() {
             } else {
                 console.log(error);
             }
-<<<<<<< HEAD
-            console.log(url); 
-		request(url, function(err, response, body) {
-			if(response.statusCode == 200){
-				// Creating the folders
-				mkdirp(mpath)
-					.catch(console.error);
-				
-				  const $ = cheerio.load(body);
-			      $(body).find('img.chapter-img').each(function(index, element) {
-					  let info = ($(element).attr('src'));
-					  if(info){
-						list.push(info);
-					  }
-			      });
-			      lhsDownloader(url, foldername, chno, mpath);
-			}else{
-				console.log(error);
-			}
-		});	
-=======
         });
     });
->>>>>>> 858088ac0100427c881aca793a0f3bd0053f77fe
 }
 
 
 function lhsDownloader(url, foldername, chno, path) {
 
-<<<<<<< HEAD
-	request(url, function(err, resp, body) {
-		if(!err && resp.statusCode == 200){
-		// First we get the image urls from lhscans.
-			const $ = cheerio.load(body);
-			$(body).find('img.chapter-img').each(function(index, element) {
-				let info = ($(element).attr('src'));
-				if(info){
-				list.push(info);
-				}
-			});
-		
-		let counter = 1;
-		list.forEach(function(item, url){
-			let imgUrl = item.trim();
-			// Downloadin the images.
-			let file = fs.createWriteStream(path + counter + '.' + 
-				imgUrl.split('.').pop(-1).toLowerCase());
-			let req = http.get(imgUrl, function(response) {
-				response.pipe(file)
-			});
-			counter = counter + 1;
-		});
-		/*
-		// Dialog message after successful download operation.
-	    dialog.showMessageBox({message: "Downloading completed successfully!",
-	    	buttons: ['OK'] });*/
-		}
-	});
-=======
     request(url, function(err, resp, body) {
         if (!err && resp.statusCode == 200) {
             // First we get the image urls from lhscans.
@@ -132,7 +80,6 @@ function lhsDownloader(url, foldername, chno, path) {
             });
         }
     });
->>>>>>> 858088ac0100427c881aca793a0f3bd0053f77fe
 }
 
 module.exports = {
