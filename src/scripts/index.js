@@ -1,7 +1,13 @@
 // Main scripts
 
-// TODO: Add button to index.html !!! Which also means you have to use same func name for every button script which is also not a problem... !!!
-// TODO: Find a potential way to stop loading scripts from different html files.
+// TODO: Add a special rule for non-source form so that user cant write something.
+
+// Source Loader
+const lhscan = "./src/lib/mangasrc/lhscans.js";
+const kissmanga = "./src/lib/mangasrc/kissmanga.js";
+
+$.getScript(lhscan);
+$.getScript(kissmanga);	
 
 // Needed for Materialize Design
 $(document).ready(function() {
@@ -13,12 +19,14 @@ $(document).ready(function() {
 // Loads respective source buttons
 function source(source){
     if(source=="lhs"){
-        $("#content").load("./src/components/lhscans.html");
+        //$("#content").load("./src/components/lhscans.html");
+        $('#butto-kun').attr('onclick', 'lhs(); return false;'); 
         console.log("lhs")
         resetBtt();
     }
     else if(source=="km"){
-        $("#content").load("./src/components/kissmanga.html");
+        //$("#content").load("./src/components/kissmanga.html");
+        $('#butto-kun').attr('onclick', 'buttoKun(); return false;');  
         console.log("km")
         resetBtt();
     }

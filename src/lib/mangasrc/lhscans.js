@@ -12,11 +12,11 @@ let list = []
 
 
 function lhs(){
-	let foldername = document.getElementById('fname');
-	let chno = document.getElementById('chno');
+	let foldername = document.getElementById('fname').value;
+	let chno = document.getElementById('chno').value;
 	
 	let mpath = './imgs/' + foldername + '/' + chno + '/';
-	foldername = foldername.toLowerCase()
+	foldername = foldername.toLowerCase();
 	foldername = foldername.replace(/ /g, "-");
 
 	let url = 'http://lhscans.com/read-'+foldername+
@@ -29,7 +29,7 @@ function lhs(){
                 '.html';
             }
             console.log(url); 
-		request(url, function(err, resp, body) {
+		request(url, function(err, response, body) {
 			if(response.statusCode == 200){
 				// Creating the folders
 				mkdirp(mpath)
@@ -53,51 +53,33 @@ function lhs(){
 function lhsDownloader(url, foldername, chno, path){
 
 	request(url, function(err, resp, body) {
-			if(!err && resp.statusCode == 200){
-			// First we get the image urls from lhscans.
-		      const $ = cheerio.load(body);
-		      $(body).find('img.chapter-img').each(function(index, element) {
-				  let info = ($(element).attr('src'));
-				  if(info){
-					list.push(info);
-				  }
-		      });
-		
-		    let counter = 1;
-		    list.forEach(function(item, url){
-		    	let val = item.trim();
-		    	// Downloadin the images.
-		    	// val.split('.').pop(-1).toLowerCase();
-				let file = fs.createWriteStream(path + counter + '.' + 
-					val.split('.').pop(-1).toLowerCase());
-					downloader(file, val);
-				counter = counter + 1;
-
+		if(!err && resp.statusCode == 200){
+		// First we get the image urls from lhscans.
+			const $ = cheerio.load(body);
+			$(body).find('img.chapter-img').each(function(index, element) {
+				let info = ($(element).attr('src'));
+				if(info){
+				list.push(info);
+				}
 			});
-			// Dialog message after successful download operation.
-		    dialog.showMessageBox({message: "Downloading completed successfully!",
-		    	buttons: ['OK'] });
-			}else{
-				dialog.showMessageBox({type: 'error', 
-                                        message: "Check your internet connection"+
-                                        "or given URL adress!",
-		    		buttons: ['OK'] });
-			}
-
-	let counter = 1;
-    list.forEach(function(item, url){
-    	let imgUrl = item.trim();
-    	// Downloadin the images.
-		let file = fs.createWriteStream(path + counter + '.' + 
-			imgUrl.split('.').pop(-1).toLowerCase());
-		let req = http.get(imgUrl, function(response) {
-			response.pipe(file)
+		
+		let counter = 1;
+		list.forEach(function(item, url){
+			let imgUrl = item.trim();
+			// Downloadin the images.
+			let file = fs.createWriteStream(path + counter + '.' + 
+				imgUrl.split('.').pop(-1).toLowerCase());
+			let req = http.get(imgUrl, function(response) {
+				response.pipe(file)
+			});
+			counter = counter + 1;
 		});
-		counter = counter + 1;
-	});
+		/*
 		// Dialog message after successful download operation.
 	    dialog.showMessageBox({message: "Downloading completed successfully!",
-	    	buttons: ['OK'] });
+	    	buttons: ['OK'] });*/
+		}
+	});
 }
 
 module.exports = {
