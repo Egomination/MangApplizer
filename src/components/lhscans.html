@@ -5,42 +5,30 @@
 </head>
 <body>
 	
+<body>
+	
 	<div class="container start">
 		<form>
 			<div>
 				<div class="input-field">
-					<input type="text" id="fname1" data-length = "40">
+					<input type="text" id="fname">
 					<label>Manga Name</label>
 				</div>
 				<div class="input-field">
-					<input type="number" class="no-spin" id="chno1" data-length = "4">
+					<input type="number" class="no-spin" id="chno">
 					<label>Chapter No</label>
 				</div>
 			</div>
-			<button class="btn waves-effect waves-light" type="submit">Add!</button>
+			<button id="butto-kun" class="btn waves-effect waves-light" onclick="lhs(); return false;">Add!</button>
 		</form>
-	</div>
 
-	<script>
-		try{
-			const electron = require('electron');
-			const {ipcRenderer} = electron;
+    </div>
+    <script>
+        const url = "./src/lib/mangasrc/lhscans.js";
+        $.getScript(url);
 
-			const form = document.querySelector('form');
-			form.addEventListener('submit', submitForm);
-
-			function submitForm(event){
-				event.preventDefault(); // Preventing default pass
-				const name = document.querySelector('#fname').value; // Need to watch DOM video of traversy.
-				const chno = document.querySelector('#chno').value; // Need to watch DOM video of traversy.
-				ipcRenderer.send('fname:add', name); // sending the payload to main.js
-				ipcRenderer.send('chno:add', chno); // sending the payload to main.js
-			}
-		}
-		catch(err){
-			//pass
-		}
 	</script>
+	</body>
 
 </body>
 </html>

@@ -3,48 +3,55 @@ const request = require('request'),
 	  http = require('http'),
 	  mkdirp = require('mkdirp-promise'),
 	  fs = require('fs-extra'),
-	  readline = require('readline'),
-	  downloader = require('../../scripts/downloader'),
 	  {dialog} = require('electron');
 
 
-let list = [];
-var flag = 0;
-// This function will be generalized and download will be seperated.
-// TODO: Fix the download and additional manga sites!
 
-function lhs(foldername, chname){
-	let mpath = './imgs/' + foldername + '/' + chname + '/';
-	foldername = foldername.toLowerCase();
+//NOTE: Will be moved into lhs!
+let list = []
+
+
+function lhs(){
+	let foldername = document.getElementById('fname');
+	let chno = document.getElementById('chno');
+	
+	let mpath = './imgs/' + foldername + '/' + chno + '/';
+	foldername = foldername.toLowerCase()
 	foldername = foldername.replace(/ /g, "-");
 
-	let url = 'http://lhscans.com/read-'+foldername+'-chapter-'+chname+
-					'.html';
-	if(!foldername && !chname){
-		dialog.showMessageBox({type: "error", message: "Fill the form correctly!",
-	    	buttons: ['OK'] });
-	}
-	else{
-		// Creating the folders
-		mkdirp(mpath)
-			.catch(console.error);
-
-	request(url, function(err, resp, body) {
-		const $ = cheerio.load(body);
-		let x = $("title").text();
-		if(x == 'Lhscans - Read manga online in high quality'){
-			url = 'http://lhscans.com/read-'+foldername+'-raw-chapter-'+chname+
-						'.html';
-			lhsDownloader(url, foldername, chname, mpath);
-		}else{
-			lhsDownloader(url, foldername, chname, mpath);
+	let url = 'http://lhscans.com/read-'+foldername+
+                '-chapter-'+chno+'.html';
+	
+            let urlChecker = request(url, function(error, response, body){return true;})
+            //FIXME: I'm not sure that if its doing the trick for us
+            if(urlChecker == '/index.js'){
+            url = 'http://lhscans.com/read-'+foldername+'-raw-chapter-'+chno+
+                '.html';
+            }
+            console.log(url); 
+		request(url, function(err, resp, body) {
+			if(response.statusCode == 200){
+				// Creating the folders
+				mkdirp(mpath)
+					.catch(console.error);
+				
+				  const $ = cheerio.load(body);
+			      $(body).find('img.chapter-img').each(function(index, element) {
+					  let info = ($(element).attr('src'));
+					  if(info){
+						list.push(info);
+					  }
+			      });
+			      lhsDownloader(url, foldername, chno, mpath);
+			}else{
+				console.log(error);
 			}
 		});	
-	}
 }
 
 
 function lhsDownloader(url, foldername, chno, path){
+
 	request(url, function(err, resp, body) {
 			if(!err && resp.statusCode == 200){
 			// First we get the image urls from lhscans.
@@ -55,19 +62,14 @@ function lhsDownloader(url, foldername, chno, path){
 					list.push(info);
 				  }
 		      });
-		    // Creating the folders for the chapter.
-			// Downloading the each link
-
-			let counter = 1;
+		
+		    let counter = 1;
 		    list.forEach(function(item, url){
 		    	let val = item.trim();
 		    	// Downloadin the images.
 		    	// val.split('.').pop(-1).toLowerCase();
 				let file = fs.createWriteStream(path + counter + '.' + 
 					val.split('.').pop(-1).toLowerCase());
-					// let req = http.get(val, function(response) {
-					// 	response.pipe(file)
-					// 	});
 					downloader(file, val);
 				counter = counter + 1;
 
@@ -77,10 +79,25 @@ function lhsDownloader(url, foldername, chno, path){
 		    	buttons: ['OK'] });
 			}else{
 				dialog.showMessageBox({type: 'error', 
-					message: "Check your internet connection given URL adress!",
+                                        message: "Check your internet connection"+
+                                        "or given URL adress!",
 		    		buttons: ['OK'] });
 			}
+
+	let counter = 1;
+    list.forEach(function(item, url){
+    	let imgUrl = item.trim();
+    	// Downloadin the images.
+		let file = fs.createWriteStream(path + counter + '.' + 
+			imgUrl.split('.').pop(-1).toLowerCase());
+		let req = http.get(imgUrl, function(response) {
+			response.pipe(file)
 		});
+		counter = counter + 1;
+	});
+		// Dialog message after successful download operation.
+	    dialog.showMessageBox({message: "Downloading completed successfully!",
+	    	buttons: ['OK'] });
 }
 
 module.exports = {

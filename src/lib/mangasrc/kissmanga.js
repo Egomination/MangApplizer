@@ -5,16 +5,30 @@ const hakuneko = require('hakuneko');
 	its for the handling urls correction
 
  */
+/*
+function test(){
+    let a = document.getElementById('fname');
+    let text = a.value;
+    console.log(text);
+    get_pages(text);
+}*/
+
 
 function buttoKun(){
-	manga = hakuneko.base.createManga( 'Title', '/Manga/Bleach' );
-	hakuneko.kissmanga.getChapters( manga, function( error, chapters ){
-		if(!error){
+    // TODO: nmanga -> REGEX INCOMING!!!!!
+    // FIXME:foldername = foldername.toLowerCase() foldername = foldername.replace(/ /g, "-");
+    //
+    let nmanga = document.getElementById('fname').value;
+    let chno = document.getElementById('chno').value;
 
-			chapter = hakuneko.base.createChapter('[VOL]', '[NR]', 'Title', 'lang', 'scanlator',
-				'/Manga/Bleach', []);
-			// do something with the chapters ...
-			chapter = chapters[0];
+	manga = hakuneko.base.createManga( 'Title', `/Manga/${nmanga}` );
+	hakuneko.kissmanga.getChapters( manga, function( error, chapters ) {
+		if( !error ) {
+
+                        chapter = hakuneko.base.createChapter('[VOL]', '[NR]', 'Title',
+                        'lang', 'scanlator',`/Manga/${nmanga}`, []);
+			// FIXME: 0 -> equals the last chap
+			chapter = chapters[chno];
 			console.log(chapter);
 
 			hakuneko.kissmanga.getPages( chapter, function( error, pages ){
@@ -23,7 +37,10 @@ function buttoKun(){
 				}
 				console.log(error, pages)
 			});
-		}
+		}else{
+            console.log(error);
+        }
 
 	});
 }
+
