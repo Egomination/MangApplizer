@@ -5,6 +5,10 @@ const request = require('request'),
     fs = require('fs-extra'),
     { dialog } = require('electron').remote;
 
+// Fetch API
+require('es6-promise').polyfill();
+require('isomorphic-fetch');
+
 
 
 //NOTE: Will be moved into lhs!
@@ -22,11 +26,12 @@ function lhs() {
     let url = 'http://lhscans.com/read-' +
         foldername + '-chapter-' + chno + '.html';
     console.log(url);
-    request(url, function(error, response, body) {
-        console.log(response.req.path);
-        if (response.req.path == '/index.html') {
+
+    fetch(url, { redirect: "manual" }).then(function(response) {
+        console.log(response.status);
+        if(response.status === 0){
             url = 'http://lhscans.com/read-' +
-                foldername + '-raw-chapter-' + chno + '.html';
+            foldername + '-raw-chapter-' + chno + '.html';
         }
         console.log(url);
         request(url, function(err, resp, body) {
@@ -47,17 +52,11 @@ function lhs() {
                 console.log(error);
             }
         });
-    });
+
+      });
 }
 
-/**
- * [A function downloads the manga and saves it into file]
- * @param  {[type]} url        [description]
- * @param  {[type]} foldername [description]
- * @param  {[type]} chno       [description]
- * @param  {[type]} path       [description]
- * @return {[type]}            [description]
- */
+
 function lhsDownloader(url, foldername, chno, path) {
 
     request(url, function(err, resp, body) {
@@ -81,10 +80,7 @@ function lhsDownloader(url, foldername, chno, path) {
                 });
             });
             // Dialog message after successful download operation.
-            dialog.showMessageBox({
-                message: "Downloading completed successfully!",
-                buttons: ['OK']
-            });
+            Materialize.toast('Downloading completed successfully!', 3000);
         }
     });
 }
