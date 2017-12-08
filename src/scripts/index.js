@@ -1,7 +1,15 @@
 // Main scripts
 
-// TODO: Add button to index.html !!! Which also means you have to use same func name for every button script which is also not a problem... !!!
-// TODO: Find a potential way to stop loading scripts from different html files.
+// TODO: Add a special rule for non-source form so that user cant write something.
+
+// Reqs.
+
+// Source Loader
+const lhscan = "./src/lib/mangasrc/lhscans.js";
+const kissmanga = "./src/lib/mangasrc/kissmanga.js";
+
+$.getScript(lhscan);
+$.getScript(kissmanga);	
 
 // Needed for Materialize Design
 $(document).ready(function() {
@@ -13,11 +21,13 @@ $(document).ready(function() {
 // Loads respective source buttons
 function source(source) {
     if (source == "lhs") {
-        $("#content").load("./src/components/lhscans.html");
+        //$("#content").load("./src/components/lhscans.html");
+        $('#butto-kun').attr('onclick', 'lhs(); return false;'); 
         console.log("lhs")
         resetBtt();
     } else if (source == "km") {
-        $("#content").load("./src/components/kissmanga.html");
+        //$("#content").load("./src/components/kissmanga.html");
+        $('#butto-kun').attr('onclick', 'buttoKun(); return false;'); 
         console.log("km")
         resetBtt();
     }
@@ -25,11 +35,12 @@ function source(source) {
 
 // Grey out the button if at least one input is missing
 (function() {
+    $('#butto-kun').attr('disabled', 'disabled');
     $("form input").on("keyup change", function() {
 
         let empty = false;
         $('form input').each(function() {
-            // Check is any input value is empty
+            // Check if any input value is empty
             if ($(this).val() == '') {
                 empty = true;
             }
@@ -41,7 +52,19 @@ function source(source) {
             $('#butto-kun').removeAttr('disabled');
         }
     });
-})()
+})();
+
+// Disable form if no source is selected
+(function() {
+    $("#downloadForm :input").prop("disabled", true);
+    $('#selector').on('change', function() {
+        if ($('#selector option:selected').prop("disabled") == true){
+            $("#downloadForm :input").prop("disabled", true);
+        } else {
+            $("#downloadForm :input").prop("disabled", false);
+        }
+    });
+})();
 
 // Reset Button
 function resetBtt() {
