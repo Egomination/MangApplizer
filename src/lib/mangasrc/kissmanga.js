@@ -28,18 +28,22 @@ function buttoKun() {
 
             hakuneko.kissmanga.getPages(chapter, function(error, pages) {
                 if (!error) {
+                    let ctr = 1;
+
                     pages.forEach(function(item) {
                         item = item.trim();
                         let regex = new RegExp(/(.*\.jpe?g|.*\.png)/)
-                        item = item.match(regex); // FIXME: regex returns to array.
+                        item = item.match(regex);
 
                         // Downloading from Https, doesnt work
                         // So i had to convert it to http
                         let link = item[0].split('://');
                         let newLink = "http://" + link[1];
+                        console.log(newLink);
+                        let file = fs.createWriteStream(path + ctr + '.' +
+                            newLink.split('.').pop(-1));
 
-                        let file = fs.createWriteStream(path +
-                            newLink.split('-').pop(-1));
+                        ctr = ctr + 1;
                         let req = http.get(newLink, function(response) {
                             response.pipe(file)
                         });
