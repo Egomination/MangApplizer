@@ -80,10 +80,7 @@ function lhsDownloader(url, foldername, chno, path) {
                 });
             });
             // Dialog message after successful download operation.
-            dialog.showMessageBox({
-                message: "Downloading completed successfully!",
-                buttons: ['OK']
-            });
+            Materialize.toast('Downloading completed successfully!', 3000);
         }
     });
 }
