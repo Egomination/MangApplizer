@@ -5,6 +5,10 @@ const request = require('request'),
     fs = require('fs-extra'),
     { dialog } = require('electron').remote;
 
+// Fetch API
+require('es6-promise').polyfill();
+require('isomorphic-fetch');
+
 
 
 //NOTE: Will be moved into lhs!
@@ -22,11 +26,12 @@ function lhs() {
     let url = 'http://lhscans.com/read-' +
         foldername + '-chapter-' + chno + '.html';
     console.log(url);
-    request(url, function(error, response, body) {
-        console.log(response.req.path);
-        if (response.req.path == '/index.html') {
+
+    fetch(url, { redirect: "manual" }).then(function(response) {
+        console.log(response.status);
+        if(response.status === 0){
             url = 'http://lhscans.com/read-' +
-                foldername + '-raw-chapter-' + chno + '.html';
+            foldername + '-raw-chapter-' + chno + '.html';
         }
         console.log(url);
         request(url, function(err, resp, body) {
@@ -47,7 +52,8 @@ function lhs() {
                 console.log(error);
             }
         });
-    });
+
+      });
 }
 
 

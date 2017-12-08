@@ -19,11 +19,13 @@ $(document).ready(function() {
 // Loads respective source buttons
 function source(source) {
     if (source == "lhs") {
-        $("#content").load("./src/components/lhscans.html");
+        //$("#content").load("./src/components/lhscans.html");
+        $('#butto-kun').attr('onclick', 'lhs(); return false;'); 
         console.log("lhs")
         resetBtt();
     } else if (source == "km") {
-        $("#content").load("./src/components/kissmanga.html");
+        //$("#content").load("./src/components/kissmanga.html");
+        $('#butto-kun').attr('onclick', 'buttoKun(); return false;'); 
         console.log("km")
         resetBtt();
     }
