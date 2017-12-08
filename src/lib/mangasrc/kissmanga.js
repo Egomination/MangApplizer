@@ -1,5 +1,4 @@
-const hakuneko = require('hakuneko'),
-    fs = require('fs-extra');
+const hakuneko = require('hakuneko');
 
 /*
 	regex=(.*\.jpe?g|.*\.png)
@@ -18,9 +17,9 @@ function test(){
 function buttoKun() {
     // TODO: nmanga -> REGEX INCOMING!!!!!
     // FIXME:foldername = foldername.toLowerCase() foldername = foldername.replace(/ /g, "-");
+    // chapterNo = chapters.length - chno;
     let nmanga = document.getElementById('fname').value;
     let chno = document.getElementById('chno').value;
-    nmanga = nmanga.replace(/ /g, "-");
 
     manga = hakuneko.base.createManga('Title', `/Manga/${nmanga}`);
     hakuneko.kissmanga.getChapters(manga, function(error, chapters) {
@@ -28,30 +27,17 @@ function buttoKun() {
 
             chapter = hakuneko.base.createChapter('[VOL]', '[NR]', 'Title',
                 'lang', 'scanlator', `/Manga/${nmanga}`, []);
-            // FIXME: 0 -> equals the last chap
-            // chapNo = chapSize - chapNo.
-            let chapSize = chapters;
-            console.log(chapters.lenght)
-            chapter = chapters[chno];
-            console.log(chapter);
+            chapterNo = (chapters.length - chno) - 1; // Because of array
+            chapter = chapters[chapterNo];
 
             hakuneko.kissmanga.getPages(chapter, function(error, pages) {
                 if (!error) {
-                    let regex = new RegExp(/.*\.jpe?g|.*\.png/);
-                    pages.forEach(function(item){
-                        let x = item.match(regex);
-                 //        x.trim();
-                 //        let file = fs.createWriteStream('./imgs/' +
-                 //            x.split('/').pop(-1).toLowerCase());
-                 //        let req = http.get(x, function(response) {
-                 //            response.pipe(file)});
-                 // });
                     chapter.p = pages; // assign pages to chapter
                 }
+                console.log(error, pages)
             });
-                // console.log(error, pages)
         } else {
-            // console.log(error);
+            console.log(error);
         }
 
     });
