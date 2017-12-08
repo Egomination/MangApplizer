@@ -50,7 +50,14 @@ function lhs() {
     });
 }
 
-
+/**
+ * [A function downloads the manga and saves it into file]
+ * @param  {[type]} url        [description]
+ * @param  {[type]} foldername [description]
+ * @param  {[type]} chno       [description]
+ * @param  {[type]} path       [description]
+ * @return {[type]}            [description]
+ */
 function lhsDownloader(url, foldername, chno, path) {
 
     request(url, function(err, resp, body) {

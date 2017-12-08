@@ -29,6 +29,9 @@ function buttoKun() {
             chapter = hakuneko.base.createChapter('[VOL]', '[NR]', 'Title',
                 'lang', 'scanlator', `/Manga/${nmanga}`, []);
             // FIXME: 0 -> equals the last chap
+            // chapNo = chapSize - chapNo.
+            let chapSize = chapters;
+            console.log(chapters.lenght)
             chapter = chapters[chno];
             console.log(chapter);
 
@@ -37,12 +40,12 @@ function buttoKun() {
                     let regex = new RegExp(/.*\.jpe?g|.*\.png/);
                     pages.forEach(function(item){
                         let x = item.match(regex);
-                        x.trim();
-                        let file = fs.createWriteStream('./imgs/' +
-                            x.split('/').pop(-1).toLowerCase());
-                        let req = http.get(x, function(response) {
-                            response.pipe(file)});
-                 });
+                 //        x.trim();
+                 //        let file = fs.createWriteStream('./imgs/' +
+                 //            x.split('/').pop(-1).toLowerCase());
+                 //        let req = http.get(x, function(response) {
+                 //            response.pipe(file)});
+                 // });
                     chapter.p = pages; // assign pages to chapter
                 }
             });
