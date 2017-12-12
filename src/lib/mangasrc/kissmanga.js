@@ -11,7 +11,7 @@ function buttoKun() {
     nmanga = nmanga.toLowerCase()
     nmanga = nmanga.replace(/ /g, "-");
 
-    let path = './imgs/' + nmanga + '/' + chno + '/';
+    // let path = './imgs/' + nmanga + '/' + chno + '/';
 
     manga = hakuneko.base.createManga('Title', `/Manga/${nmanga}`);
     hakuneko.kissmanga.getChapters(manga, function(error, chapters) {
@@ -20,9 +20,9 @@ function buttoKun() {
             chapter = hakuneko.base.createChapter('[VOL]', '[NR]', 'Title',
                 'lang', 'scanlator', `/Manga/${nmanga}`, []);
             chapterNo = (chapters.length - chno) - 1; // Because of array
-            console.log(chapterNo);
             chapter = chapters[chapterNo];
-            console.log(chapter);
+            // Creating the chapter name with actual ch number + title if exists.
+            let path = './imgs/' + nmanga + '/' + chapter.t + '/';
             mkdirp(path)
                 .catch(console.error);
 
