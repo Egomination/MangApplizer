@@ -32,31 +32,33 @@ function lhs() {
         // somehow!
         if (response.status === 0) {
             if (response.status === 0) {
-                // NOTE: Need to find a way to get available chapters
-                // for lhscans
                 console.log("Another Redirect Spoted!");
+
                 let pages = GetAvailableChapters(url, function(error, pages) {
-                    // FIXME: replace the chapter no with pages' chno.
+                    // finding chapter no.
+                    let reg = new RegExp(/(.*)(:?-)(.*)(:?.html)/);
+                    let newChNo = pages[0].match(reg);
+
+                    // Generating new path for last chapter!
+                    mpath = './imgs/' + foldername + '/' + newChNo[3] + '/'
                     url = 'http://lhscans.com/' + pages[0];
-                    console.log(pages);
-                    GetChapters(url, mpath, foldername, chno);
+                    GetChapters(url, mpath);
                 });
             } else {
                 url = 'http://lhscans.com/read-' +
                     foldername + '-raw-chapter-' + chno + '.html';
+                GetChapters(url, mpath);
             }
-            // Only 1 redirect
-            GetChapters(url, mpath, foldername, chno);
         } else {
             // Link is correct!
-            GetChapters(url, mpath, foldername, chno);
+            GetChapters(url, mpath);
         }
 
     });
 }
 
 // Main function for the getting manga pages!
-function GetChapters(url, mpath, foldername, chno, ) {
+function GetChapters(url, mpath) {
     request(url, function(error, response, body) {
         if (response.statusCode == 200 && !error) {
             // Creating the folders
@@ -70,14 +72,14 @@ function GetChapters(url, mpath, foldername, chno, ) {
                     list.push(info);
                 }
             });
-            lhsDownloader(url, foldername, chno, mpath);
+            lhsDownloader(url, mpath);
         } else {
             console.log(error);
         }
     });
 }
 
-function lhsDownloader(url, foldername, chno, path) {
+function lhsDownloader(url, path) {
 
     request(url, function(err, resp, body) {
         if (!err && resp.statusCode == 200) {
