@@ -2,7 +2,6 @@ const request = require('request'),
     cheerio = require('cheerio'),
     http = require('http'),
     mkdirp = require('mkdirp-promise'),
-    fs = require('fs-extra'),
     { dialog } = require('electron').remote;
 
 // Fetch API

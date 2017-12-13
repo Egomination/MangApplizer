@@ -1,12 +1,13 @@
 // Main scripts
 
-// TODO: Add a special rule for non-source form so that user cant write something.
-
 // Reqs.
 
 // Source Loader
+const fs = require('fs-extra');
+const imgPath = './imgs/';
 const lhscan = "./src/lib/mangasrc/lhscans.js";
 const kissmanga = "./src/lib/mangasrc/kissmanga.js";
+let number = 1;
 
 $.getScript(lhscan);
 $.getScript(kissmanga);	
@@ -72,3 +73,10 @@ function resetBtt() {
         .find(":input").val("");
     $('#butto-kun').attr('disabled', 'disabled');
 }
+
+fs.readdirSync(imgPath).forEach(file => {
+    $('#View ul').append(
+        $('<li>').attr('id', `src${number}`).append(`${file}`)
+    );  
+    number = number + 1;
+});
