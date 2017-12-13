@@ -37,31 +37,43 @@ function lhs() {
                 // NOTE: Need to find a way to get available chapters
                 // for lhscans
                 console.log("Another Redirect Spoted!");
-                return -1;
-            }
-        }
-        request(url, function(error, response, body) {
-            if (response.statusCode == 200 && !error) {
-                // Creating the folders
-                mkdirp(mpath)
-                    .catch(console.error);
-
-                const $ = cheerio.load(body);
-                $(body).find('img.chapter-img').each(function(index, element) {
-                    let info = ($(element).attr('src'));
-                    if (info) {
-                        list.push(info);
-                    }
+                let pages = GetAvailableChapters(url, function(error, pages) {
+                    // FIXME: replace the chapter no with pages' chno.
+                    url = 'http://lhscans.com/' + pages;
+                    console.log(url);
+                    GetChapters(url, mpath, foldername, chno);
                 });
-                lhsDownloader(url, foldername, chno, mpath);
-            } else {
-                console.log(error);
             }
-        });
+            // Only 1 redirect
+            GetChapters(url, mpath, foldername, chno);
+        }
+        // Link is correct!
+        GetChapters(url, mpath, foldername, chno);
 
     });
 }
 
+// Main function for the getting manga pages!
+function GetChapters(url, mpath, foldername, chno,) {
+    request(url, function(error, response, body) {
+        if (response.statusCode == 200 && !error) {
+            // Creating the folders
+            mkdirp(mpath)
+                .catch(console.error);
+
+            const $ = cheerio.load(body);
+            $(body).find('img.chapter-img').each(function(index, element) {
+                let info = ($(element).attr('src'));
+                if (info) {
+                    list.push(info);
+                }
+            });
+            lhsDownloader(url, foldername, chno, mpath);
+        } else {
+            console.log(error);
+        }
+    });
+}
 
 function lhsDownloader(url, foldername, chno, path) {
 
@@ -94,7 +106,7 @@ function lhsDownloader(url, foldername, chno, path) {
 }
 
 // EDIT: Find a way to implement this into download!
-function getAvailableChapters(url) {
+function GetAvailableChapters(url, callback) {
 
     let chapterList = []
     // NOTE: need to parse the url 'till -chapter-...
@@ -116,11 +128,11 @@ function getAvailableChapters(url) {
                 }
             });
             // Find a way to return this value
-            // Possible solutions -> Callback, Promise
-            return chapterList[0];
+            // Possible solutions -> callback, Promise
+            url = chapterList[0]; // We can pass all of the array
+            callback && callback(null, url);
         }
     });
-    console.log(chapterList);
 }
 
 
