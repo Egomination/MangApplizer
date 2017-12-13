@@ -11,11 +11,10 @@ require('isomorphic-fetch');
 
 
 
-//NOTE: Will be moved into lhs!
 let list = []
 
 function lhs() {
-
+    // Getting form inputs.
     let foldername = document.getElementById('fname').value;
     let chno = document.getElementById('chno').value;
 
@@ -25,17 +24,25 @@ function lhs() {
 
     let url = 'http://lhscans.com/read-' +
         foldername + '-chapter-' + chno + '.html';
-    console.log(url);
 
     fetch(url, { redirect: "manual" }).then(function(response) {
-        console.log(response.status);
-        if(response.status === 0){
+        // Means there is a redirect on website.
+        // FIXME: If there's no chapter, website still redirects
+        // and because of below if clause, it downloads random chapter
+        // somehow!
+        if (response.status === 0) {
             url = 'http://lhscans.com/read-' +
-            foldername + '-raw-chapter-' + chno + '.html';
+                foldername + '-raw-chapter-' + chno + '.html';
+            if (response.status === 0) {
+                // NOTE: Need to find a way to get available chapters
+                // for lhscans
+                console.log("Another Redirect Spoted!");
+                let b = getAvailableChapters(url);
+                console.log(b);
+            }
         }
-        console.log(url);
-        request(url, function(err, resp, body) {
-            if (resp.statusCode == 200) {
+        request(url, function(error, response, body) {
+            if (response.statusCode == 200 && !error) {
                 // Creating the folders
                 mkdirp(mpath)
                     .catch(console.error);
@@ -53,7 +60,7 @@ function lhs() {
             }
         });
 
-      });
+    });
 }
 
 
@@ -69,10 +76,10 @@ function lhsDownloader(url, foldername, chno, path) {
                     list.push(info);
                 }
             });
-
+            // Traversing through the images on the array.
             list.forEach(function(item, url) {
                 let imgUrl = item.trim();
-                // Downloadin the images.
+                // Creating file name for the image.
                 let file = fs.createWriteStream(path +
                     imgUrl.split('/').pop(-1).toLowerCase());
                 let req = http.get(imgUrl, function(response) {
@@ -80,7 +87,35 @@ function lhsDownloader(url, foldername, chno, path) {
                 });
             });
             // Dialog message after successful download operation.
-            Materialize.toast('Downloading completed successfully!', 3000);
+            Materialize.toast('Downloading completed successfully!', 5000);
+        } else {
+            console.log(error);
+        }
+    });
+}
+
+function getAvailableChapters(url) {
+
+    let chapterList = []
+    // NOTE: need to parse the url 'till -chapter-...
+    let regex = new RegExp(/(.*)(?:-chapter)/);
+    // mangaPage returns to the given manga's manga page.
+    let mangaPage = url.match(regex);
+    mangaPage = mangaPage[1] + '.html';
+    mangaPage = mangaPage.replace("read", "manga");
+
+    // Need to find latest chapter!
+    request(mangaPage, function(error, response, body) {
+        if (!error && response.statusCode == 200) {
+            // First we get the image urls from lhscans.
+            const $ = cheerio.load(body);
+            $(body).find('a.chapter').each(function(index, element) {
+                let info = ($(element).attr('href'));
+                if (info) {
+                    chapterList.push(info);
+                }
+            });
+            return chapterList[0];
         }
     });
 }
