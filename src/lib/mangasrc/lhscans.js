@@ -37,8 +37,7 @@ function lhs() {
                 // NOTE: Need to find a way to get available chapters
                 // for lhscans
                 console.log("Another Redirect Spoted!");
-                let b = getAvailableChapters(url);
-                console.log(b);
+                return -1;
             }
         }
         request(url, function(error, response, body) {
@@ -94,6 +93,7 @@ function lhsDownloader(url, foldername, chno, path) {
     });
 }
 
+// EDIT: Find a way to implement this into download!
 function getAvailableChapters(url) {
 
     let chapterList = []
@@ -115,10 +115,14 @@ function getAvailableChapters(url) {
                     chapterList.push(info);
                 }
             });
+            // Find a way to return this value
+            // Possible solutions -> Callback, Promise
             return chapterList[0];
         }
     });
+    console.log(chapterList);
 }
+
 
 module.exports = {
     lhs: lhs
