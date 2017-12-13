@@ -31,30 +31,32 @@ function lhs() {
         // and because of below if clause, it downloads random chapter
         // somehow!
         if (response.status === 0) {
-            url = 'http://lhscans.com/read-' +
-                foldername + '-raw-chapter-' + chno + '.html';
             if (response.status === 0) {
                 // NOTE: Need to find a way to get available chapters
                 // for lhscans
                 console.log("Another Redirect Spoted!");
                 let pages = GetAvailableChapters(url, function(error, pages) {
                     // FIXME: replace the chapter no with pages' chno.
-                    url = 'http://lhscans.com/' + pages;
-                    console.log(url);
+                    url = 'http://lhscans.com/' + pages[0];
+                    console.log(pages);
                     GetChapters(url, mpath, foldername, chno);
                 });
+            } else {
+                url = 'http://lhscans.com/read-' +
+                    foldername + '-raw-chapter-' + chno + '.html';
             }
             // Only 1 redirect
             GetChapters(url, mpath, foldername, chno);
+        } else {
+            // Link is correct!
+            GetChapters(url, mpath, foldername, chno);
         }
-        // Link is correct!
-        GetChapters(url, mpath, foldername, chno);
 
     });
 }
 
 // Main function for the getting manga pages!
-function GetChapters(url, mpath, foldername, chno,) {
+function GetChapters(url, mpath, foldername, chno, ) {
     request(url, function(error, response, body) {
         if (response.statusCode == 200 && !error) {
             // Creating the folders
@@ -129,7 +131,7 @@ function GetAvailableChapters(url, callback) {
             });
             // Find a way to return this value
             // Possible solutions -> callback, Promise
-            url = chapterList[0]; // We can pass all of the array
+            url = chapterList; // We can pass all of the array
             callback && callback(null, url);
         }
     });
