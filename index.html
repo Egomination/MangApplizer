@@ -63,7 +63,7 @@
                 </div>
                 <div class="row">
                     <div class="col s3">
-                        <button id="butto-kun" class="btn waves-effect waves-light" disabled="disabled" onclick="return false;">Download</button>
+                        <button id="butto-kun" class="btn waves-effect waves-light" onclick="return false;">Download</button>
                     </div>
                     <div class="col s1">
                             <button id="reset" class="btn waves-effect waves-dark" onclick="resetBtt(); return false;">Reset</button>
@@ -74,12 +74,17 @@
     </div>
     <div id="View">
     <h1>Viewer</h1>
+    <form name="viewerForm" id="viewerForm"></form>
         <select id="sourcelist">
             <option value="nul" disabled selected>Please select a manga</option>
         </select>
-        <select id="chapterlist">
-            <option value="nul" disabled selected>Please select a chapter</option>
-        </select>
+        <div class="input-field">
+            <input type="number" class="no-spin" id="vChapNo">
+            <label>Chapter No</label>
+        </div>
+        <button id="vButto" class="btn waves-effect waves-light" disabled="disabled" onclick="resetBtt(); return false;">View</button>
+    </form>
+
     </div>
     <script type="text/javascript" src="./node_modules/jquery/dist/jquery.min.js"></script>
     <script type="text/javascript" src="./node_modules/hammerjs/hammer.min.js"></script>

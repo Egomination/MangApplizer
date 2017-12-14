@@ -7,7 +7,7 @@ const fs = require('fs-extra');
 const imgPath = "./imgs/";
 const lhscan = "./src/lib/mangasrc/lhscans.js";
 const kissmanga = "./src/lib/mangasrc/kissmanga.js";
-const viewer = "./src/lib/mangasrc/viewer.js"
+const viewer = "./src/scripts/viewer.js"
 
 $.getScript(lhscan);
 $.getScript(kissmanga);	
@@ -39,10 +39,10 @@ function source(source) {
 // Grey out the button if at least one input is missing
 (function() {
     $('#butto-kun').attr('disabled', 'disabled');
-    $("form input").on("keyup change", function() {
+    $("#downloadForm input").on("keyup change", function() {
 
         let empty = false;
-        $('form input').each(function() {
+        $('#downloadForm input').each(function() {
             // Check if any input value is empty
             if ($(this).val() == '') {
                 empty = true;
@@ -57,7 +57,7 @@ function source(source) {
     });
 })();
 
-// Disable form if no source is selected
+// Disable download form if no source is selected
 (function() {
     $("#downloadForm :input").prop("disabled", true);
     $('#selector').on('change', function() {
@@ -75,47 +75,3 @@ function resetBtt() {
         .find(":input").val("");
     $('#butto-kun').attr('disabled', 'disabled');
 }
-
-fs.readdirSync(imgPath).forEach(file => {
-    //$("#chapterlist").attr('disabled', 'disabled');
-    $('#sourcelist').append(
-        $('<option>').attr('value', `${file}`).append(`${file}`)
-    );  
-});
-
-/*
-function viewer(manga) {
-    //$("#chapterlist").removeAttr('disabled');
-    console.log(manga);
-    $("#content").load("./den.html");
-    if(manga){
-        let mangaPath = `./imgs/${manga}`;
-        console.log(mangaPath);
-        $("#chapterlist").append("<option></option>");
-        fs.readdirSync(mangaPath).forEach(file2 => {
-            console.log(file2);
-            $('#chapterlist').append(
-                $('<option>').attr('value', `${file2}`).append(`${file2}`)
-            );
-        });    
-    }
-}*/
-
-/*
-$("#sourcelist").change(function() {
-    let manga = $("#sourcelist option:selected").val();
-    console.log(manga);
-    let mangaPath = `./imgs/${manga}`;
-    let chapArr = [];
-    console.log(mangaPath);
-    $("#chapterlist").empty();
-    $("#chapterlist").append("<option disabled selected>Please select a chapter</option>");
-    fs.readdirSync(mangaPath).forEach(file2 => {
-        console.log(file2);
-        chapArr.push(file2);
-    });
-    console.log(chapArr);
-    $(chapArr).each(function(i) { //to list cities
-        $("#chapterlist").append("<option>" + chapArr[i] + "</option>")
-    });
-});*/
