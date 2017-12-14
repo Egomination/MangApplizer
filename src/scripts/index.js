@@ -4,13 +4,15 @@
 
 // Source Loader
 const fs = require('fs-extra');
-const imgPath = './imgs/';
+const imgPath = "./imgs/";
 const lhscan = "./src/lib/mangasrc/lhscans.js";
 const kissmanga = "./src/lib/mangasrc/kissmanga.js";
-let number = 1;
+const viewer = "./src/lib/mangasrc/viewer.js"
 
 $.getScript(lhscan);
 $.getScript(kissmanga);	
+$.getScript(viewer);	
+
 
 // Needed for Materialize Design
 $(document).ready(function() {
@@ -75,8 +77,45 @@ function resetBtt() {
 }
 
 fs.readdirSync(imgPath).forEach(file => {
-    $('#View ul').append(
-        $('<li>').attr('id', `src${number}`).append(`${file}`)
+    //$("#chapterlist").attr('disabled', 'disabled');
+    $('#sourcelist').append(
+        $('<option>').attr('value', `${file}`).append(`${file}`)
     );  
-    number = number + 1;
 });
+
+/*
+function viewer(manga) {
+    //$("#chapterlist").removeAttr('disabled');
+    console.log(manga);
+    $("#content").load("./den.html");
+    if(manga){
+        let mangaPath = `./imgs/${manga}`;
+        console.log(mangaPath);
+        $("#chapterlist").append("<option></option>");
+        fs.readdirSync(mangaPath).forEach(file2 => {
+            console.log(file2);
+            $('#chapterlist').append(
+                $('<option>').attr('value', `${file2}`).append(`${file2}`)
+            );
+        });    
+    }
+}*/
+
+/*
+$("#sourcelist").change(function() {
+    let manga = $("#sourcelist option:selected").val();
+    console.log(manga);
+    let mangaPath = `./imgs/${manga}`;
+    let chapArr = [];
+    console.log(mangaPath);
+    $("#chapterlist").empty();
+    $("#chapterlist").append("<option disabled selected>Please select a chapter</option>");
+    fs.readdirSync(mangaPath).forEach(file2 => {
+        console.log(file2);
+        chapArr.push(file2);
+    });
+    console.log(chapArr);
+    $(chapArr).each(function(i) { //to list cities
+        $("#chapterlist").append("<option>" + chapArr[i] + "</option>")
+    });
+});*/
