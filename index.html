@@ -73,17 +73,17 @@
         </div>
     </div>
     <div id="View">
-    <h1>Viewer</h1>
-    <form name="viewerForm" id="viewerForm"></form>
-        <select id="sourcelist">
-            <option value="nul" disabled selected>Please select a manga</option>
-        </select>
-        <div class="input-field">
-            <input type="number" class="no-spin" id="vChapNo">
-            <label>Chapter No</label>
-        </div>
-        <button id="vButto" class="btn waves-effect waves-light" disabled="disabled" onclick="resetBtt(); return false;">View</button>
-    </form>
+        <h1>Viewer</h1>
+        <form name="viewerForm" id="viewerForm">
+            <select id="sourcelist">
+                <option value="nul" disabled selected>Please select a manga</option>
+            </select>
+            <div class="input-field">
+                <input type="number" class="no-spin" id="vChapNo">
+                <label>Chapter No</label>
+            </div>
+            <button id="vButto" class="btn waves-effect waves-light" onclick="return false;">View</button>
+        </form>
 
     </div>
     <script type="text/javascript" src="./node_modules/jquery/dist/jquery.min.js"></script>

@@ -12,7 +12,7 @@ fs.readdirSync(imgPath).forEach(file => {
     $("#viewerForm input").on("keyup change", function() {
 
         let empty = false;
-        $("form input").each(function() {
+        $("#viewerForm input").each(function() {
             // Check if any input value is empty
             if ($(this).val() == "") {
                 empty = true;
@@ -20,9 +20,9 @@ fs.readdirSync(imgPath).forEach(file => {
         });
 
         if (empty) {
-            $("#butto-kun").attr("disabled", "disabled");
+            $("#vButto").attr("disabled", "disabled");
         } else {
-            $("#butto-kun").removeAttr("disabled");
+            $("#vButto").removeAttr("disabled");
         }
     });
 })();
