@@ -1,15 +1,19 @@
 // Main scripts
 
-// TODO: Add a special rule for non-source form so that user cant write something.
-
 // Reqs.
 
 // Source Loader
+const fs = require('fs-extra');
+const mkdirp = require('mkdirp-promise');
+const http = require('http');
 const lhscan = "./src/lib/mangasrc/lhscans.js";
 const kissmanga = "./src/lib/mangasrc/kissmanga.js";
+const viewer = "./src/scripts/viewer.js"
 
 $.getScript(lhscan);
 $.getScript(kissmanga);	
+$.getScript(viewer);	
+
 
 // Needed for Materialize Design
 $(document).ready(function() {
@@ -36,10 +40,10 @@ function source(source) {
 // Grey out the button if at least one input is missing
 (function() {
     $('#butto-kun').attr('disabled', 'disabled');
-    $("form input").on("keyup change", function() {
+    $("#downloadForm input").on("keyup change", function() {
 
         let empty = false;
-        $('form input').each(function() {
+        $('#downloadForm input').each(function() {
             // Check if any input value is empty
             if ($(this).val() == '') {
                 empty = true;
@@ -54,7 +58,7 @@ function source(source) {
     });
 })();
 
-// Disable form if no source is selected
+// Disable download form if no source is selected
 (function() {
     $("#downloadForm :input").prop("disabled", true);
     $('#selector').on('change', function() {

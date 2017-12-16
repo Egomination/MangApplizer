@@ -1,20 +1,20 @@
 const electron = require('electron'),
     url = require('url'),
     path = require('path'),
-    { app, BrowserWindow, Menu, dialog } = electron;
+    { app, BrowserWindow, Menu, dialog, ipcMain, webContents } = electron;
 
 // SET ENVIRONMENT FOR DEV TOOLS
 process.env.NODE_ENV = 'dev';
 
 let mainWin;
-let addWindow;
+let nwin;
 
 // Creation
 // It creates a main window from mainWin html.
 app.on('ready', function() {
     mainWin = new BrowserWindow({
         width: 1200,
-        height: 800,
+        height: 800
     });
     //Load html for the view.
     mainWin.loadURL(url.format({
@@ -34,10 +34,11 @@ app.on('ready', function() {
     Menu.setApplicationMenu(mainMenu)
 });
 
+/*
 // For logging the errors in the program
 electron.dialog.showErrorBox = (title, content) => {
     console.log(`${title}\n${content}`);
-};
+};*/
 
 // Creating the menu template
 const mainMenuTemp = [{
@@ -55,6 +56,20 @@ const mainMenuTemp = [{
 if (process.platform == 'darwin') {
     mainMenuTemp.unshift({}); //Unshift adds item begining of the array.
 }
+
+// Event for opening viewer
+ipcMain.on('open-viewer', (event, fileName, data) => {
+    nwin = new BrowserWindow({
+        width: 1600,
+        height: 1200
+    });
+    console.log("data is:" + data);
+    nwin.loadURL(`file://${__dirname}/src/components/` + fileName + `.html`);
+    nwin.webContents.on('dom-ready', function() {
+        nwin.webContents.send('send-to-viewer', data);
+        nwin.show();
+    });
+})
 
 // Add dev tools
 if (process.env.NODE_ENV !== 'production') {
