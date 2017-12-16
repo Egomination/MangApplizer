@@ -45,8 +45,10 @@ function buttoKun() {
                         // So i had to convert it to http
                         let link = item[0].split('://');
                         let newLink = "http://" + link[1];
-                        let file = fs.createWriteStream(path + ctr + '.' +
-                            newLink.split('.').pop(-1));
+
+                        console.log(newLink.match(/\d*.png|\d*.jpe?g/));
+                        let file = fs.createWriteStream(path +
+                            newLink.match(/\d*.png|\d*.jpe?g/));
 
                         ctr = ctr + 1;
                         let req = http.get(newLink, function(response) {
