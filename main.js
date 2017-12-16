@@ -65,8 +65,9 @@ ipcMain.on('open-viewer', (event, fileName, data) => {
     });
     console.log("data is:" + data);
     nwin.loadURL(`file://${__dirname}/src/components/` + fileName + `.html`);
-    nwin.webContents.on('did-finish-load', function() {
+    nwin.webContents.on('dom-ready', function() {
         nwin.webContents.send('send-to-viewer', data);
+        nwin.show();
     });
 })
 
