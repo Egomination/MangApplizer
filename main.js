@@ -1,20 +1,19 @@
 const electron = require('electron'),
     url = require('url'),
     path = require('path'),
-    { app, BrowserWindow, Menu, dialog } = electron;
+    { app, BrowserWindow, Menu, dialog, ipcMain } = electron;
 
 // SET ENVIRONMENT FOR DEV TOOLS
 process.env.NODE_ENV = 'dev';
 
 let mainWin;
-let addWindow;
 
 // Creation
 // It creates a main window from mainWin html.
 app.on('ready', function() {
     mainWin = new BrowserWindow({
         width: 1200,
-        height: 800,
+        height: 800
     });
     //Load html for the view.
     mainWin.loadURL(url.format({
@@ -55,6 +54,16 @@ const mainMenuTemp = [{
 if (process.platform == 'darwin') {
     mainMenuTemp.unshift({}); //Unshift adds item begining of the array.
 }
+
+// General new window event
+ipcMain.on('open-new-window', (event, fileName) => {
+    let nwin = new BrowserWindow({
+        width: 800,
+        height: 600
+    });
+    nwin.loadURL(`file://${__dirname}/src/components/` + fileName + `.html`)
+})
+
 
 // Add dev tools
 if (process.env.NODE_ENV !== 'production') {

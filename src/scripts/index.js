@@ -4,7 +4,8 @@
 
 // Source Loader
 const fs = require('fs-extra');
-const imgPath = "./imgs/";
+const mkdirp = require('mkdirp-promise');
+const http = require('http');
 const lhscan = "./src/lib/mangasrc/lhscans.js";
 const kissmanga = "./src/lib/mangasrc/kissmanga.js";
 const viewer = "./src/scripts/viewer.js"

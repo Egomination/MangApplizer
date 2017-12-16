@@ -1,3 +1,6 @@
+const imgPath = "./imgs/";
+// NOTE: Add this to index.js for further electron uses
+const {ipcRenderer} = require('electron');
 
 // Folder listing for Viewer
 fs.readdirSync(imgPath).forEach(file => {
@@ -6,7 +9,8 @@ fs.readdirSync(imgPath).forEach(file => {
     );  
 });
 
-
+// Prevents clicking view button if no chapter is given
+/*
 (function() {
     $("#vButto").attr("disabled", "disabled");
     $("#viewerForm input").on("keyup change", function() {
@@ -25,4 +29,8 @@ fs.readdirSync(imgPath).forEach(file => {
             $("#vButto").removeAttr("disabled");
         }
     });
-})();
+})();*/
+
+function openViewer(){
+    ipcRenderer.send('open-new-window', 'viewer');
+}
