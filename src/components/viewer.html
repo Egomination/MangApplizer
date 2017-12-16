@@ -2,8 +2,26 @@
 <html lang="en">
 <head>
     <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 </head>
 <body>
-    <h1>Den</h1>
+    <h1>Viewer</h1>
+    <div id="chapView" class="carousel carousel-slider">
+        <a class="carousel-item" href="#one!"><img src="https://lorempixel.com/800/400/food/1"></a>
+        <a class="carousel-item" href="#two!"><img src="https://lorempixel.com/800/400/food/2"></a>
+        <a class="carousel-item" href="#three!"><img src="https://lorempixel.com/800/400/food/3"></a>
+        <a class="carousel-item" href="#four!"><img src="https://lorempixel.com/800/400/food/4"></a>
+    </div>
+
+
+    <script type="text/javascript" src="../../node_modules/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="../../node_modules/hammerjs/hammer.min.js"></script>
+    <script type="text/javascript" src="../../node_modules/materialize-css/dist/js/materialize.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('.carousel.carousel-slider').carousel({fullWidth: true});
+        });
+    </script>
 </body>
 </html>

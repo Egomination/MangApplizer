@@ -58,8 +58,8 @@ if (process.platform == 'darwin') {
 // General new window event
 ipcMain.on('open-new-window', (event, fileName) => {
     let nwin = new BrowserWindow({
-        width: 800,
-        height: 600
+        width: 1600,
+        height: 1200
     });
     nwin.loadURL(`file://${__dirname}/src/components/` + fileName + `.html`)
 })
