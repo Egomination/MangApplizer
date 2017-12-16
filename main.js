@@ -57,11 +57,13 @@ if (process.platform == 'darwin') {
     mainMenuTemp.unshift({}); //Unshift adds item begining of the array.
 }
 
+// FIXME: Garb. collector
 // Event for opening viewer
 ipcMain.on('open-viewer', (event, fileName, data) => {
     nwin = new BrowserWindow({
-        width: 1600,
-        height: 1200
+        width: 700,
+        height: 1080,
+        frame: false
     });
     console.log("data is:" + data);
     nwin.loadURL(`file://${__dirname}/src/components/` + fileName + `.html`);
