@@ -13,8 +13,8 @@ let nwin;
 // It creates a main window from mainWin html.
 app.on('ready', function() {
     mainWin = new BrowserWindow({
-        width: 1200,
-        height: 800
+        width: 700,
+        height: 1080
     });
     //Load html for the view.
     mainWin.loadURL(url.format({
