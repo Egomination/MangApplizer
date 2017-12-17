@@ -63,7 +63,7 @@ ipcMain.on('open-viewer', (event, fileName, data) => {
     nwin = new BrowserWindow({
         width: 700,
         height: 1080,
-        frame: false
+        //frame: false
     });
     console.log("data is:" + data);
     nwin.loadURL(`file://${__dirname}/src/components/` + fileName + `.html`);
@@ -73,15 +73,11 @@ ipcMain.on('open-viewer', (event, fileName, data) => {
     });
 })
 
-ipcMain.on('send-chap', (event, chapArr, manga) => {
-    console.log("chapArr is:" + chapArr);
-    mainWin.loadURL(url.format({
-        pathname: path.join(__dirname, 'index.html'),
-        protocol: 'file:',
-        slashes: true //This is just passing the path.
-    }));
+ipcMain.on('open-chapter', (event, chapPath) => {
+    console.log("chapPath is:" + chapPath);
+    nwin.loadURL(`file://${__dirname}/src/components/viewer.html`);
     mainWin.webContents.on('dom-ready', function() {
-        event.sender.send('send-chap-reply', chapArr, manga);
+        event.sender.send('open-chap-reply', chapPath);
         mainWin.show();
     });
 })
