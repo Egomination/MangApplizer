@@ -1,25 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <title>Document</title>
+    <title>MangApplizer Viewer</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <style>
-        .carousel { 
-            min-height: 1200px;
-        }
+    .carousel {
+        min-height: 1200px;
+    }
     </style>
 </head>
+
 <body>
     <select id="chapterlist">
     </select>
-    <button id="viewerBtt" class="btn waves-effect waves-light" onclick="viewManga(); return false;">Dew</button>
+    <button id="viewerBtt" class="btn waves-effect waves-light" onclick="viewManga(); return false;">Open</button>
     <div id="chapView" class="carousel carousel-slider container">
     </div>
-
     <script type="text/javascript" src="../../node_modules/jquery/dist/jquery.min.js"></script>
     <script type="text/javascript" src="../../node_modules/hammerjs/hammer.min.js"></script>
     <script type="text/javascript" src="../../node_modules/materialize-css/dist/js/materialize.js"></script>
     <script type="text/javascript" src="../scripts/viewer.js"></script>
 </body>
+
 </html>
