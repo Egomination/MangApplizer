@@ -2,18 +2,18 @@
 
 // Reqs.
 
-// Source Loader
 const fs = require('fs-extra');
 const mkdirp = require('mkdirp-promise');
 const http = require('http');
+const {ipcRenderer} = require('electron');
+const imgPath = "./imgs/";
+
+// Source Loader
 const lhscan = "./src/lib/mangasrc/lhscans.js";
 const kissmanga = "./src/lib/mangasrc/kissmanga.js";
-const viewer = "./src/scripts/viewer.js"
 
 $.getScript(lhscan);
 $.getScript(kissmanga);	
-$.getScript(viewer);	
-
 
 // Needed for Materialize Design
 $(document).ready(function() {
@@ -75,4 +75,17 @@ function resetBtt() {
     $('form[name="downloadForm"]')
         .find(":input").val("");
     $('#butto-kun').attr('disabled', 'disabled');
+}
+
+// Folder listing for Viewertab
+fs.readdirSync(imgPath).forEach(file => {
+    $("#sourcelist").append(
+        $("<option>").attr("value", `${file}`).append(`${file}`)
+    );  
+});
+
+function openViewer(){
+    let sourceVal = $("#sourcelist option:selected").val();
+    let mangaPath = imgPath + sourceVal + "/";
+    ipcRenderer.send('open-viewer', 'viewer', mangaPath);
 }

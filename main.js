@@ -14,8 +14,7 @@ let nwin;
 app.on('ready', function() {
     mainWin = new BrowserWindow({
         width: 700,
-        height: 1080,
-        frame: false
+        height: 1080
     });
     //Load html for the view.
     mainWin.loadURL(url.format({
@@ -58,16 +57,25 @@ if (process.platform == 'darwin') {
     mainMenuTemp.unshift({}); //Unshift adds item begining of the array.
 }
 
+// FIXME: Garb. collector
 // Event for opening viewer
-ipcMain.on('open-viewer', (event, fileName, data) => {
+ipcMain.on('open-viewer', (event, fileName, mangaPath) => {
     nwin = new BrowserWindow({
-        width: 1600,
-        height: 1200
+        width: 700,
+        height: 1080,
+        //frame: false
     });
-    console.log("data is:" + data);
     nwin.loadURL(`file://${__dirname}/src/components/` + fileName + `.html`);
     nwin.webContents.on('dom-ready', function() {
-        nwin.webContents.send('send-to-viewer', data);
+        nwin.webContents.send('open-viewer-reply', mangaPath);
+        nwin.show();
+    });
+})
+
+ipcMain.on('open-chapter', (event, chapPath) => {
+    nwin.loadURL(`file://${__dirname}/src/components/viewer.html`);
+    nwin.webContents.on('dom-ready', function() {
+        event.sender.send('open-chap-reply', chapPath);
         nwin.show();
     });
 })
