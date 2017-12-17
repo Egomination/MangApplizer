@@ -24,9 +24,9 @@
         </div>
         <div class="nav-content">
             <ul class="tabs tabs-transparent">
-                <li class="tab"><a href="#Main" class="active">Main</a></li>
-                <li class="tab"><a href="#Dow">Manga Downloader</a></li>
-                <li class="tab"><a href="#View">Manga Viewer</a></li>
+                <li class="tab"><a id="maintab" href="#Main">Main</a></li>
+                <li class="tab"><a id="downtab" href="#Dow">Manga Downloader</a></li>
+                <li class="tab"><a id="viewtab" href="#View">Manga Viewer</a></li>
             </ul>
         </div>
         <ul id="help_drop" class="dropdown-content">
@@ -74,17 +74,10 @@
     </div>
     <div id="View">
         <h1>Viewer</h1>
-        <form name="viewerForm" id="viewerForm">
-            <select id="sourcelist">
-                <option value="nul" disabled selected>Please select a manga</option>
-            </select>
-            <div class="input-field">
-                <input type="number" class="no-spin" id="vChapNo">
-                <label>Chapter No</label>
-            </div>
-            <button id="vButto" class="btn waves-effect waves-light" onclick="openViewer(); return false;">View</button>
-        </form>
-
+        <select id="sourcelist">
+            <option value="nul" disabled selected>Please select a manga</option>
+        </select>
+        <button id="vButto" class="btn waves-effect waves-light" onclick="openViewer(); return false;">View</button>
     </div>
     <script type="text/javascript" src="./node_modules/jquery/dist/jquery.min.js"></script>
     <script type="text/javascript" src="./node_modules/hammerjs/hammer.min.js"></script>
