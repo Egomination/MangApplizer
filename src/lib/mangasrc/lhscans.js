@@ -116,21 +116,28 @@ function GetAvailableChapters(url, callback) {
     mangaPage = mangaPage[1] + '.html';
     mangaPage = mangaPage.replace("read", "manga");
 
-    // Need to find latest chapter!
-    request(mangaPage, function(error, response, body) {
-        if (!error && response.statusCode == 200) {
-            // First we get the image urls from lhscans.
-            const $ = cheerio.load(body);
-            $(body).find('a.chapter').each(function(index, element) {
-                let info = ($(element).attr('href'));
-                if (info) {
-                    chapterList.push(info);
+    fetch(url, { redirect: "manual" }).then(function(response) {
+        if (response.status === 0) {
+            // That means manga is not found
+            Materialize.toast('Manga is not available!', 5000);
+        } else {
+            // Need to find latest chapter!
+            request(mangaPage, function(error, response, body) {
+                if (!error && response.statusCode == 200) {
+                    // First we get the image urls from lhscans.
+                    const $ = cheerio.load(body);
+                    $(body).find('a.chapter').each(function(index, element) {
+                        let info = ($(element).attr('href'));
+                        if (info) {
+                            chapterList.push(info);
+                        }
+                    });
+                    // Find a way to return this value
+                    // Possible solutions -> callback, Promise
+                    url = chapterList; // We can pass all of the array
+                    callback && callback(null, url);
                 }
             });
-            // Find a way to return this value
-            // Possible solutions -> callback, Promise
-            url = chapterList; // We can pass all of the array
-            callback && callback(null, url);
         }
     });
 }

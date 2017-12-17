@@ -26,7 +26,7 @@ function buttoKun() {
                 chapter = chapters[chapterNo];
             }
             // Creating the chapter name with actual ch number + title if exists.
-            let path = './imgs/' + nmanga + '/' + chapter.t + '/';
+            let path = './imgs/' + nmanga + '/' + chapter.n + '/';
 
             mkdirp(path)
                 .catch(console.error);
