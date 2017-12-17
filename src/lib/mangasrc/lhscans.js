@@ -14,18 +14,14 @@ function lhs() {
     let foldername = document.getElementById('fname').value;
     let chno = document.getElementById('chno').value;
 
-    let mpath = './imgs/' + foldername + '/' + chno + '/';
     foldername = foldername.toLowerCase()
     foldername = foldername.replace(/ /g, "-");
+    let mpath = './imgs/' + foldername + '/' + chno + '/';
 
     let url = 'http://lhscans.com/read-' +
         foldername + '-chapter-' + chno + '.html';
 
     fetch(url, { redirect: "manual" }).then(function(response) {
-        // Means there is a redirect on website.
-        // FIXME: If there's no chapter, website still redirects
-        // and because of below if clause, it downloads random chapter
-        // somehow!
         if (response.status === 0) {
             if (response.status === 0) {
                 console.log("Another Redirect Spoted!");
@@ -76,7 +72,6 @@ function GetChapters(url, mpath) {
 }
 
 function lhsDownloader(url, path) {
-
     request(url, function(err, resp, body) {
         if (!err && resp.statusCode == 200) {
             // First we get the image urls from lhscans.
@@ -107,9 +102,7 @@ function lhsDownloader(url, path) {
 
 // EDIT: Find a way to implement this into download!
 function GetAvailableChapters(url, callback) {
-
     let chapterList = []
-    // NOTE: need to parse the url 'till -chapter-...
     let regex = new RegExp(/(.*)(?:-chapter)/);
     // mangaPage returns to the given manga's manga page.
     let mangaPage = url.match(regex);
@@ -132,8 +125,6 @@ function GetAvailableChapters(url, callback) {
                             chapterList.push(info);
                         }
                     });
-                    // Find a way to return this value
-                    // Possible solutions -> callback, Promise
                     url = chapterList; // We can pass all of the array
                     callback && callback(null, url);
                 }
@@ -143,6 +134,6 @@ function GetAvailableChapters(url, callback) {
 }
 
 
-module.exports = {
-    lhs: lhs
-}
+// module.exports = {
+//     lhs: lhs
+// }
