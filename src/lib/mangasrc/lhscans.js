@@ -25,31 +25,32 @@ function lhs() {
         if (response.status === 0) {
             url = 'http://lhscans.com/read-' +
                 foldername + '-raw-chapter-' + chno + '.html';
-            
+
             fetch(url, { redirect: "manual" }).then(function(response) {
-                if(response.status === 0){
-                    let pages = GetAvailableChapters(url, foldername, function(error, pages) {
-                        // finding chapter no.
-                        let reg = new RegExp(/(.*)(:?-)(.*)(:?.html)/);
-                        let newChNo = pages[0].match(reg);
-                        console.log(newChNo);
-                        // Generating new path for last chapter!
-                        mpath = './imgs/' + foldername + '/' + newChNo[3] + '/'
-                        url = 'http://lhscans.com/' + pages[0];
-                        GetChapters(url, mpath);
-                    });
-                }else{
+                if (response.status === 0) {
+                    let pages = GetAvailableChapters(url, foldername,
+                        function(error, pages) {
+                            // finding chapter no.
+                            let reg = new RegExp(/(.*)(:?-)(.*)(:?.html)/);
+                            let newChNo = pages[0].match(reg);
+                            console.log(newChNo);
+                            // Generating new path for last chapter!
+                            mpath = './imgs/' + foldername + '/' +
+                                newChNo[3] + '/'
+                            url = 'http://lhscans.com/' + pages[0];
+                            GetChapters(url, mpath);
+                        });
+                } else {
                     GetChapters(url, mpath);
                 }
             });
-
         } else {
             // Link is correct!
             GetChapters(url, mpath);
         }
-
     });
 }
+
 
 // Main function for the getting manga pages!
 function GetChapters(url, mpath) {
@@ -70,8 +71,10 @@ function GetChapters(url, mpath) {
         } else {
             console.log(error);
         }
+        response.socket.end();
     });
 }
+
 
 function lhsDownloader(url, path) {
     request(url, function(err, resp, body) {
@@ -96,25 +99,52 @@ function lhsDownloader(url, path) {
             });
             // Dialog message after successful download operation.
             Materialize.toast('Downloading completed successfully!', 5000);
+            list = []; // Freeing the list after every chapter download !
         } else {
             console.log(error);
         }
+        resp.socket.end();
     });
 }
 
 
+// Return to the available chapters. If not, sends pop up msg.
 function GetAvailableChapters(url, foldername, callback) {
     let chapterList = []
-    let regex = new RegExp(/(.*)(?:-chapter)/);
     // mangaPage returns to the given manga's manga page.
-    let mangaPage = url.match(regex);
+    let mangaPage = url.match(/(.*)(?:-chapter)/);
     mangaPage = mangaPage[1] + '.html';
     mangaPage = mangaPage.replace("read", "manga");
 
     fetch(mangaPage, { redirect: "manual" }).then(function(response) {
         if (response.status === 0) {
-            // That means manga is not found
-            Materialize.toast(`'${foldername}' is not available!`, 5000);
+            mangaPage = mangaPage.replace("-raw", "");
+            //(╯°□°）╯︵ ┻━┻
+            fetch(mangaPage, { redirect: 'manual' }).then(function(response) {
+                if (response.status === 0) {
+                    // manga not found!
+                    Materialize.toast(`'${foldername}' is not available!`,
+                        5000);
+                } else {
+                    //(╯°□°）╯︵ ┻━┻
+                    request(mangaPage, function(error, response, body) {
+                        if (!error && response.statusCode == 200) {
+                            // First we get the image urls from lhscans.
+                            const $ = cheerio.load(body);
+                            $(body).find('a.chapter')
+                                .each(function(index, element) {
+                                    let info = ($(element).attr('href'));
+                                    if (info) {
+                                        //(╯°□°）╯︵ ┻━┻
+                                        chapterList.push(info);
+                                    }
+                                });
+                            url = chapterList; // We can pass all of the array
+                            callback && callback(null, url);
+                        }
+                    });
+                }
+            });
         } else {
             // Need to find latest chapter!
             request(mangaPage, function(error, response, body) {
