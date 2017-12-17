@@ -23,24 +23,26 @@ function lhs() {
 
     fetch(url, { redirect: "manual" }).then(function(response) {
         if (response.status === 0) {
-            if (response.status === 0) {
-                console.log("Another Redirect Spoted!");
-
-                let pages = GetAvailableChapters(url, foldername, function(error, pages) {
-                    // finding chapter no.
-                    let reg = new RegExp(/(.*)(:?-)(.*)(:?.html)/);
-                    let newChNo = pages[0].match(reg);
-
-                    // Generating new path for last chapter!
-                    mpath = './imgs/' + foldername + '/' + newChNo[3] + '/'
-                    url = 'http://lhscans.com/' + pages[0];
+            url = 'http://lhscans.com/read-' +
+                foldername + '-raw-chapter-' + chno + '.html';
+            
+            fetch(url, { redirect: "manual" }).then(function(response) {
+                if(response.status === 0){
+                    let pages = GetAvailableChapters(url, foldername, function(error, pages) {
+                        // finding chapter no.
+                        let reg = new RegExp(/(.*)(:?-)(.*)(:?.html)/);
+                        let newChNo = pages[0].match(reg);
+                        console.log(newChNo);
+                        // Generating new path for last chapter!
+                        mpath = './imgs/' + foldername + '/' + newChNo[3] + '/'
+                        url = 'http://lhscans.com/' + pages[0];
+                        GetChapters(url, mpath);
+                    });
+                }else{
                     GetChapters(url, mpath);
-                });
-            } else {
-                url = 'http://lhscans.com/read-' +
-                    foldername + '-raw-chapter-' + chno + '.html';
-                GetChapters(url, mpath);
-            }
+                }
+            });
+
         } else {
             // Link is correct!
             GetChapters(url, mpath);
@@ -109,7 +111,7 @@ function GetAvailableChapters(url, foldername, callback) {
     mangaPage = mangaPage[1] + '.html';
     mangaPage = mangaPage.replace("read", "manga");
 
-    fetch(url, { redirect: "manual" }).then(function(response) {
+    fetch(mangaPage, { redirect: "manual" }).then(function(response) {
         if (response.status === 0) {
             // That means manga is not found
             Materialize.toast(`'${foldername}' is not available!`, 5000);
