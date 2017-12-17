@@ -1,41 +1,51 @@
+// Viewer window scripts
 
+const {ipcRenderer} = require('electron');
+const fs = require('fs-extra');
+let path;
 
-/*
-$("#sourcelist").change(function() {
-    let manga = $("#sourcelist option:selected").val();
-    console.log(manga);
-    let mangaPath = `./imgs/${manga}`;
-    let chapArr = [];
-    console.log(mangaPath);
-    fs.readdirSync(mangaPath).forEach(file2 => {
-        console.log(file2);
-        chapArr.push(file2);
-    });
-    ipcRenderer.send('send-chap', chapArr, manga);
+// Needed for Materialize Design
+$(document).ready(function(){
+    $('select').material_select();
+    $('.carousel.carousel-slider').carousel({fullWidth: true});
 });
 
-ipcRenderer.on('send-chap-reply', (event, data, data2) => {
-    console.log("Send");
-    $("#maintab").removeClass("active");
-    $("#viewtab").addClass("active");
-    $("#chapterlist").empty();
+// Opening event of viewer window
+ipcRenderer.on('open-viewer-reply', (event, mangaPath) => {
+    console.log("mangaPath:" + mangaPath);
+    path = mangaPath;
+    // NOTE: Add this to the html file
     $("#chapterlist").append('<option value="nul" disabled selected>Please select a chapter</option>');
-    $(data).each(function(i) { //to list cities
-        $("#chapterlist").append("<option>" + data[i] + "</option>")
-    });   
-    console.log("Send done");
-});*/
+    // Folder listing for viewer window
+    fs.readdirSync(mangaPath).forEach(file => {
+        console.log(file);
+        $("#chapterlist").append(
+            $("<option>").attr("value", `${file}`).append(`${file}`)
+        );  
+    });
+});
+
+// Will list pages of said manga + IPC event to reload page
+function viewManga(){
+    let chapter = $("#chapterlist option:selected").val();
+    console.log("Chapter is:" + chapter);
+    let chapPath = path + chapter;
+    console.log("chapPath1:" + chapPath);
+    ipcRenderer.send('open-chapter', chapPath);
+}
 
 
-/*
-function openViewer(){
-    let sourceVal = $("#sourcelist option:selected").val();
-    console.log(sourceVal);
-    let mangaPath = imgPath + sourceVal + "/";
-    console.log(mangaPath);
-    let chapNo = $("#vChapNo").val();
-    console.log(chapNo);
-    let chapterPath = mangaPath + chapNo + "/";
-    console.log(chapterPath);
-    ipcRenderer.send('open-viewer', 'viewer', chapterPath);
-}*/
+// Ipc event that gives the path from main-viewer
+ipcRenderer.on('open-chap-reply', (event, chapPath) => {
+    console.log("chapPath2:" + chapPath);
+    $("#chapView").empty();
+    fs.readdirSync(chapPath)/*.filter(function(file) { return file.substr(-4) === '.jpg'; })*/.forEach(file => {
+        $("#chapView").append(
+            $("<a>").attr("class", "carousel-item").append(
+                $("<img>").attr("src", "../." + chapPath + "/" + file)
+            )
+        );
+        //console.log(file);
+    });
+    
+});
