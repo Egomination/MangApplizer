@@ -73,6 +73,19 @@ ipcMain.on('open-viewer', (event, fileName, data) => {
     });
 })
 
+ipcMain.on('send-chap', (event, chapArr, manga) => {
+    console.log("chapArr is:" + chapArr);
+    mainWin.loadURL(url.format({
+        pathname: path.join(__dirname, 'index.html'),
+        protocol: 'file:',
+        slashes: true //This is just passing the path.
+    }));
+    mainWin.webContents.on('dom-ready', function() {
+        event.sender.send('send-chap-reply', chapArr, manga);
+        mainWin.show();
+    });
+})
+
 // Add dev tools
 if (process.env.NODE_ENV !== 'production') {
     mainMenuTemp.push({
