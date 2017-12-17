@@ -70,7 +70,7 @@ function buttoKun() {
                         let file = fs.createWriteStream(path + "000" +
                             newLink.match(/\d+\w\d*.png|\d+\w\d*.jpe?g/));
 
-                        let req = http.get(newLink, function(response) {
+                        let downloader = http.get(newLink, function(response) {
                             response.pipe(file)
                         });
                     });

@@ -26,7 +26,7 @@ function lhs() {
             if (response.status === 0) {
                 console.log("Another Redirect Spoted!");
 
-                let pages = GetAvailableChapters(url, function(error, pages) {
+                let pages = GetAvailableChapters(url, foldername, function(error, pages) {
                     // finding chapter no.
                     let reg = new RegExp(/(.*)(:?-)(.*)(:?.html)/);
                     let newChNo = pages[0].match(reg);
@@ -88,7 +88,7 @@ function lhsDownloader(url, path) {
                 // Creating file name for the image.
                 let file = fs.createWriteStream(path +
                     imgUrl.split('/').pop(-1).toLowerCase());
-                let req = http.get(imgUrl, function(response) {
+                let downloader = http.get(imgUrl, function(response) {
                     response.pipe(file)
                 });
             });
@@ -100,8 +100,8 @@ function lhsDownloader(url, path) {
     });
 }
 
-// EDIT: Find a way to implement this into download!
-function GetAvailableChapters(url, callback) {
+
+function GetAvailableChapters(url, foldername, callback) {
     let chapterList = []
     let regex = new RegExp(/(.*)(?:-chapter)/);
     // mangaPage returns to the given manga's manga page.
@@ -112,7 +112,7 @@ function GetAvailableChapters(url, callback) {
     fetch(url, { redirect: "manual" }).then(function(response) {
         if (response.status === 0) {
             // That means manga is not found
-            Materialize.toast('Manga is not available!', 5000);
+            Materialize.toast(`'${foldername}' is not available!`, 5000);
         } else {
             // Need to find latest chapter!
             request(mangaPage, function(error, response, body) {
@@ -132,8 +132,3 @@ function GetAvailableChapters(url, callback) {
         }
     });
 }
-
-
-// module.exports = {
-//     lhs: lhs
-// }
