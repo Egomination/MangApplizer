@@ -86,12 +86,6 @@ fs.readdirSync(imgPath).forEach(file => {
 
 function openViewer(){
     let sourceVal = $("#sourcelist option:selected").val();
-    console.log(sourceVal);
     let mangaPath = imgPath + sourceVal + "/";
-    console.log(mangaPath);
-    /*let chapNo = $("#vChapNo").val();
-    console.log(chapNo);
-    let chapterPath = mangaPath + chapNo + "/";
-    console.log(chapterPath);*/
     ipcRenderer.send('open-viewer', 'viewer', mangaPath);
 }

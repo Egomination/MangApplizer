@@ -65,7 +65,6 @@ ipcMain.on('open-viewer', (event, fileName, mangaPath) => {
         height: 1080,
         //frame: false
     });
-    console.log("mangaPath is:" + mangaPath);
     nwin.loadURL(`file://${__dirname}/src/components/` + fileName + `.html`);
     nwin.webContents.on('dom-ready', function() {
         nwin.webContents.send('open-viewer-reply', mangaPath);
@@ -74,7 +73,6 @@ ipcMain.on('open-viewer', (event, fileName, mangaPath) => {
 })
 
 ipcMain.on('open-chapter', (event, chapPath) => {
-    console.log("chapPath is:" + chapPath);
     nwin.loadURL(`file://${__dirname}/src/components/viewer.html`);
     nwin.webContents.on('dom-ready', function() {
         event.sender.send('open-chap-reply', chapPath);
