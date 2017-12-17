@@ -55,8 +55,7 @@ function buttoKun() {
             hakuneko.kissmanga.getPages(chapter, function(error, pages) {
                 if (!error) {
                     chapter.p = pages; // Will be usefull later.
-                    console.log(pages);
-                    console.log(pages.length);
+
                     pages.forEach(function(item) {
                         item = item.trim();
                         item = item.match(/(.*\.jpe?g|.*\.png)/);
