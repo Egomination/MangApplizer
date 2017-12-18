@@ -26,12 +26,12 @@ $(document).ready(function() {
 function source(source) {
     if (source == "lhs") {
         //$("#content").load("./src/components/lhscans.html");
-        $('#butto-kun').attr('onclick', 'lhs(); return false;'); 
+        $('#butto-kun').attr('onclick', 'lhs()'); 
         console.log("lhs")
         resetBtt();
     } else if (source == "km") {
         //$("#content").load("./src/components/kissmanga.html");
-        $('#butto-kun').attr('onclick', 'buttoKun(); return false;'); 
+        $('#butto-kun').attr('onclick', 'buttoKun()'); 
         console.log("km")
         resetBtt();
     }
@@ -39,7 +39,7 @@ function source(source) {
 
 // Grey out the button if at least one input is missing
 (function() {
-    $('#butto-kun').attr('disabled', 'disabled');
+    $('#butto-kun').prop('disabled', 'disabled');
     $("#downloadForm input").on("keyup change", function() {
 
         let empty = false;
@@ -51,7 +51,7 @@ function source(source) {
         });
 
         if (empty) {
-            $('#butto-kun').attr('disabled', 'disabled');
+            $('#butto-kun').prop('disabled', 'disabled');
         } else {
             $('#butto-kun').removeAttr('disabled');
         }
@@ -88,6 +88,7 @@ try{
     // pass
 }
 
+// Grey out the View button if no manga is selected
 (function() {
     $("#vButto").prop("disabled", true);
     $('#sourcelist').on('change', function() {
