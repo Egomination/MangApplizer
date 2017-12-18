@@ -78,11 +78,26 @@ function resetBtt() {
 }
 
 // Folder listing for Viewertab
-fs.readdirSync(imgPath).forEach(file => {
-    $("#sourcelist").append(
-        $("<option>").attr("value", `${file}`).append(`${file}`)
-    );  
-});
+try{
+    fs.readdirSync(imgPath).forEach(file => {
+        $("#sourcelist").append(
+            $("<option>").attr("value", `${file}`).append(`${file}`)
+        );  
+    });
+}catch(err){
+    // pass
+}
+
+(function() {
+    $("#vButto").prop("disabled", true);
+    $('#sourcelist').on('change', function() {
+        if ($('#sourcelist option:selected').prop("disabled") == true){
+            $("#vButto").prop("disabled", true);
+        } else {
+            $("#vButto").prop("disabled", false);
+        }
+    });
+})();
 
 function openViewer(){
     let sourceVal = $("#sourcelist option:selected").val();
