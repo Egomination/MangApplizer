@@ -7,14 +7,12 @@ let path;
 // Needed for Materialize Design
 $(document).ready(function(){
     $('select').material_select();
-    $('.carousel.carousel-slider').carousel({fullWidth: true});
+    $('.carousel.carousel-slider').carousel({fullWidth: true, noWrap: true});
 });
 
 // Opening event of viewer window
 ipcRenderer.on('open-viewer-reply', (event, mangaPath) => {
     path = mangaPath;
-    // NOTE: Add this to the html file
-    $("#chapterlist").append('<option value="nul" disabled selected>Please select a chapter</option>');
     // Folder listing for viewer window
     fs.readdirSync(mangaPath).forEach(file => {
         $("#chapterlist").append(
