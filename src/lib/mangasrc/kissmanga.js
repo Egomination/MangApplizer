@@ -74,7 +74,7 @@ function buttoKun() {
                         });
                     });
                     Materialize.toast('Downloading completed' +
-                        'successfully!', 5000);
+                        ' successfully!', 5000);
                 } else {
 
                     console.log(error);

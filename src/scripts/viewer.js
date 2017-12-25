@@ -3,24 +3,35 @@
 const {ipcRenderer} = require('electron');
 const fs = require('fs-extra');
 let path;
+let arr = [];
 
 // Needed for Materialize Design
 $(document).ready(function(){
     $('select').material_select();
-    $('.carousel.carousel-slider').carousel({fullWidth: true});
+    $('.carousel.carousel-slider').carousel({fullWidth: true, noWrap: true});
 });
+
+// Sorting function for an array of numbers
+function sortNumber(a,b) {
+    return a - b;
+}
 
 // Opening event of viewer window
 ipcRenderer.on('open-viewer-reply', (event, mangaPath) => {
     path = mangaPath;
-    // NOTE: Add this to the html file
-    $("#chapterlist").append('<option value="nul" disabled selected>Please select a chapter</option>');
     // Folder listing for viewer window
     fs.readdirSync(mangaPath).forEach(file => {
-        $("#chapterlist").append(
-            $("<option>").attr("value", `${file}`).append(`${file}`)
-        );  
+        arr.push(file);
     });
+    console.log("arr1:" + arr);
+    arr.sort(sortNumber);
+    console.log("arr2:" + arr);
+    arr.forEach(item => {
+        $("#chapterlist").append(
+            $("<option>").attr("value", `${item}`).append(`${item}`)
+        );
+    });
+    arr = [];
 });
 
 // Will list pages of said manga + IPC event to reload page

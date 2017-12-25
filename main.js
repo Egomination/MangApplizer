@@ -13,8 +13,8 @@ let nwin;
 // It creates a main window from mainWin html.
 app.on('ready', function() {
     mainWin = new BrowserWindow({
-        width: 700,
-        height: 1080
+        width: 1200,
+        height: 800
     });
     //Load html for the view.
     mainWin.loadURL(url.format({
@@ -57,18 +57,23 @@ if (process.platform == 'darwin') {
     mainMenuTemp.unshift({}); //Unshift adds item begining of the array.
 }
 
-// FIXME: Garb. collector
 // Event for opening viewer
 ipcMain.on('open-viewer', (event, fileName, mangaPath) => {
+    // Window settings
     nwin = new BrowserWindow({
         width: 700,
         height: 1080,
         //frame: false
     });
+    // Load location and reply event
     nwin.loadURL(`file://${__dirname}/src/components/` + fileName + `.html`);
     nwin.webContents.on('dom-ready', function() {
         nwin.webContents.send('open-viewer-reply', mangaPath);
         nwin.show();
+    });
+    // Garb. collector
+    nwin.on('close', function(){
+        nwin = null;
     });
 })
 
