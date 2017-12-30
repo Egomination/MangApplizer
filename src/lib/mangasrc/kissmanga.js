@@ -20,13 +20,28 @@ function buttoKun() {
             let chapterNo = chapters.filter(function(obj) {
                 // Kissmanga puts double 0 in front of the all 1 digit chapters.
                 // But puts one 0 in front of 2 digit chapters.
-                let chapterNoFromTitle = obj.t.match(/\d+(\.\d+)?/);
-                if (chno > 0 && chno < 10) {
-                    return chapterNoFromTitle[0] == '0' + '0' + chno;
-                } else if (chno >= 10 && chno < 100) {
-                    return chapterNoFromTitle[0] == '0' + chno;
+                let chapterNoFromTitle;
+                // checking the url if there's Capter specifier in it.
+                if (obj.t.match(/ch/i)) {
+                    try {
+                        chapterNoFromTitle = obj.t.match(/(?:ch?\w+[\-,.]?)(\d+(\.\d+)?)/gi);
+                        chapterNoFromTitle = chapterNoFromTitle[0];
+                        chapterNoFromTitle = chapterNoFromTitle.match(/\d+/);
+                    } catch (e) {
+                        chapterNoFromTitle = obj.t.match(/\d+(\.\d+)?/);
+                        chapterNoFromTitle = chapterNoFromTitle[0];
+                    }
                 } else {
-                    return chapterNoFromTitle[0] == chno;
+                    chapterNoFromTitle = obj.t.match(/\d+(\.\d+)?/);
+                    chapterNoFromTitle = chapterNoFromTitle[0];
+                }
+
+                if (chno > 0 && chno < 10) {
+                    return chapterNoFromTitle == '0' + '0' + chno;
+                } else if (chno >= 10 && chno < 100) {
+                    return chapterNoFromTitle == '0' + chno;
+                } else {
+                    return chapterNoFromTitle == chno;
                 }
             });
             if (typeof chapterNo[0] === 'undefined') {
