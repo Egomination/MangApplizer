@@ -9,13 +9,13 @@ require("isomorphic-fetch");
 
 let list = []
 
-// Takes body from the request.
-function parsePage(body) {
+// Takes body from the request. and array's name
+function parsePage(body, arr) {
     const $ = cheerio.load(body);
     $(body).find("img.chapter-img").each(function(index, element) {
         let info = ($(element).attr("src"));
         if (info) {
-            list.push(info);
+            arr.push(info);
         }
     });
 }
@@ -25,7 +25,7 @@ function lhsDownloader(url, path) {
     request(url, function(err, resp, body) {
         if (!err && resp.statusCode == 200) {
             // First we get the image urls from lhscans.
-            parsePage(body);
+            parsePage(body, list);
             // Traversing through the images on the array.
             list.forEach(function(item, url) {
                 let imgUrl = item.trim();
@@ -112,7 +112,7 @@ function getChapters(url, mpath) {
             mkdirp(mpath)
                 .catch(console.error);
 
-            parsePage(body);
+            parsePage(body, list);
             lhsDownloader(url, mpath);
         } else {
             console.log(error);
