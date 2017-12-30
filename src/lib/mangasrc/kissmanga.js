@@ -20,34 +20,55 @@ function buttoKun() {
             let chapterNo = chapters.filter(function(obj) {
                 // Kissmanga puts double 0 in front of the all 1 digit chapters.
                 // But puts one 0 in front of 2 digit chapters.
-                let chapterNoFromTitle = obj.t.match(/\d+(\.\d+)?/);
-                if (chno > 0 && chno < 10) {
-                    return chapterNoFromTitle[0] == '0' + '0' + chno;
-                } else if (chno >= 10 && chno < 100) {
-                    return chapterNoFromTitle[0] == '0' + chno;
+                let chapterNoFromTitle;
+                // checking the url if there's Capter specifier in it.
+                if (obj.t.match(/ch/i)) {
+                    try {
+                        chapterNoFromTitle = obj.t.match(/(?:ch?\w+[\-,.]?)(\d+(\.\d+)?)/gi);
+                        chapterNoFromTitle = chapterNoFromTitle[0];
+                        chapterNoFromTitle = chapterNoFromTitle.match(/\d+/);
+                    } catch (e) {
+                        chapterNoFromTitle = obj.t.match(/\d+(\.\d+)?/);
+                        chapterNoFromTitle = chapterNoFromTitle[0];
+                    }
                 } else {
-                    return chapterNoFromTitle[0] == chno;
+                    chapterNoFromTitle = obj.t.match(/\d+(\.\d+)?/);
+                    chapterNoFromTitle = chapterNoFromTitle[0];
+                }
+
+                if (chno > 0 && chno < 10) {
+                    return chapterNoFromTitle == '0' + '0' + chno;
+                } else if (chno >= 10 && chno < 100) {
+                    return chapterNoFromTitle == '0' + chno;
+                } else {
+                    return chapterNoFromTitle == chno;
                 }
             });
+
+            // Terminating if not valid chap no
+            // FIXME: Do it like lhs.
             if (typeof chapterNo[0] === 'undefined') {
                 Materialize.toast(`Chapter ${chno} is not available
                     for ${nmanga}`, 5000);
                 return;
             }
-
+            /*
+            // Cont. above fixme; I don't remember why i discared this feature,
+            // maybe re-enabled later.
             // Handling the chapter no input greater than number of chaps.
             if (chapterNo > chapters.length || chapterNo < 0) {
                 chapter = chapters[0];
             } else {
                 chapter = chapterNo[0]; // bc chapterNo is also an array.
-            }
+            }*/
 
-            // Generating chapter no from its title. Since some of the mangas
-            // do not have number in api.
-            let chapterNoForPath = chapter.t.match(/\d+(\.\d+)?/);
+            if (!chapterNo[0].n) {
+                chapterNo[0].n = chno;
+            }
+            chapter = chapterNo[0];
 
             // Creating the chapter name with actual ch number
-            let path = './imgs/' + nmanga + '/' + chapterNoForPath[0] + '/';
+            let path = './imgs/' + nmanga + '/' + chapterNo[0].n + '/';
 
             mkdirp(path)
                 .catch(console.error);
