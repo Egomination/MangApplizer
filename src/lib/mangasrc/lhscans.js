@@ -10,7 +10,7 @@ require("isomorphic-fetch");
 let list = []
 
 // Takes body from the request.
-function ParsePage(body) {
+function parsePage(body) {
     const $ = cheerio.load(body);
     $(body).find("img.chapter-img").each(function(index, element) {
         let info = ($(element).attr("src"));
@@ -86,7 +86,7 @@ function lhsDownloader(url, path) {
     request(url, function(err, resp, body) {
         if (!err && resp.statusCode == 200) {
             // First we get the image urls from lhscans.
-            ParsePage(body);
+            parsePage(body);
             // Traversing through the images on the array.
             list.forEach(function(item, url) {
                 let imgUrl = item.trim();
@@ -109,7 +109,7 @@ function lhsDownloader(url, path) {
 
 
 // Return to the available chapters. If not, sends pop up msg.
-function GetAvailableChapters(url, foldername, callback) {
+function getAvailableChapters(url, foldername, callback) {
     let chapterList = []
     // mangaPage returns to the given manga's manga page.
     let mangaPage = url.match(/(.*)(?:-chapter)/);
