@@ -23,7 +23,7 @@ function parsePage(body, arr) {
 
 function lhsDownloader(url, path) {
     request(url, function(err, resp, body) {
-        if (!err && resp.statusCode == 200) {
+        if (!err && resp.statusCode === 200) {
             // First we get the image urls from lhscans.
             parsePage(body, list);
             // Traversing through the images on the array.
@@ -68,7 +68,7 @@ function getAvailableChapters(url, foldername, callback) {
                 } else {
                     //(╯°□°）╯︵ ┻━┻
                     request(mangaPage, function(error, response, body) {
-                        if (!error && response.statusCode == 200) {
+                        if (!error && response.statusCode === 200) {
                             // First we get the image urls from lhscans.
                             const $ = cheerio.load(body);
                             $(body).find("a.chapter")
@@ -86,7 +86,7 @@ function getAvailableChapters(url, foldername, callback) {
             });
         } else {
             request(mangaPage, function(error, response, body) {
-                if (!error && response.statusCode == 200) {
+                if (!error && response.statusCode === 200) {
                     // First we get the image urls from lhscans.
                     const $ = cheerio.load(body);
                     $(body).find("a.chapter")
@@ -107,7 +107,7 @@ function getAvailableChapters(url, foldername, callback) {
 // Main function for the getting manga pages!
 function getChapters(url, mpath) {
     request(url, function(error, response, body) {
-        if (response.statusCode == 200 && !error) {
+        if (response.statusCode === 200 && !error) {
             // Creating the folders
             mkdirp(mpath)
                 .catch(console.error);
@@ -143,7 +143,6 @@ function lhs() {
                 if (response.status === 0) {
                     let pages = getAvailableChapters(url, foldername,
                         function(error, pages) {
-                            console.log(pages[0]);
                             // finding chapter no.
                             let newChNo = pages[0].match(/\d+/);
                             // Generating new path for last chapter!
