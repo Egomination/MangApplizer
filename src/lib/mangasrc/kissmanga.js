@@ -1,20 +1,20 @@
-const hakuneko = require('hakuneko');
+const hakuneko = require("hakuneko");
 
 function buttoKun() {
     // Getting form informations.
-    let nmanga = document.getElementById('fname').value;
-    let chno = document.getElementById('chno').value;
+    let nmanga = document.getElementById("fname").value;
+    let chno = document.getElementById("chno").value;
 
     // Fixing the spaces
     nmanga = nmanga.toLowerCase()
     nmanga = nmanga.replace(/ /g, "-");
 
-    manga = hakuneko.base.createManga('Title', `/Manga/${nmanga}`);
+    manga = hakuneko.base.createManga("Title", `/Manga/${nmanga}`);
     hakuneko.kissmanga.getChapters(manga, function(error, chapters) {
         if (!error) {
 
-            chapter = hakuneko.base.createChapter('[VOL]', '[NR]', 'Title',
-                'lang', 'scanlator', `/Manga/${nmanga}`, []);
+            chapter = hakuneko.base.createChapter("[VOL]", "[NR]", "Title",
+                "lang", "scanlator", `/Manga/${nmanga}`, []);
 
             // Returns to the given chapter no.
             let chapterNo = chapters.filter(function(obj) {
@@ -37,9 +37,9 @@ function buttoKun() {
                 }
 
                 if (chno > 0 && chno < 10) {
-                    return chapterNoFromTitle == '0' + '0' + chno;
+                    return chapterNoFromTitle == "0" + "0" + chno;
                 } else if (chno >= 10 && chno < 100) {
-                    return chapterNoFromTitle == '0' + chno;
+                    return chapterNoFromTitle == "0" + chno;
                 } else {
                     return chapterNoFromTitle == chno;
                 }
@@ -47,7 +47,7 @@ function buttoKun() {
 
             // Terminating if not valid chap no
             // FIXME: Do it like lhs.
-            if (typeof chapterNo[0] === 'undefined') {
+            if (typeof chapterNo[0] === "undefined") {
                 Materialize.toast(`Chapter ${chno} is not available
                     for ${nmanga}`, 5000);
                 return;
@@ -68,7 +68,7 @@ function buttoKun() {
             chapter = chapterNo[0];
 
             // Creating the chapter name with actual ch number
-            let path = './imgs/' + nmanga + '/' + chapterNo[0].n + '/';
+            let path = "./imgs/" + nmanga + "/" + chapterNo[0].n + "/";
 
             mkdirp(path)
                 .catch(console.error);
@@ -83,7 +83,7 @@ function buttoKun() {
 
                         // Downloading from Https, doesnt work
                         // So i had to convert it to http
-                        let link = item[0].split('://');
+                        let link = item[0].split("://");
                         let newLink = "http://" + link[1];
 
                         console.log(newLink.match(/\d*.png|\d*.jpe?g/));
@@ -94,8 +94,8 @@ function buttoKun() {
                             response.pipe(file)
                         });
                     });
-                    Materialize.toast('Downloading completed' +
-                        ' successfully!', 5000);
+                    Materialize.toast("Downloading completed" +
+                        " successfully!", 5000);
                 } else {
 
                     console.log(error);

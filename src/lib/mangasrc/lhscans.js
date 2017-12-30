@@ -1,5 +1,5 @@
-const request = require("request"),
-    cheerio = require("cheerio");
+const request = require("request");
+const cheerio = require("cheerio");
 
 // Fetch API
 require("es6-promise").polyfill();
