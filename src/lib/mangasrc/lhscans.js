@@ -9,6 +9,18 @@ require('isomorphic-fetch');
 
 let list = []
 
+// Takes body from the request.
+function ParsePage(body) {
+    const $ = cheerio.load(body);
+    $(body).find('img.chapter-img').each(function(index, element) {
+        let info = ($(element).attr('src'));
+        if (info) {
+            list.push(info);
+        }
+    });
+}
+
+
 function lhs() {
     // Getting form inputs.
     let foldername = document.getElementById('fname').value;
@@ -60,13 +72,7 @@ function GetChapters(url, mpath) {
             mkdirp(mpath)
                 .catch(console.error);
 
-            const $ = cheerio.load(body);
-            $(body).find('img.chapter-img').each(function(index, element) {
-                let info = ($(element).attr('src'));
-                if (info) {
-                    list.push(info);
-                }
-            });
+            ParsePage(body);
             lhsDownloader(url, mpath);
         } else {
             console.log(error);
@@ -80,13 +86,7 @@ function lhsDownloader(url, path) {
     request(url, function(err, resp, body) {
         if (!err && resp.statusCode == 200) {
             // First we get the image urls from lhscans.
-            const $ = cheerio.load(body);
-            $(body).find('img.chapter-img').each(function(index, element) {
-                let info = ($(element).attr('src'));
-                if (info) {
-                    list.push(info);
-                }
-            });
+            ParsePage(body);
             // Traversing through the images on the array.
             list.forEach(function(item, url) {
                 let imgUrl = item.trim();
