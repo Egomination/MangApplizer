@@ -127,6 +127,7 @@ function lhs() {
     let foldername = document.getElementById("fname").value;
     let chno = document.getElementById("chno").value;
 
+    // FIXME: If user provides extra space, manga become invalid.
     foldername = foldername.toLowerCase()
     foldername = foldername.replace(/ /g, "-");
     let mpath = "./imgs/" + foldername + "/" + chno + "/";
