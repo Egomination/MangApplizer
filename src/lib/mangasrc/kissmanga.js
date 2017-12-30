@@ -44,18 +44,23 @@ function buttoKun() {
                     return chapterNoFromTitle == chno;
                 }
             });
+
+            // Terminating if not valid chap no
+            // FIXME: Do it like lhs.
             if (typeof chapterNo[0] === 'undefined') {
                 Materialize.toast(`Chapter ${chno} is not available
                     for ${nmanga}`, 5000);
                 return;
             }
-
+            /*
+            // Cont. above fixme; I don't remember why i discared this feature,
+            // maybe re-enabled later.
             // Handling the chapter no input greater than number of chaps.
             if (chapterNo > chapters.length || chapterNo < 0) {
                 chapter = chapters[0];
             } else {
                 chapter = chapterNo[0]; // bc chapterNo is also an array.
-            }
+            }*/
 
             // Generating chapter no from its title. Since some of the mangas
             // do not have number in api.
