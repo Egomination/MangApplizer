@@ -62,12 +62,13 @@ function buttoKun() {
                 chapter = chapterNo[0]; // bc chapterNo is also an array.
             }*/
 
-            // Generating chapter no from its title. Since some of the mangas
-            // do not have number in api.
-            let chapterNoForPath = chapter.t.match(/\d+(\.\d+)?/);
+            if (!chapterNo[0].n) {
+                chapterNo[0].n = chno;
+            }
+            chapter = chapterNo[0];
 
             // Creating the chapter name with actual ch number
-            let path = './imgs/' + nmanga + '/' + chapterNoForPath[0] + '/';
+            let path = './imgs/' + nmanga + '/' + chapterNo[0].n + '/';
 
             mkdirp(path)
                 .catch(console.error);
