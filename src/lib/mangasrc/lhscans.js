@@ -85,17 +85,17 @@ function getAvailableChapters(url, foldername, callback) {
                 }
             });
         } else {
-            // Need to find latest chapter!
             request(mangaPage, function(error, response, body) {
                 if (!error && response.statusCode == 200) {
                     // First we get the image urls from lhscans.
                     const $ = cheerio.load(body);
-                    $(body).find("a.chapter").each(function(index, element) {
-                        let info = ($(element).attr("href"));
-                        if (info) {
-                            chapterList.push(info);
-                        }
-                    });
+                    $(body).find("a.chapter")
+                        .each(function(index, element) {
+                            let info = ($(element).attr("href"));
+                            if (info) {
+                                chapterList.push(info);
+                            }
+                        });
                     url = chapterList; // We can pass all of the array
                     callback && callback(null, url);
                 }
