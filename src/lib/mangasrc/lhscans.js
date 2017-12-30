@@ -21,67 +21,6 @@ function parsePage(body) {
 }
 
 
-function lhs() {
-    // Getting form inputs.
-    let foldername = document.getElementById("fname").value;
-    let chno = document.getElementById("chno").value;
-
-    foldername = foldername.toLowerCase()
-    foldername = foldername.replace(/ /g, "-");
-    let mpath = "./imgs/" + foldername + "/" + chno + "/";
-
-    let url = "http://lhscans.com/read-" +
-        foldername + "-chapter-" + chno + ".html";
-
-    fetch(url, { redirect: "manual" }).then(function(response) {
-        if (response.status === 0) {
-            url = "http://lhscans.com/read-" +
-                foldername + "-raw-chapter-" + chno + ".html";
-
-            fetch(url, { redirect: "manual" }).then(function(response) {
-                if (response.status === 0) {
-                    let pages = GetAvailableChapters(url, foldername,
-                        function(error, pages) {
-                            // finding chapter no.
-                            let reg = new RegExp(/(.*)(:?-)(.*)(:?.html)/);
-                            let newChNo = pages[0].match(reg);
-                            console.log(newChNo);
-                            // Generating new path for last chapter!
-                            mpath = "./imgs/" + foldername + "/" +
-                                newChNo[3] + "/"
-                            url = "http://lhscans.com/" + pages[0];
-                            GetChapters(url, mpath);
-                        });
-                } else {
-                    GetChapters(url, mpath);
-                }
-            });
-        } else {
-            // Link is correct!
-            GetChapters(url, mpath);
-        }
-    });
-}
-
-
-// Main function for the getting manga pages!
-function GetChapters(url, mpath) {
-    request(url, function(error, response, body) {
-        if (response.statusCode == 200 && !error) {
-            // Creating the folders
-            mkdirp(mpath)
-                .catch(console.error);
-
-            ParsePage(body);
-            lhsDownloader(url, mpath);
-        } else {
-            console.log(error);
-        }
-        response.socket.end();
-    });
-}
-
-
 function lhsDownloader(url, path) {
     request(url, function(err, resp, body) {
         if (!err && resp.statusCode == 200) {
@@ -161,6 +100,66 @@ function getAvailableChapters(url, foldername, callback) {
                     callback && callback(null, url);
                 }
             });
+        }
+    });
+}
+
+// Main function for the getting manga pages!
+function getChapters(url, mpath) {
+    request(url, function(error, response, body) {
+        if (response.statusCode == 200 && !error) {
+            // Creating the folders
+            mkdirp(mpath)
+                .catch(console.error);
+
+            parsePage(body);
+            lhsDownloader(url, mpath);
+        } else {
+            console.log(error);
+        }
+        response.socket.end();
+    });
+}
+
+
+function lhs() {
+    // Getting form inputs.
+    let foldername = document.getElementById("fname").value;
+    let chno = document.getElementById("chno").value;
+
+    foldername = foldername.toLowerCase()
+    foldername = foldername.replace(/ /g, "-");
+    let mpath = "./imgs/" + foldername + "/" + chno + "/";
+
+    let url = "http://lhscans.com/read-" +
+        foldername + "-chapter-" + chno + ".html";
+
+    fetch(url, { redirect: "manual" }).then(function(response) {
+        if (response.status === 0) {
+            url = "http://lhscans.com/read-" +
+                foldername + "-raw-chapter-" + chno + ".html";
+
+            fetch(url, { redirect: "manual" }).then(function(response) {
+                if (response.status === 0) {
+                    let pages = getAvailableChapters(url, foldername,
+                        function(error, pages) {
+                            // finding chapter no.
+                            let reg = new RegExp(/(.*)(:?-)(.*)(:?.html)/);
+                            let newChNo = pages[0].match(reg);
+                            console.log(newChNo);
+                            // Generating new path for last chapter!
+                            mpath = "./imgs/" + foldername + "/" +
+                                newChNo[3] + "/"
+                            url = "http://lhscans.com/" + pages[0];
+                            getChapters(url, mpath);
+                        });
+                } else {
+                    getChapters(url, mpath);
+                }
+            });
+        } else {
+            // Link is correct!
+            getChapters(url, mpath);
         }
     });
 }
