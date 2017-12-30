@@ -51,9 +51,10 @@ function lhsDownloader(url, path) {
 function getAvailableChapters(url, foldername, callback) {
     let chapterList = []
     // mangaPage returns to the given manga's manga page.
-    let mangaPage = url.match(/(.*)(?:-chapter)/);
-    mangaPage = mangaPage[1] + ".html";
+    // in that page, all of the chapters are listed.
+    let mangaPage = url.replace("-chapter", "");
     mangaPage = mangaPage.replace("read", "manga");
+    mangaPage = mangaPage.replace(/-\d+/, "");
 
     fetch(mangaPage, { redirect: "manual" }).then(function(response) {
         if (response.status === 0) {
@@ -74,7 +75,6 @@ function getAvailableChapters(url, foldername, callback) {
                                 .each(function(index, element) {
                                     let info = ($(element).attr("href"));
                                     if (info) {
-                                        //(╯°□°）╯︵ ┻━┻
                                         chapterList.push(info);
                                     }
                                 });
@@ -143,13 +143,12 @@ function lhs() {
                 if (response.status === 0) {
                     let pages = getAvailableChapters(url, foldername,
                         function(error, pages) {
+                            console.log(pages[0]);
                             // finding chapter no.
-                            let reg = new RegExp(/(.*)(:?-)(.*)(:?.html)/);
-                            let newChNo = pages[0].match(reg);
-                            console.log(newChNo);
+                            let newChNo = pages[0].match(/\d+/);
                             // Generating new path for last chapter!
                             mpath = "./imgs/" + foldername + "/" +
-                                newChNo[3] + "/"
+                                newChNo + "/"
                             url = "http://lhscans.com/" + pages[0];
                             getChapters(url, mpath);
                         });
