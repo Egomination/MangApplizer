@@ -7,7 +7,7 @@ require("isomorphic-fetch");
 
 
 
-let list = []
+let list = [];
 
 // Takes body from the request. and array's name
 function parsePage(body, arr) {
@@ -33,7 +33,7 @@ function lhsDownloader(url, path) {
                 let file = fs.createWriteStream(path +
                     imgUrl.split('/').pop(-1).toLowerCase());
                 let downloader = http.get(imgUrl, function(response) {
-                    response.pipe(file)
+                    response.pipe(file);
                 });
             });
             // Dialog message after successful download operation.
@@ -49,7 +49,7 @@ function lhsDownloader(url, path) {
 
 // Return to the available chapters. If not, sends pop up msg.
 function getAvailableChapters(url, foldername, callback) {
-    let chapterList = []
+    let chapterList = [];
     // mangaPage returns to the given manga's manga page.
     // in that page, all of the chapters are listed.
     let mangaPage = url.replace("-chapter", "");
@@ -128,7 +128,7 @@ function lhs() {
     let chno = document.getElementById("chno").value;
 
     // FIXME: If user provides extra space, manga become invalid.
-    foldername = foldername.toLowerCase()
+    foldername = foldername.toLowerCase();
     foldername = foldername.replace(/ /g, "-");
     let mpath = "./imgs/" + foldername + "/" + chno + "/";
 
@@ -148,7 +148,7 @@ function lhs() {
                             let newChNo = pages[0].match(/\d+/);
                             // Generating new path for last chapter!
                             mpath = "./imgs/" + foldername + "/" +
-                                newChNo + "/"
+                                newChNo + "/";
                             url = "http://lhscans.com/" + pages[0];
                             getChapters(url, mpath);
                         });

@@ -9,11 +9,11 @@ function buttoKun() {
     nmanga = nmanga.toLowerCase()
     nmanga = nmanga.replace(/ /g, "-");
 
-    manga = hakuneko.base.createManga("Title", `/Manga/${nmanga}`);
+    let manga = hakuneko.base.createManga("Title", `/Manga/${nmanga}`);
     hakuneko.kissmanga.getChapters(manga, function(error, chapters) {
         if (!error) {
 
-            chapter = hakuneko.base.createChapter("[VOL]", "[NR]", "Title",
+            let chapter = hakuneko.base.createChapter("[VOL]", "[NR]", "Title",
                 "lang", "scanlator", `/Manga/${nmanga}`, []);
 
             // Returns to the given chapter no.
