@@ -4,6 +4,7 @@ const { ipcRenderer } = require("electron");
 const fs = require("fs-extra");
 let path;
 let arr = [];
+let arr2 = []; // Use for prev-next bug
 
 // Needed for Materialize Design
 $(document).ready(function() {
@@ -31,6 +32,7 @@ ipcRenderer.on("open-viewer-reply", (event, mangaPath) => {
             $("<option>").attr("value", `${item}`).append(`${item}`)
         );
     });
+    arr2 = arr;
     arr = [];
 });
 
@@ -56,3 +58,14 @@ ipcRenderer.on("open-chap-reply", (event, chapPath) => {
         });
 
 });
+
+// Page functions
+
+function nextPage(){
+
+    $('.carousel').carousel('next');
+}
+
+function prevPage(){
+    $('.carousel').carousel('prev');
+}

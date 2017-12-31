@@ -5,25 +5,11 @@
     <title>MangApplizer Viewer</title>
     <link rel="stylesheet" href="../../node_modules/materialize-css/dist/css/materialize.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-
-    <style type="text/css">
-        .carousel { 
-            min-height: 1200px;
-        }
-
-        .row {
-            margin-top: 20px;
-            margin-bottom: 10px;
-        }
-        
-        ::-webkit-scrollbar {
-            display: none;
-            }
-    </style>
+    <link rel="stylesheet" href="../css/viewer.css">
 </head>
 
 <body>
-    <div class="row">
+    <div class="row tabBar">
         <div class="col s8">
             <select id="chapterlist">
                 <option value="nul" disabled selected>Please select a chapter</option>
@@ -34,6 +20,14 @@
         </div>
     </div>
     <div id="chapView" class="carousel carousel-slider container">
+    </div>
+    <div class="row">
+        <div class="col s4 offset-s3">
+            <button id="viewerBtt" type="button" class="btn waves-effect waves-dark" onclick="prevPage()"><</button>
+        </div>
+        <div class="col s4">
+            <button id="viewerBtt" type="button" class="btn waves-effect waves-dark" onclick="nextPage()">></button>
+        </div>
     </div>
     <script type="text/javascript" src="../../node_modules/jquery/dist/jquery.min.js"></script>
     <script type="text/javascript" src="../../node_modules/hammerjs/hammer.min.js"></script>
