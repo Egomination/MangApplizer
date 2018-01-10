@@ -9,7 +9,7 @@ let arr2 = []; // Use for prev-next bug
 // Needed for Materialize Design
 $(document).ready(function() {
     $("select").material_select();
-    $(".carousel.carousel-slider").carousel({fullWidth: true, noWrap: true});
+    $(".carousel.carousel-slider").carousel({fullWidth: true, noWrap: false});
 });
 
 // Sorting function for an array of numbers
