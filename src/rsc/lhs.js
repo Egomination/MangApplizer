@@ -4,10 +4,10 @@ const jso = require("../jsoner");
 const fs = require("fs");
 
 class LHS {
-    constructor(title) {
+    constructor() {
         this.title = title;
         this.existingChapters = [];
-        this.existingManga = {};
+        this.existingManga = [];
         this.BASE_URL = "http://lhscans.com/";
     }
 
@@ -84,7 +84,8 @@ class LHS {
     }
 }
 
-let obj = new LHS('test');
+let obj = new LHS("test");
 // obj.getAllManga("http://lhscans.com/");
-obj.getChapters("A Un");
+obj.getChapters("G Men");
+obj.getPages("G Men", 150);
 // manga name : a-un
