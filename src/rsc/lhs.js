@@ -51,8 +51,18 @@ class LHS {
         name = name + " - Raw";
         let mangaUrl;
         this.getAvailableManga((error, data) => {
-            mangaUrl = data[name];
-            console.log(mangaUrl);
+            mangaUrl = data[name]["url"][0];
+            this.get(this.BASE_URL + mangaUrl, (response, body) => {
+                if (response.statusCode !== 200) return;
+                const $ = cheerio.load(body);
+                let info = $(body).find("td a b").each(function(index, element) {
+                    let data = $(element).text();
+                    // Will Probably Change After UI implementation.
+                    console.log(data);
+                });
+            });
+        });
+    }
         });
     }
 }
