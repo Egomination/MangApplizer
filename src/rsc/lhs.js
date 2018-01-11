@@ -46,10 +46,18 @@ class LHS{
 			callback(null, value);
 		});
 	}
+
+	getChapters(name){
+		name = name + " - Raw";
+		let mangaUrl;
+		this.getAvailableManga((error, data) => {
+			mangaUrl = data[name];
+			console.log(mangaUrl);
 		});
 	}
 }
 
 let obj = new LHS('test');
 // obj.getAllManga("http://lhscans.com/");
-obj.test();
+obj.getChapters("A Un");
+// manga name : a-un
