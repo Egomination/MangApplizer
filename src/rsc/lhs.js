@@ -35,7 +35,14 @@ class LHS{
 		});
 	}
 
-
+	getAvailableManga(){
+		fs.readFile("db.json", (error, data) => {
+			if(error) throw error;
+			let value = JSON.parse(data);
+			console.log(value["lhsmanga"]);
+		});
+	}
+}
 
 let obj = new LHS('test');
 // obj.getAllManga("http://lhscans.com/");
