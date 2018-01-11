@@ -7,7 +7,7 @@ class LHS{
 	constructor(title){
 		this.title = title;
 		this.existingChapters = [];
-		this.existingManga = [];
+		this.existingManga = {};
 		this.BASE_URL = "http://lhscans.com/";
 	}
 
@@ -22,16 +22,19 @@ class LHS{
 	 */
 	getAllManga(url){
 		// all pages -> available mangas in lhs
-		let test = [];
+		let value = [];
+		let keys = [];
 		url = this.BASE_URL + "manga-list.html?listType=allABC";
 		this.get(url, function(response, body){
 			if(response.statusCode !== 200) return;
 			const $ = cheerio.load(body);
 			let info = $(body).find("span a").each(function(index, element){
-				let data = $(element).attr("href");
-				test.push(data);
+				let key = $(element).text();
+				let val = $(element).attr("href");
+				keys.push(key);
+				value.push(val);
 			});
-			jso("lhsmanga", test);
+			jso(keys, value);
 		});
 	}
 
