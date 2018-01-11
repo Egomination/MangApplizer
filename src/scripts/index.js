@@ -2,10 +2,10 @@
 
 // Reqs.
 
-const fs = require('fs-extra');
-const mkdirp = require('mkdirp-promise');
-const http = require('http');
-const {ipcRenderer} = require('electron');
+const fs = require("fs");
+const mkdirp = require("mkdirp-promise");
+const http = require("http");
+const {ipcRenderer} = require("electron");
 const imgPath = "./imgs/";
 
 // Source Loader
@@ -17,7 +17,7 @@ $.getScript(kissmanga);
 
 // Needed for Materialize Design
 $(document).ready(function() {
-    $('select').material_select();
+    $("select").material_select();
     $(".dropdown-button").dropdown();
     $(".button-collapse").sideNav();
 });
@@ -26,12 +26,12 @@ $(document).ready(function() {
 function source(source) {
     if (source == "lhs") {
         //$("#content").load("./src/components/lhscans.html");
-        $('#butto-kun').attr('onclick', 'lhs()'); 
+        $("#butto-kun").attr("onclick", "lhs()"); 
         console.log("lhs")
         resetBtt();
     } else if (source == "km") {
         //$("#content").load("./src/components/kissmanga.html");
-        $('#butto-kun').attr('onclick', 'buttoKun()'); 
+        $("#butto-kun").attr("onclick", "buttoKun()"); 
         console.log("km")
         resetBtt();
     }
@@ -39,21 +39,21 @@ function source(source) {
 
 // Grey out the button if at least one input is missing
 (function() {
-    $('#butto-kun').prop('disabled', 'disabled');
+    $("#butto-kun").prop("disabled", "disabled");
     $("#downloadForm input").on("keyup change", function() {
 
         let empty = false;
-        $('#downloadForm input').each(function() {
+        $("#downloadForm input").each(function() {
             // Check if any input value is empty
-            if ($(this).val() == '') {
+            if ($(this).val() == "") {
                 empty = true;
             }
         });
 
         if (empty) {
-            $('#butto-kun').prop('disabled', 'disabled');
+            $("#butto-kun").prop("disabled", "disabled");
         } else {
-            $('#butto-kun').removeAttr('disabled');
+            $("#butto-kun").removeAttr("disabled");
         }
     });
 })();
@@ -61,8 +61,8 @@ function source(source) {
 // Disable download form if no source is selected
 (function() {
     $("#downloadForm :input").prop("disabled", true);
-    $('#selector').on('change', function() {
-        if ($('#selector option:selected').prop("disabled") == true){
+    $("#selector").on("change", function() {
+        if ($("#selector option:selected").prop("disabled") == true){
             $("#downloadForm :input").prop("disabled", true);
         } else {
             $("#downloadForm :input").prop("disabled", false);
@@ -74,7 +74,7 @@ function source(source) {
 function resetBtt() {
     $('form[name="downloadForm"]')
         .find(":input").val("");
-    $('#butto-kun').attr('disabled', 'disabled');
+    $("#butto-kun").attr("disabled", "disabled");
 }
 
 // Folder listing for Viewertab
@@ -91,8 +91,8 @@ try{
 // Grey out the View button if no manga is selected
 (function() {
     $("#vButto").prop("disabled", true);
-    $('#sourcelist').on('change', function() {
-        if ($('#sourcelist option:selected').prop("disabled") == true){
+    $("#sourcelist").on("change", function() {
+        if ($("#sourcelist option:selected").prop("disabled") == true){
             $("#vButto").prop("disabled", true);
         } else {
             $("#vButto").prop("disabled", false);
@@ -103,5 +103,5 @@ try{
 function openViewer(){
     let sourceVal = $("#sourcelist option:selected").val();
     let mangaPath = imgPath + sourceVal + "/";
-    ipcRenderer.send('open-viewer', 'viewer', mangaPath);
+    ipcRenderer.send("open-viewer", "viewer", mangaPath);
 }

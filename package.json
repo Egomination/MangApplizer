@@ -15,12 +15,10 @@
     "cheerio": "^1.0.0-rc.2",
     "electron": "^1.8.1",
     "es6-promise": "^4.2.2",
-    "fs-extra": "^4.0.3",
     "hakuneko": "^0.2.40",
     "isomorphic-fetch": "^2.2.1",
     "jquery": "^3.2.1",
     "materialize-css": "^0.100.2",
-    "mkdirp": "^0.5.1",
     "mkdirp-promise": "^5.0.1",
     "request": "^2.83.0"
   },

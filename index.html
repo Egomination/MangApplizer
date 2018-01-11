@@ -3,8 +3,9 @@
 
 <head>
     <title>MangApplizer</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+    <link rel="stylesheet" href="./node_modules/materialize-css/dist/css/materialize.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link href="https://fonts.googleapis.com/css?family=Fresca" rel="stylesheet">
     <link rel="stylesheet" href="./src/css/main.css">
 </head>
 
@@ -42,14 +43,15 @@
     </nav>
     <div id="Main" class="col s12">Test 0</div>
     <div id="Dow">
-        <div class="container bar">
+        <div class="container med">
+            <h2 class="title">Downloader</h2>
             <select name="myList" id="selector" required="required" onchange="source(this.value)">
                 <option value="nul" disabled selected>Please select a source</option>
                 <option value="lhs">LHScan</option>
                 <option value="km">KissManga</option>
             </select>
         </div>
-        <div class="container start">
+        <div class="container larg">
             <form name="downloadForm" id="downloadForm">
                 <div>
                     <div class="input-field">
@@ -65,7 +67,7 @@
                     <div class="col s3">
                         <button id="butto-kun" type="button" class="btn waves-effect waves-light" onclick="return false;">Download</button>
                     </div>
-                    <div class="col s1">
+                    <div class="col s2 offset-s7">
                             <button id="reset" type="button" class="btn waves-effect waves-dark" onclick="resetBtt()">Reset</button>
                     </div>
                 </div>
@@ -73,11 +75,13 @@
         </div>
     </div>
     <div id="View">
-        <h1>Viewer</h1>
-        <select id="sourcelist">
-            <option value="nul" disabled selected>Please select a manga</option>
-        </select>
-        <button id="vButto" type="button" class="btn waves-effect waves-light" onclick="openViewer()">View</button>
+        <div class="container med">
+            <h2 class="title">Viewer</h2>
+            <select id="sourcelist">
+                <option value="nul" disabled selected>Please select a manga</option>
+            </select>
+            <button id="vButto" type="button" class="btn waves-effect waves-light" onclick="openViewer()">View</button>
+        </div>
     </div>
     <script type="text/javascript" src="./node_modules/jquery/dist/jquery.min.js"></script>
     <script type="text/javascript" src="./node_modules/hammerjs/hammer.min.js"></script>
