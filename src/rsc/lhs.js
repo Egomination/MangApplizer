@@ -63,6 +63,23 @@ class LHS {
             });
         });
     }
+
+    getPages(url, chNo){
+        url = url + " - Raw";
+        this.getAvailableManga((error, data) => {
+            let pageUrl = data[url]["url"][0];
+            pageUrl = pageUrl.replace("manga", "read");
+            pageUrl = pageUrl.replace(".html", `-chapter-${chNo}.html`);
+            this.get(this.BASE_URL + pageUrl, (response, body) => {
+                if(response.statusCode !== 200) console.log('err');
+                const $ = cheerio.load(body);
+                let info = $(body).find(".chapter-content .chapter-img").each(function(index, element){
+                    let value = $(element).attr("src");
+                    // Dunno why but, it prints 3 undefineds.
+                    value = (!value) ? "" : value;
+                    console.log(value);
+                });
+            });
         });
     }
 }
