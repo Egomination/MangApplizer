@@ -38,11 +38,14 @@ class LHS{
 		});
 	}
 
-	getAvailableManga(){
+	getAvailableManga(callback){
 		fs.readFile("db.json", (error, data) => {
 			if(error) throw error;
 			let value = JSON.parse(data);
-			console.log(value["lhsmanga"]);
+			// console.log(value);
+			callback(null, value);
+		});
+	}
 		});
 	}
 }
