@@ -1,6 +1,7 @@
 const request = require("request");
 const cheerio = require("cheerio");
 const jso = require("../jsoner");
+const downloader = require("../downloader");
 const fs = require("fs");
 
 class LHS {
@@ -111,6 +112,7 @@ class LHS {
      */
     getPages(url, chNo) {
         url = url + " - Raw";
+        let pageUrls = []
         this.getAvailableManga((error, data) => {
             let pageUrl = data[url]["url"][0];
             pageUrl = pageUrl.replace("manga", "read");
@@ -121,8 +123,15 @@ class LHS {
                 let info = $(body).find(".chapter-content .chapter-img").each(function(index, element) {
                     let value = $(element).attr("src");
                     // Dunno why but, it prints 3 undefineds.
-                    value = (!value) ? "" : value;
-                    console.log(value);
+                    value = (!value) ? null : value;
+                    pageUrls.push(value);
+                });
+                // Removing Null values.
+                pageUrls = pageUrls.filter(i => i);
+                pageUrls.forEach(function(item) {
+                    let pUrl = item.trim();
+                    console.log(pUrl);
+                    downloader(pUrl, url);
                 });
             });
         });
