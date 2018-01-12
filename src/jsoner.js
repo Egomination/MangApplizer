@@ -14,4 +14,4 @@ module.exports = function(keys, value) {
     let wrable = JSON.stringify(obj);
     console.log(wrable);
     createDb(wrable);
-}
+};

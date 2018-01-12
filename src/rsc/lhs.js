@@ -30,7 +30,7 @@ class LHS {
         let keys = [];
         url = this.BASE_URL + "manga-list.html?listType=allABC";
         this.get(url, function(response, body) {
-            if (response.statusCode !== 200) return;
+            if (response.statusCode !== 200) { return };
             const $ = cheerio.load(body);
             let info = $(body).find("span a").each(function(index, element) {
                 let key = $(element).text();
@@ -48,7 +48,7 @@ class LHS {
      */
     getAvailableManga(callback) {
         fs.readFile("db.json", (error, data) => {
-            if (error) throw error;
+            if (error) { throw error };
             let value = JSON.parse(data);
             // console.log(value);
             callback(null, value);
@@ -63,7 +63,7 @@ class LHS {
     getMangaInfo(name /*, callback*/ ) {
         name = name + " - Raw";
         let mangaUrl;
-        let infodump = []
+        let infodump = [];
         this.getAvailableManga((error, data) => {
             mangaUrl = data[name]["url"][0];
             this.get(this.BASE_URL + mangaUrl, (response, body) => {
@@ -74,7 +74,7 @@ class LHS {
                     infodump[i] = data;
                     i += 1;
                 });
-                let desc = $(body).find("div[class=row] p").text()
+                let desc = $(body).find("div[class=row] p").text();
                 desc = desc.split("!");
                 desc = desc.pop(0);
                 // callback(null, infodump);
@@ -94,7 +94,7 @@ class LHS {
         this.getAvailableManga((error, data) => {
             mangaUrl = data[name]["url"][0];
             this.get(this.BASE_URL + mangaUrl, (response, body) => {
-                if (response.statusCode !== 200) return;
+                if (response.statusCode !== 200) { return };
                 const $ = cheerio.load(body);
                 let info = $(body).find("td a b").each(function(index, element) {
                     let data = $(element).text();
@@ -118,7 +118,7 @@ class LHS {
             pageUrl = pageUrl.replace("manga", "read");
             pageUrl = pageUrl.replace(".html", `-chapter-${chNo}.html`);
             this.get(this.BASE_URL + pageUrl, (response, body) => {
-                if (response.statusCode !== 200) console.log('err');
+                if (response.statusCode !== 200) { console.log('err'); }
                 const $ = cheerio.load(body);
                 let info = $(body).find(".chapter-content .chapter-img").each(function(index, element) {
                     let value = $(element).attr("src");
@@ -127,7 +127,7 @@ class LHS {
                     pageUrls.push(value);
                 });
                 // Removing Null values.
-                pageUrls = pageUrls.filter(i => i);
+                pageUrls = pageUrls.filter((i) => i);
                 pageUrls.forEach(function(item) {
                     let pUrl = item.trim();
                     console.log(pUrl);
