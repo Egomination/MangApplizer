@@ -30,7 +30,7 @@ class LHS {
         let keys = [];
         url = this.BASE_URL + "manga-list.html?listType=allABC";
         this.get(url, function(response, body) {
-            if (response.statusCode !== 200) { return };
+            if (response.statusCode !== 200) { return; }
             const $ = cheerio.load(body);
             let info = $(body).find("span a").each(function(index, element) {
                 let key = $(element).text();
@@ -48,7 +48,7 @@ class LHS {
      */
     getAvailableManga(callback) {
         fs.readFile("db.json", (error, data) => {
-            if (error) { throw error };
+            if (error) { throw error; }
             let value = JSON.parse(data);
             // console.log(value);
             callback(null, value);
@@ -94,7 +94,7 @@ class LHS {
         this.getAvailableManga((error, data) => {
             mangaUrl = data[name]["url"][0];
             this.get(this.BASE_URL + mangaUrl, (response, body) => {
-                if (response.statusCode !== 200) { return };
+                if (response.statusCode !== 200) { return; }
                 const $ = cheerio.load(body);
                 let info = $(body).find("td a b").each(function(index, element) {
                     let data = $(element).text();
@@ -112,7 +112,7 @@ class LHS {
      */
     getPages(url, chNo) {
         url = url + " - Raw";
-        let pageUrls = []
+        let pageUrls = [];
         this.getAvailableManga((error, data) => {
             let pageUrl = data[url]["url"][0];
             pageUrl = pageUrl.replace("manga", "read");
