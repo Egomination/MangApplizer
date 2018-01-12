@@ -5,7 +5,7 @@ const downloader = require("../downloader");
 const fs = require("fs");
 
 class LHS {
-    constructor() {
+    constructor(title) {
         this.title = title;
         this.existingChapters = [];
         this.existingManga = [];
