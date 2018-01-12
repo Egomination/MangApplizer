@@ -8,6 +8,7 @@ function createDb(value) {
 module.exports = function(keys, value) {
     let obj = {};
     let key = keys;
+    let i;
     for (i = 0; i < keys.length; i++) {
         obj[key[i]] = { "url": [value[i]] };
     }
