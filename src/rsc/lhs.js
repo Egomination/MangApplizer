@@ -55,6 +55,35 @@ class LHS {
     }
 
     /**
+     * Finds manga information such as, Genre(s), Author(s)
+     * Can be used as an utility for Search method.
+     * @name: Name of the Manga
+     */
+    getMangaInfo(name /*, callback*/ ) {
+        name = name + " - Raw";
+        let mangaUrl;
+        let infodump = []
+        this.getAvailableManga((error, data) => {
+            mangaUrl = data[name]["url"][0];
+            this.get(this.BASE_URL + mangaUrl, (response, body) => {
+                const $ = cheerio.load(body);
+                let i = 0;
+                let info = $(body).find(".manga-info li").each(function(indx, elem) {
+                    var data = $(elem).text();
+                    infodump[i] = data;
+                    i += 1;
+                });
+                let desc = $(body).find("div[class=row] p").text()
+                desc = desc.split("!");
+                desc = desc.pop(0);
+                // callback(null, infodump);
+                console.log(infodump);
+                console.log(desc);
+            });
+        });
+    }
+
+    /**
      * @name  = Name of the Manga
      *  Finds all of the chapters of given manga's
      */
