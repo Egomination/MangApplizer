@@ -126,12 +126,15 @@ class LHS {
                     value = (!value) ? null : value;
                     pageUrls.push(value);
                 });
+                let path = downloader.createFolders(url, chNo);
                 // Removing Null values.
                 pageUrls = pageUrls.filter((i) => i);
                 pageUrls.forEach(function(item) {
                     let pUrl = item.trim();
-                    console.log(pUrl);
-                    downloader(pUrl, url);
+                    // Waiting folder creation.
+                    setTimeout(function() {
+                        downloader.downloader(pUrl, path);
+                    }, 2000);
                 });
             });
         });
