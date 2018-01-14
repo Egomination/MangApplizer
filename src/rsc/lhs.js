@@ -14,6 +14,8 @@ class LHS {
 
     /**
      * Opens a connection, and passes the response and body of the html.
+     * @param  String   url
+     * @param  Function callback
      */
     get(url, callback) {
         request(url, function(error, response, body) {
@@ -45,6 +47,7 @@ class LHS {
     /**
      *  It's for reading values from the database.
      *  Passes them into the caller function.
+     *  @param Function callback
      */
     getAvailableManga(callback) {
         fs.readFile("db.json", (error, data) => {
@@ -58,7 +61,7 @@ class LHS {
     /**
      * Finds manga information such as, Genre(s), Author(s)
      * Can be used as an utility for Search method.
-     * @name: Name of the Manga
+     * @param String name
      */
     getMangaInfo(name /*, callback*/ ) {
         name = name + " - Raw";
@@ -85,8 +88,8 @@ class LHS {
     }
 
     /**
-     * @name  = Name of the Manga
      *  Finds all of the chapters of given manga's
+     *  @param String name
      */
     getChapters(name) {
         name = name + " - Raw";
@@ -107,8 +110,8 @@ class LHS {
 
     /**
      * Finds the page links of the looked chapter.
-     * @url: The name of the manga. G Men *Case sensitive
-     * @chNo: Chapter No.
+     * @param String name The name of the manga. G Men *Case sensitive
+     * @param String chNo
      */
     getPages(url, chNo) {
         url = url + " - Raw";
