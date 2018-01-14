@@ -24,11 +24,11 @@ class LHS {
     /**
      * Creates the db.json with all available mangas in LHScans.com
      */
-    getAllManga(url) {
+    getAllManga() {
         // all pages -> available mangas in lhs
         let value = [];
         let keys = [];
-        url = this.BASE_URL + "manga-list.html?listType=allABC";
+        let url = this.BASE_URL + "manga-list.html?listType=allABC";
         this.get(url, function(response, body) {
             if (response.statusCode !== 200) { return; }
             const $ = cheerio.load(body);
@@ -142,7 +142,7 @@ class LHS {
 }
 
 let obj = new LHS("test");
-// obj.getAllManga("http://lhscans.com/");
+// obj.getAllManga();
 obj.getChapters("G Men");
 obj.getPages("G Men", 150);
 // manga name : a-un
