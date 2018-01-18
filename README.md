@@ -11,3 +11,7 @@
 
 - Source change between kissmanga and lhscans. `(Issue #24)`.
 - Prev-Next button in viewer. Right now we are using wrap to fix this.
+
+# Additional Files
+- [Ready to Use db](https://www.dropbox.com/s/kybo62rd2li8e7o/test.sqlite3?dl=0)
+    Please put it inside `src/rsc/` folder.
