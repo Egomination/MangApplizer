@@ -110,7 +110,7 @@ class LHS {
         let dbObj = new Database()
         url = url + " - Raw";
         let pageUrls = [];
-        dbObj.returnUrl((error, data) => {
+        dbObj.returnUrl(url, (error, data) => {
             let pageUrl = data;
             pageUrl = pageUrl.replace("manga", "read");
             pageUrl = pageUrl.replace(".html", `-chapter-${chNo}.html`);
