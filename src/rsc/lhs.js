@@ -1,10 +1,14 @@
 const request = require("request");
 const cheerio = require("cheerio");
-const jso = require("../jsoner");
+const downloader = require("../downloader");
+const Database = require("../db");
 const fs = require("fs");
 
 class LHS {
-    constructor() {
+    constructor(title) {
+        // for now create db in ctor.
+        // let db = new Database();
+        // db.createDB();
         this.title = title;
         this.existingChapters = [];
         this.existingManga = [];
@@ -13,6 +17,8 @@ class LHS {
 
     /**
      * Opens a connection, and passes the response and body of the html.
+     * @param  {String}   url
+     * @param  {Function} callback
      */
     get(url, callback) {
         request(url, function(error, response, body) {
@@ -21,50 +27,71 @@ class LHS {
     }
 
     /**
-     * Creates the db.json with all available mangas in LHScans.com
+     * Generates the database. If database already present, checks if there is
+     * any updates on web-sites database. If there is, updates local db.
      */
-    getAllManga(url) {
+    getAllMangaAndUpdate() {
         // all pages -> available mangas in lhs
+        let dbObj = new Database()
         let value = [];
         let keys = [];
-        url = this.BASE_URL + "manga-list.html?listType=allABC";
+        let url = this.BASE_URL + "manga-list.html?listType=allABC";
         this.get(url, function(response, body) {
-            if (response.statusCode !== 200) return;
+            if (response.statusCode !== 200) { return; }
             const $ = cheerio.load(body);
             let info = $(body).find("span a").each(function(index, element) {
                 let key = $(element).text();
                 let val = $(element).attr("href");
                 keys.push(key);
                 value.push(val);
+                dbObj.updateWholeDB(key, val);
             });
-            jso(keys, value);
         });
     }
 
     /**
-     *  It's for reading values from the database.
-     *  Passes them into the caller function.
+     * Finds manga information such as, Genre(s), Author(s)
+     * Can be used as an utility for Search method.
+     * @param {String} name
      */
-    getAvailableManga(callback) {
-        fs.readFile("db.json", (error, data) => {
-            if (error) throw error;
-            let value = JSON.parse(data);
-            // console.log(value);
-            callback(null, value);
+    getMangaInfo(name /*, callback*/ ) {
+        name = name + " - Raw";
+        let dbObj = new Database();
+        let infodump = [];
+        dbObj.returnUrl(name, (error, data) => {
+            console.log(data);
+            this.get(this.BASE_URL + data, (response, body) => {
+                const $ = cheerio.load(body);
+                let i = 0;
+                let info = $(body).find(".manga-info li").each(function(indx, elem) {
+                    var data = $(elem).text();
+                    infodump[i] = data;
+                    i += 1;
+                });
+                let desc = $(body).find("div[class=row] p").text();
+                desc = desc.split("!");
+                desc = desc.pop(0);
+                // callback(null, infodump);
+                // FIXME: each element need to be key, value pair.
+                // console.log(infodump);
+                // console.log(desc);
+                dbObj.insertAdditionalInfo(name, infodump, desc);
+                dbObj.getInfo(name);
+            });
         });
     }
 
     /**
-     * @name  = Name of the Manga
      *  Finds all of the chapters of given manga's
+     *  @param {String} name
      */
     getChapters(name) {
+        let dbObj = new Database()
+        let obj = new database();
         name = name + " - Raw";
-        let mangaUrl;
-        this.getAvailableManga((error, data) => {
-            mangaUrl = data[name]["url"][0];
-            this.get(this.BASE_URL + mangaUrl, (response, body) => {
-                if (response.statusCode !== 200) return;
+        dbObj.returnUrl((error, data) => {
+            this.get(this.BASE_URL + data, (response, body) => {
+                if (response.statusCode !== 200) { return; }
                 const $ = cheerio.load(body);
                 let info = $(body).find("td a b").each(function(index, element) {
                     let data = $(element).text();
@@ -77,23 +104,35 @@ class LHS {
 
     /**
      * Finds the page links of the looked chapter.
-     * @url: The name of the manga. G Men *Case sensitive
-     * @chNo: Chapter No.
+     * @param {String} name The name of the manga. G Men *Case sensitive
+     * @param {String} chNo
      */
     getPages(url, chNo) {
+        let dbObj = new Database()
         url = url + " - Raw";
-        this.getAvailableManga((error, data) => {
-            let pageUrl = data[url]["url"][0];
+        let pageUrls = [];
+        dbObj.returnUrl((error, data) => {
+            let pageUrl = data;
             pageUrl = pageUrl.replace("manga", "read");
             pageUrl = pageUrl.replace(".html", `-chapter-${chNo}.html`);
             this.get(this.BASE_URL + pageUrl, (response, body) => {
-                if (response.statusCode !== 200) console.log('err');
+                if (response.statusCode !== 200) { console.log('err'); }
                 const $ = cheerio.load(body);
                 let info = $(body).find(".chapter-content .chapter-img").each(function(index, element) {
                     let value = $(element).attr("src");
                     // Dunno why but, it prints 3 undefineds.
-                    value = (!value) ? "" : value;
-                    console.log(value);
+                    value = (!value) ? null : value;
+                    pageUrls.push(value);
+                });
+                let path = downloader.createFolders(url, chNo);
+                // Removing Null values.
+                pageUrls = pageUrls.filter((i) => i);
+                pageUrls.forEach(function(item) {
+                    let pUrl = item.trim();
+                    // Waiting folder creation.
+                    setTimeout(function() {
+                        downloader.downloader(pUrl, path);
+                    }, 2000);
                 });
             });
         });
@@ -101,7 +140,9 @@ class LHS {
 }
 
 let obj = new LHS("test");
-// obj.getAllManga("http://lhscans.com/");
-obj.getChapters("G Men");
-obj.getPages("G Men", 150);
+// obj.getAllManga();
+// obj.getChapters("G Men");
+// obj.getPages("G Men", 150);
+obj.getMangaInfo("Archimedes no Taisen");
+// obj.updateDB();
 // manga name : a-un
