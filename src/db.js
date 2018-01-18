@@ -119,4 +119,4 @@ module.exports = class Database {
         });
         db.close();
     }
-}
+};

@@ -87,9 +87,8 @@ class LHS {
      */
     getChapters(name) {
         let dbObj = new Database()
-        let obj = new database();
         name = name + " - Raw";
-        dbObj.returnUrl((error, data) => {
+        dbObj.returnUrl(name, (error, data) => {
             this.get(this.BASE_URL + data, (response, body) => {
                 if (response.statusCode !== 200) { return; }
                 const $ = cheerio.load(body);
