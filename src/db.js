@@ -137,4 +137,15 @@ module.exports = class Database {
         });
         db.close();
     }
+
+    getAllMangaNames(callback) {
+        let names = [];
+        let db = new sqlite3.Database("test.sqlite3");
+
+        db.serialize(function() {
+            db.each("SELECT Name from lhs", function(error, data) {
+                callback(null, data.Name);
+            });
+        });
+    }
 };
