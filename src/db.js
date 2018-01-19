@@ -47,12 +47,30 @@ module.exports = class Database {
     /**
      * Prints all of the available information about searched manga
      * @param  {String} name Name of the searched manga.
+     * @param  {Array} info     Array that contains all of the information but description
+     * @param  {String} descrip Description of the manga
+     * @param {Function} callback Callback function returns error code and data
      */
-    getInfo(name) {
+    getInfo(name, info, desc, callback) {
         let db = new sqlite3.Database("test.sqlite3");
+        let pairs = [];
+        info.forEach(function(item) {
+            let val = item.split(":")[1];
+            val = val.trim();
+            pairs.push(val);
+        });
+
         db.serialize(function() {
-            db.get(`SELECT * FROM lhs WHERE Name="${name}"`, function(err, data) {
-                console.log(data);
+            db.get(`SELECT Url, Author, Genre, Status, ReleasedMag, Description \
+             		FROM lhs WHERE Name="${name}"`, function(err, data) {
+                // Checks, if update necessary or not.
+                if (data.Author !== pairs[2] || data.Genre !== pairs[3] ||
+                    data.Status !== pairs[4] || data.ReleasedMag !== pairs[5] ||
+                    data.Description !== desc) {
+                    callback(401, data);
+                } else {
+                    callback(null, data);
+                }
             });
         });
         db.close();

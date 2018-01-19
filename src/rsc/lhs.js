@@ -71,12 +71,14 @@ class LHS {
                 let desc = $(body).find("div[class=row] p").text();
                 desc = desc.split("!");
                 desc = desc.pop(0);
-                // callback(null, infodump);
-                // FIXME: each element need to be key, value pair.
-                // console.log(infodump);
-                // console.log(desc);
-                dbObj.insertAdditionalInfo(name, infodump, desc);
-                dbObj.getInfo(name);
+                // infodump.push(desc); FIXME: REFACTOR!
+                dbObj.getInfo(name, infodump, desc, (error, data) => {
+                    if (error === 401) {
+                        dbObj.insertAdditionalInfo(name, infodump, desc);
+                    } else {
+                        console.log(data);
+                    }
+                });
             });
         });
     }
