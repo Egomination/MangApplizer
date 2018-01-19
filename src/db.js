@@ -36,7 +36,7 @@ module.exports = class Database {
     insertIntoDB(key, value) {
         let db = new sqlite3.Database("test.sqlite3");
         db.parallelize(function() {
-            setTimeout(function() {}, 6000);
+            setTimeout(function() { console.log("Wait Complated!"); }, 6000);
             let stmnt = db.prepare("INSERT INTO lhs VALUES (?, ?, ?, ?, ?, ?, ?)");
             stmnt.run(key, value, null, null, null, null, null);
             stmnt.finalize();
@@ -139,6 +139,10 @@ module.exports = class Database {
         db.close();
     }
 
+    /**
+     * Returns to name of the mangas
+     * @param  {Function} callback
+     */
     getAllMangaNames(callback) {
         let names = [];
         let db = new sqlite3.Database("test.sqlite3");

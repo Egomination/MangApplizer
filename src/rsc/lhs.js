@@ -22,7 +22,7 @@ class LHS {
      */
     get(url, callback) {
         request(url, function(error, response, body) {
-                // if error.code == "ENOTFOUND" then no internet connection available
+            // if error.code == "ENOTFOUND" then no internet connection available
             callback(response, body);
         });
     }
