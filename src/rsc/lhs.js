@@ -22,6 +22,7 @@ class LHS {
      */
     get(url, callback) {
         request(url, function(error, response, body) {
+                // if error.code == "ENOTFOUND" then no internet connection available
             callback(response, body);
         });
     }
@@ -32,7 +33,7 @@ class LHS {
      */
     getAllMangaAndUpdate() {
         // all pages -> available mangas in lhs
-        let dbObj = new Database()
+        let dbObj = new Database();
         let value = [];
         let keys = [];
         let url = this.BASE_URL + "manga-list.html?listType=allABC";

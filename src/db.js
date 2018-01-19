@@ -85,8 +85,8 @@ module.exports = class Database {
     returnUrl(name, callback) {
         let db = new sqlite3.Database("test.sqlite3");
         db.serialize(function() {
-            db.get(`SELECT Url FROM lhs WHERE Name="${name}"`, function(err, row) {
-                callback(null, row.Url);
+            db.get(`SELECT Url FROM lhs WHERE Name="${name}"`, function(err, data) {
+                callback(null, data.Url);
             });
         });
         db.close();
@@ -103,6 +103,7 @@ module.exports = class Database {
         let pairs = [];
         info.forEach(function(item) {
             let val = item.split(":")[1];
+            val = val.trim();
             pairs.push(val);
         });
         db.serialize(function() {
