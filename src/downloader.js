@@ -14,16 +14,20 @@ function createFolders(name, chNo) {
     return filePath;
 }
 
-function downloader(url, path) {
-    let chapters = url.split("/").pop(-1).toLowerCase();
-    let chapNumbers = path + chapters;
-    let file = fs.createWriteStream(chapNumbers);
-    http.get(url, function(response) {
-        response.pipe(file);
-    });
+module.exports = function(url, name, chNo) {
+    url = url.filter((i) => i);
+    let path = createFolders(name, chNo);
+    // Waiting folder creation
+    setTimeout(function() {
+        url.forEach(function(item) {
+            item = item.trim();
+            console.log(item);
+            let chapters = item.split("/").pop(-1).toLowerCase();
+            let chapNumbers = path + chapters;
+            let file = fs.createWriteStream(chapNumbers);
+            http.get(item, function(response) {
+                response.pipe(file);
+            });
+        });
+    }, 2000);
 }
-
-module.exports = {
-    downloader: downloader,
-    createFolders: createFolders
-};

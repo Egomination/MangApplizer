@@ -89,7 +89,7 @@ class LHS {
      *  @param {String} name
      */
     getChapters(name) {
-        let dbObj = new Database()
+        let dbObj = new Database();
         name = name + " - Raw";
         dbObj.returnUrl(name, (error, data) => {
             this.get(this.BASE_URL + data, (response, body) => {
@@ -126,16 +126,7 @@ class LHS {
                     value = (!value) ? null : value;
                     pageUrls.push(value);
                 });
-                let path = downloader.createFolders(url, chNo);
-                // Removing Null values.
-                pageUrls = pageUrls.filter((i) => i);
-                pageUrls.forEach(function(item) {
-                    let pUrl = item.trim();
-                    // Waiting folder creation.
-                    setTimeout(function() {
-                        downloader.downloader(pUrl, path);
-                    }, 2000);
-                });
+                downloader(pageUrls, url, chNo);
             });
         });
     }
