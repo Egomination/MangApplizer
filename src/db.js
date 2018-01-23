@@ -48,14 +48,15 @@ module.exports = class Database {
      * Prints all of the available information about searched manga
      * @param  {String} name Name of the searched manga.
      * @param  {Array} info     Array that contains all of the information but description
-     * @param  {String} descrip Description of the manga
      * @param {Function} callback Callback function returns error code and data
      */
-    getInfo(name, info, desc, callback) {
+    getInfo(name, info, callback) {
         let db = new sqlite3.Database("test.sqlite3");
+        let desc = info.pop();
         let pairs = [];
         info.forEach(function(item) {
             let val = item.split(":")[1];
+            console.log(val);
             val = val.trim();
             pairs.push(val);
         });
@@ -86,7 +87,7 @@ module.exports = class Database {
         let db = new sqlite3.Database("test.sqlite3");
         db.serialize(function() {
             db.get(`SELECT Url FROM lhs WHERE Name="${name}"`, function(err, data) {
-                callback(null, data.Url);
+                (data) ? callback(null, data.Url) : callback(404, null);
             });
         });
         db.close();
@@ -98,8 +99,9 @@ module.exports = class Database {
      * @param  {Array} info     Array that contains all of the information but description
      * @param  {String} descrip Description of the manga
      */
-    insertAdditionalInfo(name, info, descrip) {
+    insertAdditionalInfo(name, info) {
         let db = new sqlite3.Database("test.sqlite3");
+        let desc = info.pop();
         let pairs = [];
         info.forEach(function(item) {
             let val = item.split(":")[1];
@@ -114,7 +116,7 @@ module.exports = class Database {
                 $genre: pairs[3],
                 $status: pairs[4],
                 $mag: pairs[5],
-                $desc: descrip
+                $desc: desc
             });
         });
         db.close();
