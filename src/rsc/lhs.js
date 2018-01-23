@@ -5,13 +5,10 @@ const Database = require("../db");
 const fs = require("fs");
 
 class LHS {
-    constructor(title) {
+    constructor() {
         // for now create db in ctor.
         // let db = new Database();
         // db.createDB();
-        this.title = title;
-        this.existingChapters = [];
-        this.existingManga = [];
         this.BASE_URL = "http://lhscans.com/";
     }
 
