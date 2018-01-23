@@ -13,14 +13,14 @@ module.exports = class Database {
         console.log("Generating Tables!");
         db.serialize(function() {
             db.run("CREATE TABLE IF NOT EXISTS lhs (\
-				Name TEXT NOT NULL,\
-				Url TEXT NOT NULL,\
-				Author TEXT,\
-				Genre TEXT,\
-				Status TEXT,\
-				ReleasedMag TEXT,\
-				View INTEGER,\
-				Description TEXT)");
+                Name TEXT NOT NULL,\
+                Url TEXT NOT NULL,\
+                Author TEXT,\
+                Genre TEXT,\
+                Status TEXT,\
+                ReleasedMag TEXT,\
+                View INTEGER,\
+                Description TEXT)");
 
             console.log("Database is Ready!");
         });
@@ -63,7 +63,7 @@ module.exports = class Database {
 
         db.serialize(function() {
             db.get(`SELECT Url, Author, Genre, Status, ReleasedMag, Description \
-             		FROM lhs WHERE Name="${name}"`, function(err, data) {
+                    FROM lhs WHERE Name="${name}"`, function(err, data) {
                 // Checks, if update necessary or not.
                 if (data.Author !== pairs[2] || data.Genre !== pairs[3] ||
                     data.Status !== pairs[4] || data.ReleasedMag !== pairs[5] ||
@@ -87,7 +87,7 @@ module.exports = class Database {
         let db = new sqlite3.Database("test.sqlite3");
         db.serialize(function() {
             db.get(`SELECT Url FROM lhs WHERE Name="${name}"`, function(err, data) {
-                (data) ? callback(null, data.Url) : callback(404, null);
+                (data) ? callback(null, data.Url): callback(404, null);
             });
         });
         db.close();
@@ -110,7 +110,7 @@ module.exports = class Database {
         });
         db.serialize(function() {
             db.run("UPDATE lhs SET Author=$author, Genre=$genre, Status=$status,\
-					ReleasedMag=$mag, Description=$desc WHERE Name=$name", {
+                    ReleasedMag=$mag, Description=$desc WHERE Name=$name", {
                 $name: name,
                 $author: pairs[2],
                 $genre: pairs[3],
@@ -154,5 +154,6 @@ module.exports = class Database {
                 callback(null, data.Name);
             });
         });
+        db.close();
     }
 };

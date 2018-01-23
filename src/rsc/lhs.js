@@ -139,5 +139,3 @@ let obj = new LHS();
 obj.getMangaInfo("Archimedes no Taisen", (error, data) => {
     console.log(data);
 });
-// obj.updateDB();
-// manga name : a-un
