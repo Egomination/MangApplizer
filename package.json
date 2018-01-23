@@ -1,6 +1,6 @@
 {
   "name": "MangApplizer",
-  "version": "0.5.7",
+  "version": "0.5.8",
   "description": "Simple manga downloader/viewer",
   "main": "main.js",
   "scripts": {
@@ -14,9 +14,9 @@
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
     "electron": "^1.8.1",
-    "es6-promise": "^4.2.2",
+    "es6-promise": "^4.2.4",
     "isomorphic-fetch": "^2.2.1",
-    "jquery": "^3.2.1",
+    "jquery": "^3.3.1",
     "materialize-css": "^0.100.2",
     "mkdirp-promise": "^5.0.1",
     "request": "^2.83.0",
