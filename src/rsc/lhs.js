@@ -54,33 +54,36 @@ class LHS {
      * Finds manga information such as, Genre(s), Author(s)
      * Can be used as an utility for Search method.
      * @param {String} name
+     * @param {Function} callback
      */
-    getMangaInfo(name /*, callback*/ ) {
+    getMangaInfo(name, callback) {
         name = name + " - Raw";
         let dbObj = new Database();
         let infodump = [];
         dbObj.returnUrl(name, (error, data) => {
-            console.log(data);
-            this.get(this.BASE_URL + data, (response, body) => {
-                const $ = cheerio.load(body);
-                let i = 0;
-                let info = $(body).find(".manga-info li").each(function(indx, elem) {
-                    var data = $(elem).text();
-                    infodump[i] = data;
-                    i += 1;
+            if (error === 404) { console.log("Manga is not found!"); } else {
+                this.get(this.BASE_URL + data, (response, body) => {
+                    const $ = cheerio.load(body);
+                    let i = 0;
+                    let info = $(body).find(".manga-info li").each(function(indx, elem) {
+                        var data = $(elem).text();
+                        infodump[i] = data;
+                        i += 1;
+                    });
+                    let desc = $(body).find("div[class=row] p").text();
+                    desc = desc.split("!");
+                    desc = desc.pop(0);
+                    infodump.push(desc);
+                    dbObj.getInfo(name, infodump, (error, data) => {
+                        if (error === 401) {
+                            dbObj.insertAdditionalInfo(name, infodump);
+                        } else {
+                            console.log(data);
+                            callback(null, data);
+                        }
+                    });
                 });
-                let desc = $(body).find("div[class=row] p").text();
-                desc = desc.split("!");
-                desc = desc.pop(0);
-                // infodump.push(desc); FIXME: REFACTOR!
-                dbObj.getInfo(name, infodump, desc, (error, data) => {
-                    if (error === 401) {
-                        dbObj.insertAdditionalInfo(name, infodump, desc);
-                    } else {
-                        console.log(data);
-                    }
-                });
-            });
+            }
         });
     }
 
@@ -132,10 +135,12 @@ class LHS {
     }
 }
 
-let obj = new LHS("test");
+let obj = new LHS();
 // obj.getAllManga();
 // obj.getChapters("G Men");
 // obj.getPages("G Men", 150);
-obj.getMangaInfo("Archimedes no Taisen");
+obj.getMangaInfo("Archimedes no Taisen", (error, data) => {
+    console.log(data);
+});
 // obj.updateDB();
 // manga name : a-un
