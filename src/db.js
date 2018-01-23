@@ -47,7 +47,7 @@ module.exports = class Database {
     /**
      * Prints all of the available information about searched manga
      * @param  {String} name Name of the searched manga.
-     * @param  {Array} info     Array that contains all of the information but description
+     * @param  {Array} info     Array that contains all of the information
      * @param {Function} callback Callback function returns error code and data
      */
     getInfo(name, info, callback) {
@@ -96,7 +96,7 @@ module.exports = class Database {
     /**
      * Inserts additional information like Genre(s), Author into database
      * @param  {String} name    Name of the manga
-     * @param  {Array} info     Array that contains all of the information but description
+     * @param  {Array} info     Array that contains all of the information.
      * @param  {String} descrip Description of the manga
      */
     insertAdditionalInfo(name, info) {
