@@ -1,4 +1,6 @@
 /* Check out the winston.js for logger module*/
+// TODO: Add time stamps
+// TODO: Add definitions for custom error codes Like 404
 const json = require("./json");
 module.exports = class Logger {
     constructor() {
@@ -72,7 +74,7 @@ module.exports = class Logger {
             console.log(Logger.name);
             console.log(colours.BgBlue + Manga + ": " + colours.BgYellow + Chapter +
                 colours.Reset + " from " + colours.BgRed + Source + colours.Reset);
-            // this.saveAsJson(Manga, Chapter, Source);
+            this.saveAsJson(Manga, Chapter, Source);
         });
     }
 

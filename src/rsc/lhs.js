@@ -85,15 +85,17 @@ class LHS {
      */
     getMangaInfo(name, callback) {
         name = name + " - Raw";
+        const log = new Logger();
         const dbObj = new Database();
         dbObj.getInfo(name, (error, data) => {
-            if (error) { console.log("Manga could not found!"); } else {
+            if (error) { log.Error(error, "Manga could not found"); } else {
                 if (data.Description === null) {
                     console.log("Downloading Additional Information!");
                     name = name.split(" - Raw");
                     // TODO: make new data usable.
                     this.updateAdditionalInfo(name[0]);
                 }
+                log.Warning("","Testing the given error in another file");
                 callback(null, data);
             }
         });
@@ -153,12 +155,12 @@ class LHS {
 
 const obj = new LHS();
 // // obj.getAllMangaAndUpdate();
-// obj.getMangaInfo("Barakamon", (error, data) => {
-//     console.log(data);
-// });
+obj.getMangaInfo("Barakamon", (error, data) => {
+    console.log(data);
+});
 // obj.updateAdditionalInfo("Shokugeki no Souma");
 // obj.getChapters("G Men");
-obj.getPages("G Men", 150);
+// obj.getPages("G Men", 150);
 // obj.getMangaInfo("G Men", (error, data) => {
 //     console.log(data);
 // });
