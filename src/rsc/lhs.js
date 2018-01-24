@@ -78,6 +78,28 @@ class LHS {
     }
 
     /**
+     * Returns to the manga information-> Author, Genre, Status Released Magazine, Description
+     * @param  {String}   name     Name of the Manga
+     * @param  {Function} callback Data which contains info
+     * @returns {void}
+     */
+    getMangaInfo(name, callback) {
+        name = name + " - Raw";
+        const dbObj = new Database();
+        dbObj.getInfo(name, (error, data) => {
+            if (error) { console.log("Manga could not found!"); } else {
+                if (data.Description === null) {
+                    console.log("Downloading Additional Information!");
+                    name = name.split(" - Raw");
+                    // TODO: make new data usable.
+                    this.updateAdditionalInfo(name[0]);
+                }
+                callback(null, data);
+            }
+        });
+    }
+
+    /**
      *  Finds all of the chapters of given manga's
      *  @param {String} name Name of the Manga
      *  @returns {void}
@@ -129,10 +151,14 @@ class LHS {
     }
 }
 
-let obj = new LHS();
-// obj.getAllManga();
+const obj = new LHS();
+// // obj.getAllMangaAndUpdate();
+// obj.getMangaInfo("Barakamon", (error, data) => {
+//     console.log(data);
+// });
+// obj.updateAdditionalInfo("Shokugeki no Souma");
 // obj.getChapters("G Men");
-// obj.getPages("G Men", 150);
-obj.getMangaInfo("Archimedes no Taisen", (error, data) => {
-    console.log(data);
-});
+obj.getPages("G Men", 150);
+// obj.getMangaInfo("G Men", (error, data) => {
+//     console.log(data);
+// });
