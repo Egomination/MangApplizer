@@ -4,7 +4,11 @@ module.exports = class Logger {
     constructor() {
         console.log("Logger called");
     }
-
+    /**
+     * Utilizing the colours
+     * @param  {Function} callback Data
+     * @return {void}
+     */
     colorTable(callback) {
         const colours = {
             Reset: "\x1b[0m",
@@ -37,10 +41,24 @@ module.exports = class Logger {
         // console.log(colours);
     }
 
+    /**
+     * Json api func
+     * @param  {String} mangaName Name of the Manga
+     * @param  {Integer} chapterNo Number of the chapter
+     * @param  {String} src       Name of the manga source
+     * @return {void}
+     */
     saveAsJson(mangaName, chapterNo, src) {
         json(mangaName, chapterNo, src);
     }
 
+    /**
+     * Main log method for generating readable logs
+     * @param  {String} name      Name of the manga source
+     * @param  {String} mangaName Name of the manga
+     * @param  {Integer} mangaChNo Number of the chapter
+     * @return {void}
+     */
     logRun(name, mangaName, mangaChNo) {
         const obj = {
             Host: name,
