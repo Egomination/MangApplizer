@@ -1,7 +1,8 @@
 const request = require("request");
 const cheerio = require("cheerio");
 const downloader = require("../downloader");
-const Database = require("../db");
+const Database = require("../db/db");
+const Logger = require("../logger/log");
 
 class LHS {
     constructor() {
@@ -103,13 +104,15 @@ class LHS {
 
     /**
      * Finds the page links of the looked chapter.
-     * @param {String} name The name of the manga. G Men *Case sensitive
-     * @param {String} chNo
+     * @param {String} url The name of the manga. G Men *Case sensitive
+     * @param {String} chNo Chapter Number
+     * @returns {void}
      */
     getPages(url, chNo) {
-        let dbObj = new Database();
+        const dbObj = new Database();
+        const log = new Logger();
         url = url + " - Raw";
-        let pageUrls = [];
+        const pageUrls = [];
         dbObj.returnUrl(url, (error, data) => {
             let pageUrl = data;
             pageUrl = pageUrl.replace("manga", "read");
@@ -124,6 +127,7 @@ class LHS {
                     pageUrls.push(value);
                 });
                 downloader(pageUrls, url, chNo);
+                log.logRun(LHS.name, url, chNo);
             });
         });
     }
