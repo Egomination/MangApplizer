@@ -75,4 +75,39 @@ module.exports = class Logger {
             // this.saveAsJson(Manga, Chapter, Source);
         });
     }
+
+    /**
+     * Custom console warning method
+     * @param {String} header Specific Warning name. Can be null as well.
+     * @param {String} input  Warning description
+     * @return {void}
+     */
+    Warning(header, input) {
+        header = header || "Warning";
+        this.colorTable((error, colour) => {
+            let rowColumn = ((new Error().stack).split("at ")[4]).trim();
+            rowColumn = rowColumn.split("/").pop(-1);
+            rowColumn = rowColumn.split(")")[0];
+            console.log(" " + colour.Dim + rowColumn + " " + colour.Reset +
+                colour.Bright + colour.FgYellow + header + " " +
+                colour.Reset + colour.Bright + input + colour.Reset);
+        });
+    }
+    /**
+     * Custom console error method
+     * @param {Integer} error Error code. Can be null as well.
+     * @param {String} text  Error description.
+     * @return {void}
+     */
+    Error(error, text) {
+        error = error || "Error";
+        this.colorTable((err, colour) => {
+            let rowColumn = ((new Error().stack).split("at ")[4]).trim();
+            rowColumn = rowColumn.split("/").pop(-1);
+            rowColumn = rowColumn.split(")")[0];
+            console.log(" " + colour.Dim + rowColumn + " " + colour.Reset +
+                colour.Blink + colour.FgRed + error + " " +
+                colour.Reset + colour.Bright + text + colour.Reset);
+        });
+    }
 };
