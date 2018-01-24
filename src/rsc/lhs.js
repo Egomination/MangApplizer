@@ -61,11 +61,9 @@ class LHS {
             if (error === 404) { console.log("Manga is not found!"); } else {
                 this.get(this.BASE_URL + data, (response, body) => {
                     const $ = cheerio.load(body);
-                    let i = 0;
                     let info = $(body).find(".manga-info li").each(function(indx, elem) {
                         var data = $(elem).text();
-                        infodump[i] = data;
-                        i += 1;
+                        infodump.push(data);
                     });
                     let desc = $(body).find("div[class=row] p").text();
                     desc = desc.split("!");
@@ -75,7 +73,7 @@ class LHS {
                         if (error === 401) {
                             dbObj.insertAdditionalInfo(name, infodump);
                         } else {
-                            console.log(data);
+                            // console.log(data);
                             callback(null, data);
                         }
                     });
@@ -110,7 +108,7 @@ class LHS {
      * @param {String} chNo
      */
     getPages(url, chNo) {
-        let dbObj = new Database()
+        let dbObj = new Database();
         url = url + " - Raw";
         let pageUrls = [];
         dbObj.returnUrl(url, (error, data) => {

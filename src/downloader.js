@@ -30,4 +30,4 @@ module.exports = function(url, name, chNo) {
             });
         });
     }, 2000);
-}
+};
