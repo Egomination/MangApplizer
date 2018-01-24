@@ -14,8 +14,9 @@ class LHS {
 
     /**
      * Opens a connection, and passes the response and body of the html.
-     * @param  {String}   url
-     * @param  {Function} callback
+     * @param  {String}   url Url of the manga
+     * @param  {Function} callback Callback funtion that returns to the info
+     * @returns {void}
      */
     get(url, callback) {
         request(url, function(error, response, body) {
@@ -27,19 +28,20 @@ class LHS {
     /**
      * Generates the database. If database already present, checks if there is
      * any updates on web-sites database. If there is, updates local db.
+     * @returns {void}
      */
     getAllMangaAndUpdate() {
         // all pages -> available mangas in lhs
-        let dbObj = new Database();
-        let value = [];
-        let keys = [];
-        let url = this.BASE_URL + "manga-list.html?listType=allABC";
+        const dbObj = new Database();
+        const value = [];
+        const keys = [];
+        const url = this.BASE_URL + "manga-list.html?listType=allABC";
         this.get(url, function(response, body) {
             if (response.statusCode !== 200) { return; }
             const $ = cheerio.load(body);
             $(body).find("span a").each(function(index, element) {
-                let key = $(element).text();
-                let val = $(element).attr("href");
+                const key = $(element).text();
+                const val = $(element).attr("href");
                 keys.push(key);
                 value.push(val);
                 dbObj.updateWholeDB(key, val);
@@ -48,15 +50,15 @@ class LHS {
     }
 
     /**
-     * Finds manga information such as, Genre(s), Author(s)
-     * Can be used as an utility for Search method.
-     * @param {String} name
-     * @param {Function} callback
+     * Updates manga information of Author, Genre(s), Status, Released Magazine, 
+     * How many views it has.
+     * @param {String} name Name of the Manga
+     * @returns {void}
      */
-    getMangaInfo(name, callback) {
+    updateAdditionalInfo(name) {
         name = name + " - Raw";
-        let dbObj = new Database();
-        let infodump = [];
+        const dbObj = new Database();
+        const infodump = [];
         dbObj.returnUrl(name, (error, data) => {
             if (error === 404) { console.log("Manga is not found!"); } else {
                 this.get(this.BASE_URL + data, (response, body) => {
@@ -69,14 +71,7 @@ class LHS {
                     desc = desc.split("!");
                     desc = desc.pop(0);
                     infodump.push(desc);
-                    dbObj.getInfo(name, infodump, (error, data) => {
-                        if (error === 401) {
-                            dbObj.insertAdditionalInfo(name, infodump);
-                        } else {
-                            // console.log(data);
-                            callback(null, data);
-                        }
-                    });
+                    dbObj.insertAdditionalInfo(name, infodump);
                 });
             }
         });
@@ -84,17 +79,18 @@ class LHS {
 
     /**
      *  Finds all of the chapters of given manga's
-     *  @param {String} name
+     *  @param {String} name Name of the Manga
+     *  @returns {void}
      */
     getChapters(name) {
-        let dbObj = new Database();
+        const dbObj = new Database();
         name = name + " - Raw";
         dbObj.returnUrl(name, (error, data) => {
             this.get(this.BASE_URL + data, (response, body) => {
                 if (response.statusCode !== 200) { return; }
                 const $ = cheerio.load(body);
                 $(body).find("td a b").each(function(index, element) {
-                    let data = $(element).text();
+                    const data = $(element).text();
                     // Will Probably Change After UI implementation.
                     console.log(data);
                 });
