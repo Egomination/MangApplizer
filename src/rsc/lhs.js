@@ -5,13 +5,10 @@ const Database = require("../db");
 const fs = require("fs");
 
 class LHS {
-    constructor(title) {
+    constructor() {
         // for now create db in ctor.
         // let db = new Database();
         // db.createDB();
-        this.title = title;
-        this.existingChapters = [];
-        this.existingManga = [];
         this.BASE_URL = "http://lhscans.com/";
     }
 
@@ -22,6 +19,7 @@ class LHS {
      */
     get(url, callback) {
         request(url, function(error, response, body) {
+            // if error.code == "ENOTFOUND" then no internet connection available
             callback(response, body);
         });
     }
@@ -32,7 +30,7 @@ class LHS {
      */
     getAllMangaAndUpdate() {
         // all pages -> available mangas in lhs
-        let dbObj = new Database()
+        let dbObj = new Database();
         let value = [];
         let keys = [];
         let url = this.BASE_URL + "manga-list.html?listType=allABC";
@@ -53,31 +51,36 @@ class LHS {
      * Finds manga information such as, Genre(s), Author(s)
      * Can be used as an utility for Search method.
      * @param {String} name
+     * @param {Function} callback
      */
-    getMangaInfo(name /*, callback*/ ) {
+    getMangaInfo(name, callback) {
         name = name + " - Raw";
         let dbObj = new Database();
         let infodump = [];
         dbObj.returnUrl(name, (error, data) => {
-            console.log(data);
-            this.get(this.BASE_URL + data, (response, body) => {
-                const $ = cheerio.load(body);
-                let i = 0;
-                let info = $(body).find(".manga-info li").each(function(indx, elem) {
-                    var data = $(elem).text();
-                    infodump[i] = data;
-                    i += 1;
+            if (error === 404) { console.log("Manga is not found!"); } else {
+                this.get(this.BASE_URL + data, (response, body) => {
+                    const $ = cheerio.load(body);
+                    let i = 0;
+                    let info = $(body).find(".manga-info li").each(function(indx, elem) {
+                        var data = $(elem).text();
+                        infodump[i] = data;
+                        i += 1;
+                    });
+                    let desc = $(body).find("div[class=row] p").text();
+                    desc = desc.split("!");
+                    desc = desc.pop(0);
+                    infodump.push(desc);
+                    dbObj.getInfo(name, infodump, (error, data) => {
+                        if (error === 401) {
+                            dbObj.insertAdditionalInfo(name, infodump);
+                        } else {
+                            console.log(data);
+                            callback(null, data);
+                        }
+                    });
                 });
-                let desc = $(body).find("div[class=row] p").text();
-                desc = desc.split("!");
-                desc = desc.pop(0);
-                // callback(null, infodump);
-                // FIXME: each element need to be key, value pair.
-                // console.log(infodump);
-                // console.log(desc);
-                dbObj.insertAdditionalInfo(name, infodump, desc);
-                dbObj.getInfo(name);
-            });
+            }
         });
     }
 
@@ -86,10 +89,9 @@ class LHS {
      *  @param {String} name
      */
     getChapters(name) {
-        let dbObj = new Database()
-        let obj = new database();
+        let dbObj = new Database();
         name = name + " - Raw";
-        dbObj.returnUrl((error, data) => {
+        dbObj.returnUrl(name, (error, data) => {
             this.get(this.BASE_URL + data, (response, body) => {
                 if (response.statusCode !== 200) { return; }
                 const $ = cheerio.load(body);
@@ -111,7 +113,7 @@ class LHS {
         let dbObj = new Database()
         url = url + " - Raw";
         let pageUrls = [];
-        dbObj.returnUrl((error, data) => {
+        dbObj.returnUrl(url, (error, data) => {
             let pageUrl = data;
             pageUrl = pageUrl.replace("manga", "read");
             pageUrl = pageUrl.replace(".html", `-chapter-${chNo}.html`);
@@ -124,25 +126,16 @@ class LHS {
                     value = (!value) ? null : value;
                     pageUrls.push(value);
                 });
-                let path = downloader.createFolders(url, chNo);
-                // Removing Null values.
-                pageUrls = pageUrls.filter((i) => i);
-                pageUrls.forEach(function(item) {
-                    let pUrl = item.trim();
-                    // Waiting folder creation.
-                    setTimeout(function() {
-                        downloader.downloader(pUrl, path);
-                    }, 2000);
-                });
+                downloader(pageUrls, url, chNo);
             });
         });
     }
 }
 
-let obj = new LHS("test");
+let obj = new LHS();
 // obj.getAllManga();
 // obj.getChapters("G Men");
 // obj.getPages("G Men", 150);
-obj.getMangaInfo("Archimedes no Taisen");
-// obj.updateDB();
-// manga name : a-un
+obj.getMangaInfo("Archimedes no Taisen", (error, data) => {
+    console.log(data);
+});

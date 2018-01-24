@@ -13,14 +13,14 @@ module.exports = class Database {
         console.log("Generating Tables!");
         db.serialize(function() {
             db.run("CREATE TABLE IF NOT EXISTS lhs (\
-				Name TEXT NOT NULL,\
-				Url TEXT NOT NULL,\
-				Author TEXT,\
-				Genre TEXT,\
-				Status TEXT,\
-				ReleasedMag TEXT,\
-				View INTEGER,\
-				Description TEXT)");
+                Name TEXT NOT NULL,\
+                Url TEXT NOT NULL,\
+                Author TEXT,\
+                Genre TEXT,\
+                Status TEXT,\
+                ReleasedMag TEXT,\
+                View INTEGER,\
+                Description TEXT)");
 
             console.log("Database is Ready!");
         });
@@ -36,7 +36,7 @@ module.exports = class Database {
     insertIntoDB(key, value) {
         let db = new sqlite3.Database("test.sqlite3");
         db.parallelize(function() {
-            setTimeout(function() {}, 6000);
+            setTimeout(function() { console.log("Wait Complated!"); }, 6000);
             let stmnt = db.prepare("INSERT INTO lhs VALUES (?, ?, ?, ?, ?, ?, ?)");
             stmnt.run(key, value, null, null, null, null, null);
             stmnt.finalize();
@@ -47,12 +47,31 @@ module.exports = class Database {
     /**
      * Prints all of the available information about searched manga
      * @param  {String} name Name of the searched manga.
+     * @param  {Array} info     Array that contains all of the information
+     * @param {Function} callback Callback function returns error code and data
      */
-    getInfo(name) {
+    getInfo(name, info, callback) {
         let db = new sqlite3.Database("test.sqlite3");
+        let desc = info.pop();
+        let pairs = [];
+        info.forEach(function(item) {
+            let val = item.split(":")[1];
+            console.log(val);
+            val = val.trim();
+            pairs.push(val);
+        });
+
         db.serialize(function() {
-            db.get(`SELECT * FROM lhs WHERE Name="${name}"`, function(err, data) {
-                console.log(data);
+            db.get(`SELECT Url, Author, Genre, Status, ReleasedMag, Description \
+                    FROM lhs WHERE Name="${name}"`, function(err, data) {
+                // Checks, if update necessary or not.
+                if (data.Author !== pairs[2] || data.Genre !== pairs[3] ||
+                    data.Status !== pairs[4] || data.ReleasedMag !== pairs[5] ||
+                    data.Description !== desc) {
+                    callback(401, data);
+                } else {
+                    callback(null, data);
+                }
             });
         });
         db.close();
@@ -67,8 +86,8 @@ module.exports = class Database {
     returnUrl(name, callback) {
         let db = new sqlite3.Database("test.sqlite3");
         db.serialize(function() {
-            db.get(`SELECT Url FROM lhs WHERE Name="${name}"`, function(err, row) {
-                callback(null, row.Url);
+            db.get(`SELECT Url FROM lhs WHERE Name="${name}"`, function(err, data) {
+                (data) ? callback(null, data.Url): callback(404, null);
             });
         });
         db.close();
@@ -77,25 +96,27 @@ module.exports = class Database {
     /**
      * Inserts additional information like Genre(s), Author into database
      * @param  {String} name    Name of the manga
-     * @param  {Array} info     Array that contains all of the information but description
+     * @param  {Array} info     Array that contains all of the information.
      * @param  {String} descrip Description of the manga
      */
-    insertAdditionalInfo(name, info, descrip) {
+    insertAdditionalInfo(name, info) {
         let db = new sqlite3.Database("test.sqlite3");
+        let desc = info.pop();
         let pairs = [];
         info.forEach(function(item) {
             let val = item.split(":")[1];
+            val = val.trim();
             pairs.push(val);
         });
         db.serialize(function() {
             db.run("UPDATE lhs SET Author=$author, Genre=$genre, Status=$status,\
-					ReleasedMag=$mag, Description=$desc WHERE Name=$name", {
+                    ReleasedMag=$mag, Description=$desc WHERE Name=$name", {
                 $name: name,
                 $author: pairs[2],
                 $genre: pairs[3],
                 $status: pairs[4],
                 $mag: pairs[5],
-                $desc: descrip
+                $desc: desc
             });
         });
         db.close();
@@ -119,4 +140,20 @@ module.exports = class Database {
         });
         db.close();
     }
-}
+
+    /**
+     * Returns to name of the mangas
+     * @param  {Function} callback
+     */
+    getAllMangaNames(callback) {
+        let names = [];
+        let db = new sqlite3.Database("test.sqlite3");
+
+        db.serialize(function() {
+            db.each("SELECT Name from lhs", function(error, data) {
+                callback(null, data.Name);
+            });
+        });
+        db.close();
+    }
+};
