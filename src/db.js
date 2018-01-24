@@ -146,7 +146,7 @@ module.exports = class Database {
      * @param  {Function} callback
      */
     getAllMangaNames(callback) {
-        let names = [];
+        // let names = [];
         let db = new sqlite3.Database("test.sqlite3");
 
         db.serialize(function() {

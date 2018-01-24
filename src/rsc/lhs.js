@@ -2,7 +2,6 @@ const request = require("request");
 const cheerio = require("cheerio");
 const downloader = require("../downloader");
 const Database = require("../db");
-const fs = require("fs");
 
 class LHS {
     constructor() {
@@ -37,7 +36,7 @@ class LHS {
         this.get(url, function(response, body) {
             if (response.statusCode !== 200) { return; }
             const $ = cheerio.load(body);
-            let info = $(body).find("span a").each(function(index, element) {
+            $(body).find("span a").each(function(index, element) {
                 let key = $(element).text();
                 let val = $(element).attr("href");
                 keys.push(key);
@@ -61,7 +60,7 @@ class LHS {
             if (error === 404) { console.log("Manga is not found!"); } else {
                 this.get(this.BASE_URL + data, (response, body) => {
                     const $ = cheerio.load(body);
-                    let info = $(body).find(".manga-info li").each(function(indx, elem) {
+                    $(body).find(".manga-info li").each(function(indx, elem) {
                         var data = $(elem).text();
                         infodump.push(data);
                     });
@@ -93,7 +92,7 @@ class LHS {
             this.get(this.BASE_URL + data, (response, body) => {
                 if (response.statusCode !== 200) { return; }
                 const $ = cheerio.load(body);
-                let info = $(body).find("td a b").each(function(index, element) {
+                $(body).find("td a b").each(function(index, element) {
                     let data = $(element).text();
                     // Will Probably Change After UI implementation.
                     console.log(data);
@@ -116,9 +115,9 @@ class LHS {
             pageUrl = pageUrl.replace("manga", "read");
             pageUrl = pageUrl.replace(".html", `-chapter-${chNo}.html`);
             this.get(this.BASE_URL + pageUrl, (response, body) => {
-                if (response.statusCode !== 200) { console.log('err'); }
+                if (response.statusCode !== 200) { console.log("err"); }
                 const $ = cheerio.load(body);
-                let info = $(body).find(".chapter-content .chapter-img").each(function(index, element) {
+                $(body).find(".chapter-content .chapter-img").each(function(index, element) {
                     let value = $(element).attr("src");
                     // Dunno why but, it prints 3 undefineds.
                     value = (!value) ? null : value;
