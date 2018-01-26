@@ -3,9 +3,7 @@
 // TODO: Add definitions for custom error codes Like 404
 const json = require("./json");
 module.exports = class Logger {
-    constructor() {
-        console.log("Logger called");
-    }
+    constructor() { }
     /**
      * Utilizing the colours
      * @param  {Function} callback Data
@@ -71,7 +69,6 @@ module.exports = class Logger {
             const Manga = obj.Manga;
             const Chapter = obj.Chapter;
             const Source = obj.Host;
-            console.log(Logger.name);
             console.log(colours.BgBlue + Manga + ": " + colours.BgYellow + Chapter +
                 colours.Reset + " from " + colours.BgRed + Source + colours.Reset);
             this.saveAsJson(Manga, Chapter, Source);
