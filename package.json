@@ -1,6 +1,6 @@
 {
   "name": "MangApplizer",
-  "version": "0.5.8",
+  "version": "0.5.10",
   "description": "Simple manga downloader/viewer",
   "main": "main.js",
   "scripts": {
