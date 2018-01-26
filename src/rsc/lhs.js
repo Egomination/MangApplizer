@@ -4,6 +4,8 @@ const downloader = require("../downloader");
 const Database = require("../db/db");
 const Logger = require("../logger/log");
 
+const log = new Logger();
+
 class LHS {
     constructor() {
         // for now create db in ctor.
@@ -85,17 +87,16 @@ class LHS {
      */
     getMangaInfo(name, callback) {
         name = name + " - Raw";
-        const log = new Logger();
         const dbObj = new Database();
         dbObj.getInfo(name, (error, data) => {
-            if (error) { log.Error(error, "Manga could not found"); } else {
+            if (error) { log.LOG("error", "Manga could not found"); } else {
                 if (data.Description === null) {
                     console.log("Downloading Additional Information!");
                     name = name.split(" - Raw");
                     // TODO: make new data usable.
                     this.updateAdditionalInfo(name[0]);
                 }
-                log.Warning("","Testing the given error in another file");
+                log.LOG("warning","Testing the given error in another file");
                 callback(null, data);
             }
         });
@@ -130,7 +131,6 @@ class LHS {
      */
     getPages(url, chNo) {
         const dbObj = new Database();
-        const log = new Logger();
         url = url + " - Raw";
         const pageUrls = [];
         dbObj.returnUrl(url, (error, data) => {
@@ -138,7 +138,7 @@ class LHS {
             pageUrl = pageUrl.replace("manga", "read");
             pageUrl = pageUrl.replace(".html", `-chapter-${chNo}.html`);
             this.get(this.BASE_URL + pageUrl, (response, body) => {
-                if (response.statusCode !== 200) { console.log("err"); }
+                if (response.statusCode !== 200) { log.LOG("error", "Error!"); }
                 const $ = cheerio.load(body);
                 $(body).find(".chapter-content .chapter-img").each(function(index, element) {
                     let value = $(element).attr("src");
