@@ -62,7 +62,7 @@ class LHS {
         const dbObj = new Database();
         const infodump = [];
         dbObj.returnUrl(name, (error, data) => {
-            if (error === 404) { console.log("Manga is not found!"); } else {
+            if (error === 404) { log.log("error" ,"Manga is not found!"); } else {
                 this.get(this.BASE_URL + data, (response, body) => {
                     const $ = cheerio.load(body);
                     $(body).find(".manga-info li").each(function(indx, elem) {
@@ -89,14 +89,14 @@ class LHS {
         name = name + " - Raw";
         const dbObj = new Database();
         dbObj.getInfo(name, (error, data) => {
-            if (error) { log.LOG("error", "Manga could not found"); } else {
+            if (error) { log.log("error", "Manga could not found"); } else {
                 if (data.Description === null) {
                     console.log("Downloading Additional Information!");
                     name = name.split(" - Raw");
                     // TODO: make new data usable.
                     this.updateAdditionalInfo(name[0]);
                 }
-                log.LOG("warning","Testing the given error in another file");
+                log.log("warning","Testing the given error in another file");
                 callback(null, data);
             }
         });
@@ -138,7 +138,7 @@ class LHS {
             pageUrl = pageUrl.replace("manga", "read");
             pageUrl = pageUrl.replace(".html", `-chapter-${chNo}.html`);
             this.get(this.BASE_URL + pageUrl, (response, body) => {
-                if (response.statusCode !== 200) { log.LOG("error", "Error!"); }
+                if (response.statusCode !== 200) { log.log("error", "Error!"); }
                 const $ = cheerio.load(body);
                 $(body).find(".chapter-content .chapter-img").each(function(index, element) {
                     let value = $(element).attr("src");

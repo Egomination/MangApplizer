@@ -1,5 +1,10 @@
 const fs = require("fs");
 
+/**
+ * Creates the json file
+ * @param  {Obj} data Javascript object which contains the json info
+ * @return {void}
+ */
 function createLog(data) {
     if (fs.existsSync("../../log.json")) {
         console.log("Path is already exists");
@@ -12,6 +17,11 @@ function createLog(data) {
     }
 }
 
+/**
+ * Inserts new manga int ojson
+ * @param  {Obj} data Javascript object that contains json info
+ * @return {void}
+ */
 function insertInto(data) {
     try {
         JSON.parse(fs.readFileSync("./../../log.json"));

@@ -2,6 +2,12 @@ const http = require("http");
 const fs = require("fs");
 const mkdirp = require("mkdirp-promise");
 
+/**
+ * Creates the manga folder with repsect to name and its chapter
+ * @param  {String} name Name of the manga
+ * @param  {String} chNo Chapter no of the manga
+ * @return {String}      path of the folder that created.
+ */
 function createFolders(name, chNo) {
     const filePath = "../../imgs/" + name + "/" + chNo + "/";
     mkdirp(filePath)

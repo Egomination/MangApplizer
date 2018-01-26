@@ -3,7 +3,7 @@
 // TODO: Add definitions for custom error codes Like 404
 const json = require("./json");
 module.exports = class Logger {
-    constructor() { }
+    constructor() { console.log("Logging!"); }
     /**
      * Utilizing the colours
      * @param  {Function} callback Data
@@ -38,7 +38,6 @@ module.exports = class Logger {
             BgWhite: "\x1b[47m"
         };
         callback(null, colours);
-        // console.log(colours);
     }
 
     /**
@@ -81,7 +80,7 @@ module.exports = class Logger {
      * @param {String} text  Warning description
      * @return {void}
      */
-    LOG(header, text) {
+    log(header, text) {
         this.colorTable((error, colour) => {
             let rowColumn = ((new Error().stack).split("at ")[4]).trim();
             rowColumn = rowColumn.split("/").pop(-1);
