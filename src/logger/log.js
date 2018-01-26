@@ -81,18 +81,23 @@ module.exports = class Logger {
     /**
      * Custom console warning method
      * @param {String} header Specific Warning name. Can be null as well.
-     * @param {String} input  Warning description
+     * @param {String} text  Warning description
      * @return {void}
      */
-    Warning(header, input) {
-        header = header || "Warning";
+    LOG(header, text) {
         this.colorTable((error, colour) => {
             let rowColumn = ((new Error().stack).split("at ")[4]).trim();
             rowColumn = rowColumn.split("/").pop(-1);
             rowColumn = rowColumn.split(")")[0];
-            console.log(" " + colour.Dim + rowColumn + " " + colour.Reset +
-                colour.Bright + colour.FgYellow + header + " " +
-                colour.Reset + colour.Bright + input + colour.Reset);
+            if (header.toLowerCase() === "warning") {
+                console.log(" " + colour.Dim + rowColumn + " " + colour.Reset +
+                    colour.Bright + colour.FgYellow + header + " " +
+                    colour.Reset + colour.Bright + text + colour.Reset);
+            } else if (header.toLowerCase() === "error") {
+                console.log(" " + colour.Dim + rowColumn + " " + colour.Reset +
+                    colour.Blink + colour.FgRed + header + " " +
+                    colour.Reset + colour.Bright + text + colour.Reset);
+            }
         });
     }
     /**
