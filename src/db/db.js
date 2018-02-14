@@ -6,9 +6,10 @@ module.exports = class Database {
     }
     /**
      * Creates database if it's not exists.
+     * @returns {void}
      */
     createDB() {
-        let db = new sqlite3.Database("test.sqlite3");
+        const db = new sqlite3.Database("test.sqlite3");
 
         console.log("Generating Tables!");
         db.serialize(function() {
@@ -32,13 +33,14 @@ module.exports = class Database {
      * Filling the database with manga name and url
      * @param  {String} key   Name of the manga
      * @param  {String} value Url links
+     * @returns {void}
      */
     insertIntoDB(key, value) {
-        let db = new sqlite3.Database("test.sqlite3");
+        const db = new sqlite3.Database("test.sqlite3");
         db.parallelize(function() {
             setTimeout(function() { console.log("Wait Complated!"); }, 6000);
-            let stmnt = db.prepare("INSERT INTO lhs VALUES (?, ?, ?, ?, ?, ?, ?)");
-            stmnt.run(key, value, null, null, null, null, null);
+            const stmnt = db.prepare("INSERT INTO lhs VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+            stmnt.run(key, value, null, null, null, null, null, null);
             stmnt.finalize();
         });
         db.close();
@@ -47,31 +49,15 @@ module.exports = class Database {
     /**
      * Prints all of the available information about searched manga
      * @param  {String} name Name of the searched manga.
-     * @param  {Array} info     Array that contains all of the information
      * @param {Function} callback Callback function returns error code and data
+     * @returns {void}
      */
-    getInfo(name, info, callback) {
-        let db = new sqlite3.Database("test.sqlite3");
-        let desc = info.pop();
-        let pairs = [];
-        info.forEach(function(item) {
-            let val = item.split(":")[1];
-            console.log(val);
-            val = val.trim();
-            pairs.push(val);
-        });
-
+    getInfo(name, callback) {
+        const db = new sqlite3.Database("test.sqlite3");
         db.serialize(function() {
-            db.get(`SELECT Url, Author, Genre, Status, ReleasedMag, Description \
+            db.get(`SELECT Author, Genre, Status, ReleasedMag, Description \
                     FROM lhs WHERE Name="${name}"`, function(err, data) {
-                // Checks, if update necessary or not.
-                if (data.Author !== pairs[2] || data.Genre !== pairs[3] ||
-                    data.Status !== pairs[4] || data.ReleasedMag !== pairs[5] ||
-                    data.Description !== desc) {
-                    callback(401, data);
-                } else {
-                    callback(null, data);
-                }
+                (!data) ? callback(404, data): callback(null, data);
             });
         });
         db.close();
@@ -82,9 +68,10 @@ module.exports = class Database {
      * available manga function of lhscans
      * @param  {String}   name     Name of the manga
      * @param  {Function} callback Callback function returns to the url
+     * @returns {void}
      */
     returnUrl(name, callback) {
-        let db = new sqlite3.Database("test.sqlite3");
+        const db = new sqlite3.Database("test.sqlite3");
         db.serialize(function() {
             db.get(`SELECT Url FROM lhs WHERE Name="${name}"`, function(err, data) {
                 (data) ? callback(null, data.Url): callback(404, null);
@@ -98,11 +85,12 @@ module.exports = class Database {
      * @param  {String} name    Name of the manga
      * @param  {Array} info     Array that contains all of the information.
      * @param  {String} descrip Description of the manga
+     * @returns {void}
      */
     insertAdditionalInfo(name, info) {
-        let db = new sqlite3.Database("test.sqlite3");
-        let desc = info.pop();
-        let pairs = [];
+        const db = new sqlite3.Database("test.sqlite3");
+        const desc = info.pop();
+        const pairs = [];
         info.forEach(function(item) {
             let val = item.split(":")[1];
             val = val.trim();
@@ -126,11 +114,12 @@ module.exports = class Database {
      * Compares fresh copy of parsed data with database, does necessary insertions if necessary
      * @param  {String} name Name of the mangas for comparison
      * @param  {String} val  Url links of mangas
+     * @returns {void}
      */
     updateWholeDB(name, val) {
         // I could not find any other options to fix class function call.
-        let classObj = new Database();
-        let db = new sqlite3.Database("test.sqlite3");
+        const classObj = new Database();
+        const db = new sqlite3.Database("test.sqlite3");
         db.serialize(function() {
             db.get(`SELECT Url FROM lhs WHERE Name="${name}"`, function(err, data) {
                 if (!data) {
@@ -143,11 +132,12 @@ module.exports = class Database {
 
     /**
      * Returns to name of the mangas
-     * @param  {Function} callback
+     * @param  {Function} callback Callback function contains the info
+     * @returns {void}
      */
     getAllMangaNames(callback) {
-        let names = [];
-        let db = new sqlite3.Database("test.sqlite3");
+        // let names = [];
+        const db = new sqlite3.Database("test.sqlite3");
 
         db.serialize(function() {
             db.each("SELECT Name from lhs", function(error, data) {
