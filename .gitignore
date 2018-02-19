@@ -10,3 +10,9 @@ vscode
 
 #Images
 imgs
+
+# Database
+*.db
+*.sqlite3
+*.sql
+*.json
